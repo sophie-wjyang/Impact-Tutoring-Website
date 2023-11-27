@@ -1,15 +1,18 @@
 import "./App.css";
-import Navbar from "./components/Navbar";
+
+import NavBar from "./components/Navbar";
 import Banner from "./components/Banner";
 import WhoWeAre from "./components/WhoWeAre";
 import WhatWeDo from "./components/WhatWeDo";
 import HowItWorks from "./components/HowItWorks";
 import CallToAction from "./components/CallToAction";
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 function App() {
   return (
     <>
-      <Navbar />
+      <NavBar />
       <Banner />
       <WhoWeAre />
       <WhatWeDo />
