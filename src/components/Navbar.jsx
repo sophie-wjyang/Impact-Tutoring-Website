@@ -7,14 +7,14 @@ import Navbar from 'react-bootstrap/Navbar';
 
 export default function NavBar() {
     return (
-        <Navbar expand="lg" className="bg-body-tertiary">
+        <Navbar expand="md" className="bg-body-tertiary">
             <Container>
                 {/* logo */}
                 <Navbar.Brand href="#home">
                     <img
                         src={Logo}
                         width="200"
-                        className="d-inline-block align-top"
+                        className="d-inline-block align-top navbar-logo"
                         alt="React Bootstrap logo"
                     />
                 </Navbar.Brand>
@@ -24,11 +24,11 @@ export default function NavBar() {
 
                 {/* nav links */}
                 <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-                    <Nav>
-                        <Nav.Link href="#home">Who We Are</Nav.Link>
-                        <Nav.Link href="#link">What We Do</Nav.Link>
-                        <Nav.Link href="#link">How It Works</Nav.Link>
-                        <Nav.Link href="#link">Get Involved</Nav.Link>
+                    <Nav className="navbar-links">
+                        <Nav.Link href="#home" className="navbar-link">Who We Are</Nav.Link>
+                        <Nav.Link href="#link" className="navbar-link">What We Do</Nav.Link>
+                        <Nav.Link href="#link" className="navbar-link">How It Works</Nav.Link>
+                        <Nav.Link href="#link" className="navbar-link">Get Involved</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

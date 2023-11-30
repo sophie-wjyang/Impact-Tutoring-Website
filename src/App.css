@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600&display=swap');
+
+/********************************* UNIVERSAL STYLES **********************************/
+:root{
+    --it-teal: #19BDC7;
+    --it-light-grey: #909394;
+    --it-dark-grey: #3C4048;
+}
+
+/********************************* NAVBAR **********************************/
+
+.navbar-logo{
+    padding: 10px;
+}
+
+.navbar-links .navbar-link{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--it-light-grey);
+}
+
+/********************************* BANNER **********************************/
+
