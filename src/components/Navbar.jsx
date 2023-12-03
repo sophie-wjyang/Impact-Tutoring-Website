@@ -7,14 +7,14 @@ import Navbar from 'react-bootstrap/Navbar';
 
 export default function NavBar() {
     return (
-        <Navbar expand="md" className="bg-body-tertiary">
+        <Navbar expand="md" className="bg-body-tertiary" id="navbar-section">
             <Container>
                 {/* logo */}
                 <Navbar.Brand href="#home">
                     <img
                         src={Logo}
                         width="200"
-                        className="d-inline-block align-top navbar-logo"
+                        className="d-inline-block align-top navbar-logo py-2"
                         alt="React Bootstrap logo"
                     />
                 </Navbar.Brand>

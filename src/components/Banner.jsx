@@ -9,22 +9,42 @@ import Button from 'react-bootstrap/Button';
 
 export default function Banner() {
     return (
-        <Container>
-            <Row>
-                <Col md={7}>
-                    <h1>
-                        Make an impact, 
+        <Container id="banner-section">
+            <Row className="flex-lg-row-reverse align-items-center g-5 py-5">
+                {/* graphic */}
+                <Col xs={10} sm={10} md={8} lg={4}>
+                    <Image
+                        src={BannerPhoto}
+                        className="d-block mx-auto img-fluid"
+                        loading="lazy"
+                    />
+                </Col>
+
+                <Col lg={1} className="d-none d-lg-block"></Col>
+
+                {/* text */}
+                <Col>
+                    {/* header */}
+                    <h1 className="pb-2">
+                        Make an impact,
                         <br />
                         No matter how small
                     </h1>
-                    <p>
+
+                    {/* description */}
+                    <p className="lead pb-4">
                         Gain valuable leadership experience and earn volunteer hours through our in-person and virtual initiatives. 
                     </p>
-                    <Button variant="primary">Become a tutor</Button>
-                    <Button variant="primary">Become a tutee</Button>
-                </Col>
-                <Col md={5}>
-                    <Image src={BannerPhoto} fluid/>
+
+                    {/* buttons */}
+                    <div className="d-grid gap-2 d-md-flex justify-content-md-start">
+                        <Button size="lg" className="px-4 me-md-2 tutor-button">
+                            Become a tutor
+                        </Button>
+                        <Button size="lg" className="px-4 tutee-button">
+                            Become a tutee
+                        </Button>
+                    </div>
                 </Col>
             </Row>
         </Container>

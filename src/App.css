@@ -10,8 +10,9 @@
 
 /********************************* NAVBAR **********************************/
 
-.navbar-logo{
-    padding: 10px;
+#navbar-section{
+    background-color: white !important;
+    border-bottom: 1px solid #f1f1f1;
 }
 
 .navbar-links .navbar-link{
@@ -23,3 +24,38 @@
 
 /********************************* BANNER **********************************/
 
+#banner-section{
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+#banner-section h1{
+    font-family: 'Yeseva One', serif;
+    font-size: 45px;
+    color: var(--it-dark-grey) !important;
+    line-height: 1.4 !important;
+}
+
+#banner-section p{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--it-light-grey);
+    line-height: 1.7 !important;
+}
+
+#banner-section .tutor-button{
+    background-color: var(--it-teal);
+    border-color: transparent;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+}
+
+#banner-section .tutee-button{
+    background-color: transparent;
+    border-color: var(--it-teal);
+    color: var(--it-teal);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+}
