@@ -24,9 +24,18 @@
 
 /********************************* BANNER **********************************/
 
-#banner-section{
-    margin-top: 100px;
-    margin-bottom: 100px;
+@media (min-width: 992px) {
+    #banner-section {
+        margin-top: 150px;
+        margin-bottom: 150px;
+    }
+}
+
+@media (max-width: 991px) {
+    #banner-section {
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
 }
 
 #banner-section h1{
@@ -58,4 +67,35 @@
     color: var(--it-teal);
     font-family: 'Open Sans', sans-serif;
     font-size: 18px;
+}
+
+/********************************* WHO WE ARE **********************************/
+
+@media (min-width: 992px) {
+    #who-we-are-section {
+        margin-top: 150px;
+        margin-bottom: 150px;
+    }
+}
+
+@media (max-width: 991px) {
+    #who-we-are-section {
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+}
+
+#who-we-are-section h1{
+    font-family: 'Yeseva One', serif;
+    font-size: 35px;
+    color: var(--it-dark-grey) !important;
+    line-height: 1.4 !important;
+}
+
+#who-we-are-section p{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--it-light-grey);
+    line-height: 1.7 !important;
 }

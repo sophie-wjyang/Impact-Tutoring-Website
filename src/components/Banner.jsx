@@ -1,5 +1,5 @@
 import React from 'react'
-import BannerPhoto from '../assets/images/landing-page/banner-graphic.svg';
+import BannerGraphic from '../assets/images/landing-page/banner-graphic.svg';
 
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
@@ -14,7 +14,7 @@ export default function Banner() {
                 {/* graphic */}
                 <Col xs={10} sm={10} md={8} lg={4}>
                     <Image
-                        src={BannerPhoto}
+                        src={BannerGraphic}
                         className="d-block mx-auto img-fluid"
                         loading="lazy"
                     />
