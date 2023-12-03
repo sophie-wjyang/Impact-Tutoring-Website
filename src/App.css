@@ -69,30 +69,30 @@
     font-size: 18px;
 }
 
-/********************************* WHO WE ARE **********************************/
+/********************************* WHO WE ARE, WHAT WE DO **********************************/
 
 @media (min-width: 992px) {
-    #who-we-are-section {
+    #who-we-are-section, #what-we-do-section {
         margin-top: 150px;
         margin-bottom: 150px;
     }
 }
 
 @media (max-width: 991px) {
-    #who-we-are-section {
+    #who-we-are-section, #what-we-do-section {
         margin-top: 50px;
         margin-bottom: 50px;
     }
 }
 
-#who-we-are-section h1{
+#who-we-are-section h1, #what-we-do-section h1{
     font-family: 'Yeseva One', serif;
     font-size: 35px;
     color: var(--it-dark-grey) !important;
     line-height: 1.4 !important;
 }
 
-#who-we-are-section p{
+#who-we-are-section p, #what-we-do-section p{
     font-family: 'Open Sans', sans-serif;
     font-size: 16px;
     font-weight: 300;
