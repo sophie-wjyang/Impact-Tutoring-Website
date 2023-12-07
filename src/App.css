@@ -219,3 +219,7 @@
     font-size: 22px;
     margin-right: 10px;
 }
+
+#footer-section .social-icon:hover{
+    color: var(--it-teal);
+}
