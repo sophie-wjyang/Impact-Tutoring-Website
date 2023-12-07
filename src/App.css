@@ -61,12 +61,22 @@
     font-size: 18px;
 }
 
+#banner-section .tutor-button:hover{
+    background-color: #13989f;
+}
+
 #banner-section .tutee-button{
     background-color: transparent;
     border-color: var(--it-teal);
     color: var(--it-teal);
     font-family: 'Open Sans', sans-serif;
     font-size: 18px;
+}
+
+#banner-section .tutee-button:hover{
+    background-color: var(--it-teal);
+    border-color: transparent;
+    color: white;
 }
 
 /********************************* WHO WE ARE, WHAT WE DO **********************************/
@@ -165,6 +175,16 @@
     margin-top: 80px;
     margin-bottom: 80px;
     background-color: #dfdfdf;
+}
+
+#call-to-action-section .tutor-button:hover{
+    background-color: #13989f;
+}
+
+#call-to-action-section .tutee-button:hover{
+    background-color: var(--it-teal);
+    border-color: transparent;
+    color: white;
 }
 
 /********************************* FOOTER **********************************/
