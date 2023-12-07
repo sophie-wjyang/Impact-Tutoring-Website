@@ -1,6 +1,5 @@
 import React from 'react'
 import WhatWeDoGraphic from '../assets/images/landing-page/what-we-do-graphic.svg';
-
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';

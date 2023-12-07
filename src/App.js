@@ -6,6 +6,7 @@ import WhoWeAre from "./components/WhoWeAre";
 import WhatWeDo from "./components/WhatWeDo";
 import HowItWorks from "./components/HowItWorks";
 import CallToAction from "./components/CallToAction";
+import Footer from "./components/Footer";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -16,8 +17,9 @@ function App() {
       <Banner />
       <WhoWeAre />
       <WhatWeDo />
-      <HowItWorks />
+      {/* <HowItWorks /> */}
       <CallToAction />
+      <Footer />
     </>
   )
 }

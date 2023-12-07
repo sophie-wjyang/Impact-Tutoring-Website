@@ -105,14 +105,14 @@
 @media (min-width: 992px) {
     #call-to-action-section {
         margin-top: 150px;
-        margin-bottom: 150px;
+        margin-bottom: 180px;
     }
 }
 
 @media (max-width: 991px) {
     #call-to-action-section {
         margin-top: 50px;
-        margin-bottom: 50px;
+        margin-bottom: 90px;
     }
 }
 
@@ -136,7 +136,7 @@
     border-color: transparent;
     color: white;
     font-family: 'Open Sans', sans-serif;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 #call-to-action-section .tutee-button{
@@ -144,7 +144,7 @@
     border-color: var(--it-teal);
     color: var(--it-teal);
     font-family: 'Open Sans', sans-serif;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 @media (min-width: 992px) {
@@ -165,4 +165,37 @@
     margin-top: 80px;
     margin-bottom: 80px;
     background-color: #dfdfdf;
+}
+
+/********************************* FOOTER **********************************/
+#footer-section{
+    background-color: var(--it-dark-grey);
+    color: white;
+}
+
+#footer-section .footer-text{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 15px;
+    margin-bottom: 0;
+    padding-left: 15px;
+}
+
+@media (max-width: 575px) {
+    #footer-section .footer-text{
+        font-size: 14px;
+    }
+
+    #footer-section .footer-logo{
+        width: 40px;
+    }
+}
+
+#footer-section .social-icon-list{
+    margin-bottom: 0;
+}
+
+#footer-section .social-icon{
+    color: white;
+    font-size: 22px;
+    margin-right: 10px;
 }
