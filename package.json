@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "frontend": "cd frontend && npm start",
-    "backend": "cd backend && npm start",
+    "backend": "cd backend && source env/bin/activate && flask run",
     "start": "concurrently \"npm run frontend\" \"npm run backend\""
   },
   "author": "",
