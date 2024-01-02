@@ -223,3 +223,13 @@
 #footer-section .social-icon:hover{
     color: var(--it-teal);
 }
+
+/********************************* SIGNUP FORM **********************************/
+
+#signup-container{
+    background-color: white;
+    padding: 50px;
+    margin: 100px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,.1);
+}

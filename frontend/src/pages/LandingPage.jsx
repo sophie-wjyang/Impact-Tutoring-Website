@@ -12,23 +12,23 @@ import Image from 'react-bootstrap/Image';
 import Row from 'react-bootstrap/Row';
 
 function LandingPage() {
-    const [landingTitle, setLandingTitle] = useState("");
+    // const [landingTitle, setLandingTitle] = useState("");
 
-    useEffect(() => {
-        // ASYNC AND AWAIT
-        async function fetchLandingTitle() {
-            const axiosPromise = axios.get('http://localhost:5000/landing-title')
-            const { data } = await axiosPromise
-            setLandingTitle(data)
-        }
+    // useEffect(() => {
+    //     // ASYNC AND AWAIT
+    //     async function fetchLandingTitle() {
+    //         const axiosPromise = axios.get('http://localhost:5000/landing-title')
+    //         const { data } = await axiosPromise
+    //         setLandingTitle(data)
+    //     }
 
-        void fetchLandingTitle();
+    //     void fetchLandingTitle();
 
-        // CALLBACKS
-        axios.get('http://localhost:5000/landing-title')
-            .then(({ data }) => { setLandingTitle(data) })
+    //     // CALLBACKS
+    //     axios.get('http://localhost:5000/landing-title')
+    //         .then(({ data }) => { setLandingTitle(data) })
 
-    }, [])
+    // }, [])
 
 
     return (
@@ -51,7 +51,10 @@ function LandingPage() {
                     <Col>
                         {/* header */}
                         <h1 className="pb-2">
-                            {landingTitle}
+                            Make an impact,
+                            <br>
+                            </br>
+                            No matter how small
                         </h1>
 
                         {/* description */}
