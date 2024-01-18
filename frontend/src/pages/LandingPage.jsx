@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
+import Logo from '../assets/logos/logo-full.png';
 import WhatWeDoGraphic from '../assets/images/landing-page/what-we-do-graphic.svg';
 import WhoWeAreGraphic from '../assets/images/landing-page/who-we-are-graphic.svg';
 import BannerGraphic from '../assets/images/landing-page/banner-graphic.svg';
@@ -10,6 +11,8 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import Row from 'react-bootstrap/Row';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
 
 export default function LandingPage() {
     // const [landingTitle, setLandingTitle] = useState("");
@@ -33,6 +36,34 @@ export default function LandingPage() {
 
     return (
         <>
+            {/* NAVBAR */}
+            <Navbar expand="md" className="bg-body-tertiary" id="navbar-section" sticky="top">
+                <Container>
+                    {/* logo */}
+                    <Navbar.Brand href="#banner-section">
+                        <img
+                            src={Logo}
+                            width="200"
+                            className="d-inline-block align-top navbar-logo py-2"
+                            alt="React Bootstrap logo"
+                        />
+                    </Navbar.Brand>
+
+                    {/* hamburger menu for smaller screen sizes */}
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+
+                    {/* nav links */}
+                    <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+                        <Nav className="navbar-links">
+                            <Nav.Link href="#who-we-are-section" className="navbar-link">Who We Are</Nav.Link>
+                            <Nav.Link href="#what-we-do-section" className="navbar-link">What We Do</Nav.Link>
+                            {/* <Nav.Link href="#" className="navbar-link">How It Works</Nav.Link> */}
+                            <Nav.Link href="#call-to-action-section" className="navbar-link">Get Involved</Nav.Link>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+
             {/* BANNER */}
             <Container id="banner-section">
                 <Row className="flex-lg-row-reverse align-items-center g-5 py-5">
