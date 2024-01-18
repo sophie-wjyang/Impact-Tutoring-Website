@@ -273,6 +273,10 @@
 }
 
 #form-container .form-link{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    color: var(--it-light-grey);
+    font-weight: 300;
     color: var(--it-teal);
 }
 
