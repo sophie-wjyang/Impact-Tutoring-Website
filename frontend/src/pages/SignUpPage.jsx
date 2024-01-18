@@ -5,70 +5,39 @@ import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import TextBox from '../components/form/TextBox';
+import RadioButtons from '../components/form/RadioButtons';
 
-function SignUpPage() {
+export default function SignUpPage() {
     return (
         <div className="d-flex justify-content-center align-items-center">
-            <Container id="signup-container">
-                <h2 className="signup-heading">Sign Up</h2>
-                <p className="mb-3 signup-description">
+            <Container id="form-container">
+                <h2 className="form-heading">Sign Up</h2>
+                <p className="mb-3 form-description">
                     Already have an account?&nbsp;
                     <a href="" className="form-link">Log in.</a>
                 </p>
 
                 <Form>
+                    {/* first and last name */}
                     <Row>
                         <Col lg={6}>
-                            <Form.Group className="mb-3" controlId="formFirstName">
-                                <Form.Label>First name</Form.Label>
-                                <Form.Control type="text" placeholder="First name" />
-                            </Form.Group>
+                            <TextBox controlId={"formFirstName"} label={"First name"} placeholder={"First name"} />
                         </Col>
 
                         <Col lg={6}>
-                            <Form.Group className="mb-3" controlId="formLastName">
-                                <Form.Label>Last name</Form.Label>
-                                <Form.Control type="text" placeholder="Last name" />
-                            </Form.Group>
+                            <TextBox controlId={"formLastName"} label={"Last name"} placeholder={"Last name"} />
                         </Col>
                     </Row>
 
-                    <Form.Group className="mb-3" controlId="formFirstName">
-                        <Form.Label>Account type</Form.Label>
-                        <div>
-                            <Form.Check
-                                type="radio"
-                                label="Tutor"
-                                id="tutor-radio"
-                                name="account-type"
-                                inline
-                            />
-                            <Form.Check
-                                type="radio"
-                                label="Tutee"
-                                id="tutee-radio"
-                                name="account-type"
-                                inline
-                            />
-                        </div>
-                    </Form.Group>
+                    {/* account type */}
+                    <RadioButtons controlId={"formAccountType"} label={"Account Type"} label1={"Tutor"} id1={"radio-tutor"} label2={"Tutee"} id2={"radio-tutee"} radioGroup={"account-type"}/>
 
-                    <Col>
-                        <Form.Group className="mb-3" controlId="formEmail">
-                            <Form.Label>Email address</Form.Label>
-                            <Form.Control type="text" placeholder="Enter email" />
-                        </Form.Group>
-                    </Col>
+                    {/* email and password */}
+                    <TextBox controlId={"formEmail"} label={"Email address"} placeholder={"Enter email"} />
+                    <TextBox controlId={"formPassword"} label={"Password"} placeholder={"Enter password"} />
 
-                    <Col>
-                        <Form.Group className="mb-3" controlId="formPassword">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control type="text" placeholder="Enter password" />
-                        </Form.Group>
-                    </Col>
-
-
-                    <Button variant="primary" size="lg" type="submit" className="w-100 signup-button">
+                    <Button variant="primary" size="lg" type="submit" className="w-100 form-submit-button">
                         Sign Up
                     </Button>
                 </Form>
@@ -77,4 +46,3 @@ function SignUpPage() {
     );
 }
 
-export default SignUpPage;

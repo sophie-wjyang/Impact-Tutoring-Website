@@ -224,9 +224,9 @@
     color: var(--it-teal);
 }
 
-/********************************* SIGNUP FORM **********************************/
+/********************************* FORMS **********************************/
 
-#signup-container{
+#form-container{
     background-color: white;
     padding: 50px;
     margin: 100px;
@@ -234,24 +234,26 @@
     box-shadow: 0 0 10px 0 rgba(0,0,0,.1);
 }
 
-#signup-container .signup-heading{
+/* heading and description */
+#form-container .form-heading{
     font-family: 'Yeseva One', serif;
     font-size: 30px;
     color: var(--it-dark-grey);
 }
 
-#signup-container .signup-description{
+#form-container .form-description{
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
     color: var(--it-light-grey);
     font-weight: 300;
 }
 
-#signup-container .form-link{
+#form-container .form-link{
     color: var(--it-teal);
 }
 
-#signup-container .form-label{
+/* text boxes */
+#form-container .form-label{
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
     color: var(--it-dark-grey);
@@ -259,37 +261,39 @@
     margin-bottom: 5px;
 }
 
-#signup-container .form-control::placeholder{
+#form-container .form-control::placeholder{
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
     color: #B8B8B8;
     font-weight: 300;
 }
 
-#signup-container .form-check-label{
+#form-container .form-control:focus{
+    border-color: #dee2e6;
+    box-shadow: none;
+}
+
+/* radio buttons */
+#form-container .form-check-label{
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
     color: var(--it-dark-grey);
     font-weight: 400;
 }
 
-#signup-container .form-control:focus{
-    border-color: #dee2e6;
-    box-shadow: none;
-}
-
-#signup-container .form-check-input:focus{
+#form-container .form-check-input:focus{
     background-color: var(--it-teal);
     border-color: var(--it-teal);
     box-shadow: 0 0 0 0.25rem rgba(25, 189, 199, 0.25);
 }
 
-#signup-container .form-check-input:checked{
+#form-container .form-check-input:checked{
     background-color: var(--it-teal);
     border-color: var(--it-teal);
 }
 
-#signup-container .signup-button{
+/* submit button */
+#form-container .form-submit-button{
     background-color: var(--it-teal);
     border-color: transparent;
     color: white;

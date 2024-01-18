@@ -11,7 +11,7 @@ import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import Row from 'react-bootstrap/Row';
 
-function LandingPage() {
+export default function LandingPage() {
     // const [landingTitle, setLandingTitle] = useState("");
 
     // useEffect(() => {
@@ -167,4 +167,3 @@ function LandingPage() {
     )
 }
 
-export default LandingPage;
