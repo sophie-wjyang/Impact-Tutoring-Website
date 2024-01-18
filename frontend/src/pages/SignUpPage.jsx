@@ -10,8 +10,11 @@ function SignUpPage() {
     return (
         <div className="d-flex justify-content-center align-items-center">
             <Container id="signup-container">
-                <h2 className="mb-3">Sign Up</h2>
-                <p>Already have an account? Log in.</p>
+                <h2 className="signup-heading">Sign Up</h2>
+                <p className="mb-3 signup-description">
+                    Already have an account?&nbsp;
+                    <a href="" className="form-link">Log in.</a>
+                </p>
 
                 <Form>
                     <Row>
@@ -65,7 +68,7 @@ function SignUpPage() {
                     </Col>
 
 
-                    <Button variant="primary" size="lg" type="submit" className="w-100">
+                    <Button variant="primary" size="lg" type="submit" className="w-100 signup-button">
                         Sign Up
                     </Button>
                 </Form>
