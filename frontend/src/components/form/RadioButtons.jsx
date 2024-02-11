@@ -3,7 +3,7 @@ import React from 'react'
 import Form from 'react-bootstrap/Form';
 
 export default function RadioButtons(props) {
-  const { controlId, label, label1, label2, id1, id2, radioGroup } = props;
+  const { controlId, label, label1, label2, id1, id2, radioGroup, onChange } = props;
   
   return (
     <Form.Group className="mb-3" controlId={controlId}>
@@ -15,6 +15,8 @@ export default function RadioButtons(props) {
                 id={id1}
                 name={radioGroup}
                 inline
+                value={label1}
+                onChange={onChange}
             />
             <Form.Check
                 type="radio"
@@ -22,6 +24,8 @@ export default function RadioButtons(props) {
                 id={id2}
                 name={radioGroup}
                 inline
+                value={label2}
+                onChange={onChange}
             />
         </div>
     </Form.Group>

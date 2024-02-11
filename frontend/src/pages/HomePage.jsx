@@ -161,10 +161,12 @@ export default function LandingPage() {
                         <p className="call-to-action pb-4">
                             Gain valuable leadership and teamwork skills, earn volunteer hours, and give back to your community.
                         </p>
-
-                        <Button size="lg" className="tutor-button">
-                            Become a tutor
-                        </Button>
+                        
+                        <Link to="/signup">
+                            <Button size="lg" className="tutor-button">
+                                Become a tutor
+                            </Button>
+                        </Link>
                     </Col>
 
                     <hr className="horizontal-divider d-lg-none" />
@@ -175,9 +177,11 @@ export default function LandingPage() {
                             Receive personalized lesson plans, designed just for you, to help with schoolwork, personal learning, and more.
                         </p>
 
-                        <Button size="lg" className="tutee-button">
-                            Become a tutee
-                        </Button>
+                        <Link to="/signup">
+                            <Button size="lg" className="tutee-button">
+                                Become a tutee
+                            </Button>
+                        </Link>
                     </Col>
                 </Row>
             </Container>
