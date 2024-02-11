@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
+// assets
 import Logo from '../assets/logos/logo-full.png';
 import WhatWeDoGraphic from '../assets/images/landing-page/what-we-do-graphic.svg';
 import WhoWeAreGraphic from '../assets/images/landing-page/who-we-are-graphic.svg';
 import BannerGraphic from '../assets/images/landing-page/banner-graphic.svg';
 
+// bootstrap
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
@@ -77,12 +78,16 @@ export default function LandingPage() {
 
                         {/* buttons */}
                         <div className="d-grid gap-2 d-md-flex justify-content-md-start">
-                            <Button size="lg" className="px-4 me-md-2 tutor-button">
-                                Become a tutor
-                            </Button>
-                            <Button size="lg" className="px-4 tutee-button">
-                                Become a tutee
-                            </Button>
+                            <Link to="/signup">
+                                <Button size="lg" className="px-4 me-md-2 tutor-button">
+                                    Become a tutor
+                                </Button>
+                            </Link>
+                            <Link to="/signup">
+                                <Button size="lg" className="px-4 tutee-button">
+                                    Become a tutee
+                                </Button>
+                            </Link>
                         </div>
                     </Col>
                 </Row>
