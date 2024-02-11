@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom';
 
 import Logo from '../assets/logos/logo-full.png';
 import WhatWeDoGraphic from '../assets/images/landing-page/what-we-do-graphic.svg';
@@ -15,25 +16,6 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 
 export default function LandingPage() {
-    // const [landingTitle, setLandingTitle] = useState("");
-
-    // useEffect(() => {
-    //     // ASYNC AND AWAIT
-    //     async function fetchLandingTitle() {
-    //         const axiosPromise = axios.get('http://localhost:5000/landing-title')
-    //         const { data } = await axiosPromise
-    //         setLandingTitle(data)
-    //     }
-
-    //     void fetchLandingTitle();
-
-    //     // CALLBACKS
-    //     axios.get('http://localhost:5000/landing-title')
-    //         .then(({ data }) => { setLandingTitle(data) })
-
-    // }, [])
-
-
     return (
         <>
             {/* NAVBAR */}

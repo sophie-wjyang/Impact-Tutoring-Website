@@ -6,7 +6,7 @@ conn = psycopg2.connect(
     host="localhost",
     database="impact_tutoring",
     user=os.environ['DB_USERNAME'],
-    password=os.environ['DB_PASSWORD']
+    password=os.environ['DB_P`ASSWORD']
 )
 
 cur = conn.cursor()

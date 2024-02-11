@@ -9,5 +9,8 @@
     "start": "concurrently \"npm run frontend\" \"npm run backend\""
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "react-router-dom": "^6.21.3"
+  }
 }
