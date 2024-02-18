@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os 
 import psycopg2
+import sys
 
 app = Flask(__name__)
 CORS(app)
@@ -17,24 +18,28 @@ conn = psycopg2.connect(
 
 @app.route('/')
 def index():
-    app.logger.error('MAIN FUNCTION')
-    return 'Hello, World!'
+    return 'index!'
 
 @app.route('/save-signup-form-data', methods=['GET', 'POST'])
-def save_signup_form():
+def save_signup_form_data():
     data = request.json
     cur = conn.cursor()
 
-    print(data)
-
-    cur.execute('''INSERT INTO tutors (first_name, last_name, email, password)
-                VALUES (%s, %s, %s, %s)''', (data['firstName'], data['lastName'], data['email'], data['password']))
+    if data['accountType'] == 'Tutor':
+        cur.execute('''INSERT INTO tutors (first_name, last_name, email, password)
+                    VALUES (%s, %s, %s, %s)''', (data['firstName'], data['lastName'], data['email'], data['password']))
     
+    elif data['accountType'] == 'Tutee':
+        cur.execute('''INSERT INTO tutees (first_name, last_name, email, password)
+                    VALUES (%s, %s, %s, %s)''', (data['firstName'], data['lastName'], data['email'], data['password']))
+
     conn.commit()
     cur.close()
+
+    return ('saved data to database!')
 
 if __name__ == '__main__':
     app.run(debug=True)
 
 # close the database connection
-conn.close()
+# conn.close()

@@ -17,9 +17,8 @@ export default function SignUpPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    // save sign up form data to database
     function saveSignUpFormData(){
-        console.log("reached js function");
-
         const data = {
             firstName: firstName,
             lastName: lastName,
@@ -30,7 +29,7 @@ export default function SignUpPage() {
 
         axios.post("http://localhost:5000/save-signup-form-data", data)
             .then(res => {
-                alert(res)
+                console.log(res);
             })
     }
 
