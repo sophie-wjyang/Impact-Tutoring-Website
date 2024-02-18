@@ -1,6 +1,7 @@
 import { useState } from "react";
+import axios from "axios";
 
-// bootstrap
+// bootstrap components
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
@@ -16,18 +17,35 @@ export default function SignUpPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    function saveSignUpFormData(){
+        console.log("reached js function");
+
+        const data = {
+            firstName: firstName,
+            lastName: lastName,
+            accountType: accountType,
+            email: email,
+            password: password
+        }
+
+        axios.post("http://localhost:5000/save-signup-form-data", data)
+            .then(res => {
+                alert(res)
+            })
+    }
+
     return (
         <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
             <Container id="form-container">
                 <h2 className="form-heading">Sign Up</h2>
                 <p className="mb-3 form-description">
                     Already have an account?&nbsp;
-                    <a href="" className="form-link">
+                    <a href="http://localhost:5000/" className="form-link">
                         Log in.
                     </a>
                 </p>
 
-                <Form>
+                <Form onSubmit={saveSignUpFormData}>
                     {/* first and last name */}
                     <Row>
                         <Col lg={6}>
