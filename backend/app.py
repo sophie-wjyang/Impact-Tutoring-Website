@@ -36,7 +36,7 @@ def save_signup_form_data():
     conn.commit()
     cur.close()
 
-    return ('saved data to database!')
+    return ('Saved signup form data to database!')
 
 if __name__ == '__main__':
     app.run(debug=True)

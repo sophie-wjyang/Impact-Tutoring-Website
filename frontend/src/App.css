@@ -296,6 +296,13 @@
     font-weight: 300;
 }
 
+#form-container .input-text{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    color: var(--it-dark-grey);
+    font-weight: 400;
+}
+
 #form-container .form-control:focus{
     border-color: #dee2e6;
     box-shadow: none;

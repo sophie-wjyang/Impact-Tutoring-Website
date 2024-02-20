@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // bootstrap components
@@ -11,6 +12,8 @@ import TextBox from "../components/form/TextBox";
 import RadioButtons from "../components/form/RadioButtons";
 
 export default function SignUpPage() {
+    const navigate = useNavigate();
+
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [accountType, setAccountType] = useState("");
@@ -18,7 +21,9 @@ export default function SignUpPage() {
     const [password, setPassword] = useState("");
 
     // save sign up form data to database
-    function saveSignUpFormData(){
+    function saveSignUpFormData(event){
+        event.preventDefault();
+
         const data = {
             firstName: firstName,
             lastName: lastName,
@@ -29,7 +34,7 @@ export default function SignUpPage() {
 
         axios.post("http://localhost:5000/save-signup-form-data", data)
             .then(res => {
-                console.log(res);
+                navigate("/login");
             })
     }
 
@@ -44,7 +49,7 @@ export default function SignUpPage() {
                     </a>
                 </p>
 
-                <Form onSubmit={saveSignUpFormData}>
+                <Form onSubmit={(e) => saveSignUpFormData(e)}>
                     {/* first and last name */}
                     <Row>
                         <Col lg={6}>

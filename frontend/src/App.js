@@ -14,6 +14,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 export default function App() {
 	return (
 		<div>
+			{/* routes */}
 			<BrowserRouter>
 				<Routes>
 					<Route index element={<HomePage />} />
@@ -21,6 +22,8 @@ export default function App() {
 					<Route path="/login" element={<LogInPage />} />
 				</Routes>
 			</BrowserRouter>
+
+			<Footer />
 		</div>
 	) 
 }
