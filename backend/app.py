@@ -20,8 +20,8 @@ conn = psycopg2.connect(
 def index():
     return 'index!'
 
-@app.route('/save-signup-form-data', methods=['GET', 'POST'])
-def save_signup_form_data():
+@app.route('/save-signup-form-data', methods=['POST'])
+def saveSignUpFormData():
     data = request.json
     cur = conn.cursor()
 
@@ -37,6 +37,27 @@ def save_signup_form_data():
     cur.close()
 
     return ('Saved signup form data to database!')
+
+@app.route('/validate-login-form-data', methods=['POST'])
+def validateLoginFormData():
+    data = request.json
+    cur = conn.cursor()
+
+    cur.execute('''SELECT first_name 
+                FROM tutors
+                WHERE email = %s and password = %s''', (data['email'], data['password']))
+
+    result = cur.fetchall()
+
+    for row in result:
+        first_name = row[0]
+        print("First name:", first_name)
+
+    conn.commit()
+    cur.close()
+
+    return ('Validated login form data!')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

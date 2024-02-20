@@ -22,7 +22,7 @@ export default function SignUpPage() {
 
     // save sign up form data to database
     function saveSignUpFormData(event){
-        event.preventDefault();
+        event.preventDefault(); // prevents default page reload
 
         const data = {
             firstName: firstName,
@@ -44,7 +44,7 @@ export default function SignUpPage() {
                 <h2 className="form-heading">Sign Up</h2>
                 <p className="mb-3 form-description">
                     Already have an account?&nbsp;
-                    <a href="http://localhost:5000/" className="form-link">
+                    <a href="/login" className="form-link">
                         Log in.
                     </a>
                 </p>
