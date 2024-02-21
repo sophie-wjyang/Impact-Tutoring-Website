@@ -339,6 +339,12 @@
     margin-top: 15px;
 }
 
+#form-container .invalid-login-message{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13px;
+    color: rgb(202, 20, 20);
+}
+
 /********************************* DASHBOARD **********************************/
 
 #dashboard-sidebar{

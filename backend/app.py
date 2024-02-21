@@ -20,6 +20,7 @@ conn = psycopg2.connect(
 def index():
     return 'index!'
 
+# save sign up form data to database
 @app.route('/save-signup-form-data', methods=['POST'])
 def saveSignUpFormData():
     data = request.json
@@ -36,25 +37,29 @@ def saveSignUpFormData():
     conn.commit()
     cur.close()
 
-@app.route('/validate-login-form-data', methods=['POST'])
+    print('Saved sign up form data')
+
+# validate that email exists in database
+@app.route('/validate-login-form-data', methods=['GET', 'POST'])
 def validateLoginFormData():
     data = request.json
     cur = conn.cursor()
 
-    cur.execute('''SELECT first_name 
+    cur.execute('''SELECT *
                 FROM tutors
                 WHERE email = %s and password = %s''', (data['email'], data['password']))
 
-    result = cur.fetchall()
+    result = cur.fetchone()
 
-    for row in result:
-        first_name = row[0]
-        print("First name:", first_name)
+    print ('Validated login form data')
 
     conn.commit()
     cur.close()
 
-    return ('Validated login form data!')
+    if result is not None:
+        return jsonify({'message': 'success'})
+    else:
+        return jsonify({'message': 'error'})
 
 
 if __name__ == '__main__':

@@ -13,6 +13,7 @@ export default function LogInPage() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [invalidLogin, setInvalidLogin] = useState(false);
 
     // check if their login credentials exist in our database
     function validateLoginFormData(event){
@@ -25,11 +26,19 @@ export default function LogInPage() {
 
         axios.post("http://localhost:5000/validate-login-form-data", data)
             .then((res) => {
-                navigate("/dashboard");
+                if(res.data.message === "success"){
+                    setInvalidLogin(false);
+                    navigate("/profile");
+                }
+                else{
+                    console.log("Invalid login credentials")
+                    setInvalidLogin(true);
+                }
             })
     }
 
     return (
+        
         <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
             <Container id="form-container">
                 <h2 className="form-heading">Log In</h2>
@@ -44,6 +53,8 @@ export default function LogInPage() {
                     <TextBox controlId={"formPassword"} label={"Password"} placeholder={"Enter password"} style={{ marginBottom: 0 }} value={password} onChange={(e) => setPassword(e.target.value)}/>
 
                     <a href="" className="d-flex justify-content-end form-link">Forgot your password?</a>
+
+                    {invalidLogin && <p className="invalid-login-message">We couldn't find an account matching the email and password you entered. Please try again.</p>}
 
                     <Button variant="primary" size="lg" type="submit" className="w-100 form-submit-button">
                         Log In
