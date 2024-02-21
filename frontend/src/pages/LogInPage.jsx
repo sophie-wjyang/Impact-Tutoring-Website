@@ -24,8 +24,8 @@ export default function LogInPage() {
         }
 
         axios.post("http://localhost:5000/validate-login-form-data", data)
-            .then(res => {
-                navigate("/");
+            .then((res) => {
+                navigate("/dashboard");
             })
     }
 

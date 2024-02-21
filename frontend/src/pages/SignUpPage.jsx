@@ -33,7 +33,7 @@ export default function SignUpPage() {
         }
 
         axios.post("http://localhost:5000/save-signup-form-data", data)
-            .then(res => {
+            .then(() => {
                 navigate("/login");
             })
     }

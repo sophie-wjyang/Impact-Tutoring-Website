@@ -36,8 +36,6 @@ def saveSignUpFormData():
     conn.commit()
     cur.close()
 
-    return ('Saved signup form data to database!')
-
 @app.route('/validate-login-form-data', methods=['POST'])
 def validateLoginFormData():
     data = request.json

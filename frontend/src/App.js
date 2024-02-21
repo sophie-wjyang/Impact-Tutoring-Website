@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import SignUpPage from "./pages/SignUpPage";
 import LogInPage from "./pages/LogInPage";
+import ProfilePage from "./pages/ProfilePage";
 import Footer from "./components/Footer";
 
 // bootstrap
@@ -20,6 +21,7 @@ export default function App() {
 					<Route index element={<HomePage />} />
 					<Route path="/signup" element={<SignUpPage />} />
 					<Route path="/login" element={<LogInPage />} />
+					<Route path="/profile" element={<ProfilePage />} />
 				</Routes>
 			</BrowserRouter>
 

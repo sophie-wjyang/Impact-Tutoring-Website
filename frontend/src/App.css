@@ -338,3 +338,45 @@
     padding: 10px 20px;  
     margin-top: 15px;
 }
+
+/********************************* DASHBOARD **********************************/
+
+#dashboard-sidebar{
+    background-color: white;
+    height: 100vh;    
+}
+
+#dashboard-main-content{
+    background-color: #eeeeee;
+}
+
+#dashboard-sidebar .sidebar-logo{
+    margin: 20px 10px;
+    padding: 25px 30px;
+}
+
+#dashboard-sidebar .sidebar-link{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #909394;
+    margin: 3px 10px;
+    padding: 25px 30px;
+    /* border: solid grey 1px; */
+}
+
+#dashboard-sidebar .sidebar-link:hover{
+    background-color: #e7fafb;
+    border-radius: 10px;
+    color: var(--it-teal);
+}
+
+#dashboard-sidebar .sidebar-link:focus{
+    background-color: #e7fafb;
+    border-radius: 10px;
+    color: var(--it-teal);
+}
+
+#dashboard-sidebar .sidebar-icon{
+    padding-right: 25px;
+}
