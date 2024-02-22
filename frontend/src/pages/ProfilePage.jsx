@@ -30,36 +30,65 @@ export default function ProfilePage() {
                     <DashboardSidebar />
                 </Col>
                 <Col id="dashboard-main-content" xs={9}>
-                    <h1 className="profile-heading">Welcome, Sophie</h1>
+                    <h1 className="profile-welcome">Welcome, Sophie</h1>
 
                     <Container className="table-container">
                         <Table className="profile-table">
                             <thead>
                                 <tr>
-                                    <th className="personal-information">Personal information</th>
+                                    <th className="profile-table-title">Personal information</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td className="personal-information-header"><b>Name</b></td>
-                                    <td className="personal-information-text">Sophie Yang</td>
+                                    <td className="profile-table-header"><b>Name</b></td>
+                                    <td className="profile-table-text">Sophie Yang</td>
                                 </tr>
                                 <tr>
-                                    <td className="personal-information-header"><b>Email</b></td>
-                                    <td className="personal-information-text">sophie.wjyang@gmail.com</td>
+                                    <td className="profile-table-header"><b>Email</b></td>
+                                    <td className="profile-table-text">sophie.wjyang@gmail.com</td>
                                 </tr>
                                 <tr>
-                                    <td className="personal-information-header"><b>Grade</b></td>
-                                    <td className="personal-information-text">12</td>
+                                    <td className="profile-table-header"><b>Grade</b></td>
+                                    <td className="profile-table-text">12</td>
                                 </tr>
                                 <tr>
-                                    <td className="personal-information-header"><b>Gender</b></td>
-                                    <td className="personal-information-text">Female</td>
+                                    <td className="profile-table-header"><b>Gender</b></td>
+                                    <td className="profile-table-text">Female</td>
                                 </tr>
                                 <tr>
-                                    <td className="personal-information-header"><b>Location</b></td>
-                                    <td className="personal-information-text">Toronto, Canada</td>
+                                    <td className="profile-table-header"><b>Location</b></td>
+                                    <td className="profile-table-text">Toronto, Canada</td>
+                                </tr>
+                            </tbody>
+                        </Table>
+                    </Container>
+
+                    <Container className="table-container">
+                        <Table className="profile-table">
+                            <thead>
+                                <tr>
+                                    <th className="profile-table-title">Tutoring information</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td className="profile-table-header"><b>Subjects</b></td>
+                                    <td className="profile-table-text">Grade 8 math, Grade 10 english</td>
+                                </tr>
+                                <tr>
+                                    <td className="profile-table-header"><b>Languages</b></td>
+                                    <td className="profile-table-text">English, Mandarin</td>
+                                </tr>
+                                <tr>
+                                    <td className="profile-table-header"><b>Availability</b></td>
+                                    <td className="profile-table-text">Tuesday, Thursday, Sunday</td>
+                                </tr>
+                                <tr>
+                                    <td className="profile-table-header"><b>Maximum student capacity</b></td>
+                                    <td className="profile-table-text">3</td>
                                 </tr>
                             </tbody>
                         </Table>

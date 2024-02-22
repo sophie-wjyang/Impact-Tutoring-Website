@@ -390,7 +390,7 @@
 /********************************* PROFILE **********************************/
 
 #dashboard-main-content{
-    padding: 50px;
+    padding: 70px 150px;
 }
 
 .table-container{
@@ -399,7 +399,7 @@
     padding: 0px 20px !important;
 }
 
-.profile-heading{
+.profile-welcome{
     font-family: 'Yeseva One', serif;
     font-size: 35px;
     color: var(--it-dark-grey);
@@ -408,7 +408,8 @@
 
 .profile-table{
     font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
+    margin-bottom: 50px !important;
 }
 
 .profile-table tbody tr:last-child td{
@@ -416,19 +417,19 @@
     padding-bottom: 30px !important;
 }
 
-.profile-table .personal-information{
+.profile-table .profile-table-title{
     font-family: 'Yeseva One', serif;
     color: var(--it-dark-grey);
-    font-size: 20px;
+    font-size: 18px;
     padding: 20px 10px !important;
 }
 
-.profile-table .personal-information-header{
+.profile-table .profile-table-header{
     color: var(--it-dark-grey);
     padding: 20px 10px !important;
 }
 
-.profile-table .personal-information-text{
+.profile-table .profile-table-text{
     color: var(--it-light-grey);
     padding: 20px 10px !important;
 }
