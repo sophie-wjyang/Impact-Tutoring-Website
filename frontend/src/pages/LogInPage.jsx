@@ -24,7 +24,7 @@ export default function LogInPage() {
             password: password
         }
 
-        axios.post("http://localhost:5000/validate-login-form-data", data)
+        axios.post("http://localhost:5000/validate-login-form-data", data, { withCredentials: true })
             .then((res) => {
                 if(res.data.message === "success"){
                     setInvalidLogin(false);

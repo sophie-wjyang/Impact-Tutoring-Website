@@ -20,7 +20,7 @@ export default function DashboardSidebar() {
     return (
         <Nav className="flex-column sidebar-links">
             <img src={Logo} width="300" className="d-inline-block sidebar-logo" />
-            <Nav.Link href="" className="sidebar-link">
+            <Nav.Link href="" className="sidebar-link active">
                 <FontAwesomeIcon icon={faUser} className="sidebar-icon" />
                 Profile
             </Nav.Link>

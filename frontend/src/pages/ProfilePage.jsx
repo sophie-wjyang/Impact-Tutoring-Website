@@ -9,9 +9,10 @@ import DashboardSidebar from "../components/DashboardSidebar";
 import { Container, Row, Col, Table } from "react-bootstrap";
 
 export default function ProfilePage() {
+    const [profile, setProfile] = useState({});
     // get all relevant profile information on component render
     useEffect(() => {
-        axios.get("http://localhost:5000/get-profile-info").then((res) => {
+        axios.get("http://localhost:5000/get-profile-info", { withCredentials: true }).then((res) => {
             // const profileInfo = res.data;
             console.log(res.data);
 
@@ -20,6 +21,7 @@ export default function ProfilePage() {
             // console.log('Last name:', profileInfo[0].last_name);
             // console.log('Email:', profileInfo[0].email);
             // console.log('Grade:', profileInfo[0].grade);
+            setProfile(res.data);  // context, redux, recoil
         });
     }, []);
 

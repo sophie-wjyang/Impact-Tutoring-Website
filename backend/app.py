@@ -1,10 +1,12 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask import Flask, request, jsonify, session
+from flask_session import Session
+from flask_cors import CORS, cross_origin
 import os 
 import psycopg2
-import sys
 
 app = Flask(__name__)
+app.config['SESSION_TYPE'] = 'filesystem'
+Session(app)
 CORS(app)
 
 # connect to database   
@@ -37,10 +39,9 @@ def saveSignUpFormData():
     conn.commit()
     cur.close()
 
-    print('Saved sign up form data')
-
 # validate that email exists in database
 @app.route('/validate-login-form-data', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def validateLoginFormData():
     data = request.json
     cur = conn.cursor()
@@ -49,20 +50,44 @@ def validateLoginFormData():
                 FROM tutors
                 WHERE email = %s and password = %s''', (data['email'], data['password']))
 
-    result = cur.fetchone()
-
-    print ('Validated login form data')
+    result = cur.fetchall()
 
     conn.commit()
     cur.close()
 
-    if result is not None:
+    if result:
+        # set the current session
+        session['email'] = data['email']
+        print("SET SESSION EMAIL:", session['email'])
+        print(session)
         return jsonify({'message': 'success'})
     else:
-        return jsonify({'message': 'error'})
+        return jsonify({'message': 'error', 'details': 'Did not find matching email and password'})
 
+@app.route('/get-profile-info', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def getProfileInfo():
+    print(session)
+    print("SET SESSION EMAIL:", session['email'])
+
+    if 'email' not in session:
+        return jsonify({'message': 'error', 'details': 'Email not found in session'})
+
+    cur = conn.cursor()
+
+    cur.execute('''SELECT first_name, last_name, email, grade, gender, location, subjects, languages, availability, student_capacity
+                FROM tutors
+                WHERE email = %s ''', session['email'])
+
+    result = cur.fetchall()
+
+    conn.commit()
+    cur.close()
+
+    return jsonify(result)
 
 if __name__ == '__main__':
+    app.secret_key = 'secret_key'
     app.run(debug=True)
 
 # close the database connection
