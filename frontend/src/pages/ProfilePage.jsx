@@ -10,19 +10,22 @@ import { Container, Row, Col, Table } from "react-bootstrap";
 
 export default function ProfilePage() {
     const [profile, setProfile] = useState({});
+
     // get all relevant profile information on component render
     useEffect(() => {
-        axios.get("http://localhost:5000/get-profile-info", { withCredentials: true }).then((res) => {
-            // const profileInfo = res.data;
-            console.log(res.data);
+        axios.get("http://localhost:5000/get-profile-info", { withCredentials: true })
+            .then((res) => {
+                const profileInfo = res.data;
 
-            // Accessing fields from the first profile
-            // console.log('First name:', profileInfo[0].first_name);
-            // console.log('Last name:', profileInfo[0].last_name);
-            // console.log('Email:', profileInfo[0].email);
-            // console.log('Grade:', profileInfo[0].grade);
-            setProfile(res.data);  // context, redux, recoil
-        });
+                // accessing fields from the first profile
+                console.log('First name:', profileInfo[0]);
+                console.log('Last name:', profileInfo[1]);
+                console.log('Email:', profileInfo[2]);
+                console.log('Grade:', profileInfo[3]);
+
+                // setProfile(res.data);  
+                // consider context, redux, recoil for state management
+            });
     }, []);
 
     return (

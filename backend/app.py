@@ -59,7 +59,6 @@ def validateLoginFormData():
         # set the current session
         session['email'] = data['email']
         print("SET SESSION EMAIL:", session['email'])
-        print(session)
         return jsonify({'message': 'success'})
     else:
         return jsonify({'message': 'error', 'details': 'Did not find matching email and password'})
@@ -67,19 +66,20 @@ def validateLoginFormData():
 @app.route('/get-profile-info', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def getProfileInfo():
-    print(session)
-    print("SET SESSION EMAIL:", session['email'])
-
     if 'email' not in session:
         return jsonify({'message': 'error', 'details': 'Email not found in session'})
+
+    print("GET SESSION EMAIL:", session['email'])
 
     cur = conn.cursor()
 
     cur.execute('''SELECT first_name, last_name, email, grade, gender, location, subjects, languages, availability, student_capacity
                 FROM tutors
-                WHERE email = %s ''', session['email'])
+                WHERE email = %s ''', (session['email'],))
 
     result = cur.fetchall()
+
+    print("RESULT:", result)
 
     conn.commit()
     cur.close()
