@@ -28,7 +28,7 @@ export default function LogInPage() {
             .then((res) => {
                 if(res.data.message === "success"){
                     setInvalidLogin(false);
-                    navigate("/profile");
+                    navigate("/dashboard");
                 }
                 else{
                     console.log("Invalid login credentials")
