@@ -367,13 +367,7 @@
     /* border: solid grey 1px; */
 }
 
-#dashboard-sidebar .sidebar-link:hover{
-    background-color: #e7fafb;
-    border-radius: 10px;
-    color: var(--it-teal);
-}
-
-#dashboard-sidebar .sidebar-link:active{
+#dashboard-sidebar .sidebar-link:hover, #dashboard-sidebar .sidebar-link.active{
     background-color: #e7fafb;
     border-radius: 10px;
     color: var(--it-teal);

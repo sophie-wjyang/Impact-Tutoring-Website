@@ -58,7 +58,7 @@ def validateLoginFormData():
     if result:
         # set the current session
         session['email'] = data['email']
-        print("SET SESSION EMAIL:", session['email'])
+        # print("SET SESSION EMAIL:", session['email'])
         return jsonify({'message': 'success'})
     else:
         return jsonify({'message': 'error', 'details': 'Did not find matching email and password'})
@@ -69,7 +69,7 @@ def getProfileInfo():
     if 'email' not in session:
         return jsonify({'message': 'error', 'details': 'Email not found in session'})
 
-    print("GET SESSION EMAIL:", session['email'])
+    # print("GET SESSION EMAIL:", session['email'])
 
     cur = conn.cursor()
 
@@ -79,7 +79,7 @@ def getProfileInfo():
 
     result = cur.fetchall()
 
-    print("PROFILE INFO:", result)
+    # print("PROFILE INFO:", result)
 
     conn.commit()
     cur.close()

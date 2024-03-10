@@ -7,6 +7,7 @@ import HomePage from "./pages/HomePage";
 import SignUpPage from "./pages/SignUpPage";
 import LogInPage from "./pages/LogInPage";
 import ProfilePage from "./pages/ProfilePage";
+import UpcomingSessionsPage from "./pages/UpcomingSessionsPage";
 import Footer from "./components/Footer";
 
 // bootstrap
@@ -22,6 +23,7 @@ export default function App() {
 					<Route path="/signup" element={<SignUpPage />} />
 					<Route path="/login" element={<LogInPage />} />
 					<Route path="/profile" element={<ProfilePage />} />
+					<Route path="/upcoming-sessions" element={<UpcomingSessionsPage />} />
 				</Routes>
 			</BrowserRouter>
 
