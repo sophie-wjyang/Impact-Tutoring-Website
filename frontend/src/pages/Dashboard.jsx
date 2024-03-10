@@ -80,23 +80,6 @@ export default function DashboardSidebar() {
                     </Navbar>
                 </Col>
 
-                {/* <Col id="dashboard-sidebar" xl={3}>
-                    <Navbar expand="xl" className="flex-column">
-                        <Navbar.Brand>
-                            <img src={Logo} className="d-inline-block sidebar-logo" alt="Logo" />
-                        </Navbar.Brand>
-                        <Navbar.Toggle aria-controls="sidebar-nav" />
-                        <Navbar.Collapse id="sidebar-nav">
-                            <Nav className="flex-column sidebar-links" activeKey={activeKey} onSelect={(selectedKey) => setActiveKey(selectedKey)}>
-                                <Nav.Link eventKey="/profile" className="sidebar-link">
-                                    <FontAwesomeIcon icon={faUser} className="sidebar-icon" />
-                                    Profile
-                                </Nav.Link>
-                            </Nav>
-                        </Navbar.Collapse>
-                    </Navbar>
-                </Col> */}
-
                 {/* main content */}
                 <Col id="dashboard-main-content" xl={9}>
                     {activeKey === "/profile" && <ProfilePage />}

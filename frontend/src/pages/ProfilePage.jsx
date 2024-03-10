@@ -42,11 +42,11 @@ export default function ProfilePage() {
 
     return (
         <Container fluid>
-            {/* profile heading */}
-            <h1 className="profile-welcome">Welcome, {firstName}</h1>
-
             {/* profile picture */}
             <Container className="mb-5">
+                {/* profile heading */}
+                <h1 className="profile-welcome">Welcome, {firstName}</h1>
+
                 <Row>
                     <Col xs={6} md={4}>
                         <Image src={TutorProfilePicture} roundedCircle style={{ width: "200px", height: "200px" }} />

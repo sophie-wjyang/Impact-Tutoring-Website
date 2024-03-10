@@ -415,12 +415,32 @@
     padding-right: 25px;
 }
 
-/********************************* PROFILE **********************************/
+/********************************* MAIN CONTENT **********************************/
 
 #dashboard-main-content{
-    padding: 70px 150px;
     background-color: #f4f4f4;
 }
+
+/* main content padding */
+@media (min-width: 1400px) {
+    #dashboard-main-content{
+        padding: 70px 150px;
+    }
+}
+
+@media (max-width: 1399px) {
+    #dashboard-main-content{
+        padding: 70px 80px;
+    }
+}
+
+@media (max-width: 767px) {
+    #dashboard-main-content{
+        padding: 70px 10px;
+    }
+}
+
+/********************************* PROFILE **********************************/
 
 .table-container{
     background-color: white;
