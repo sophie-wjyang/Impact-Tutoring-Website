@@ -1,11 +1,6 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
-// assets
-import TutorProfilePicture from "../assets/images/profile-page/tutor-profile-picture.png";
-import TuteeProfilePicture from "../assets/images/profile-page/tutee-profile-picture.png";
 
 // bootstrap
 import { Container, Row, Col, Table, Image } from "react-bootstrap";

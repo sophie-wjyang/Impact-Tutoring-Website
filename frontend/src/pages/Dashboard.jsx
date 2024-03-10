@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 // fontawesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,9 +26,9 @@ export default function DashboardSidebar() {
         <Container fluid>
             <Row>
                 {/* sidebar */}
-                <Col id="dashboard-sidebar" xs={3}>
+                <Col id="dashboard-sidebar" xl={3}>
                     <Nav className="flex-column sidebar-links" activeKey={activeKey} onSelect={(selectedKey) => setActiveKey(selectedKey)}>
-                        <img src={Logo} width="300" className="d-inline-block sidebar-logo" />
+                        <img src={Logo} className="d-inline-block sidebar-logo" />
                         <Nav.Link eventKey="/profile" className="sidebar-link">
                             <FontAwesomeIcon icon={faUser} className="sidebar-icon" />
                             Profile
@@ -59,7 +57,7 @@ export default function DashboardSidebar() {
                 </Col>
 
                 {/* main content */}
-                <Col id="dashboard-main-content" xs={9}>
+                <Col id="dashboard-main-content" xl={9}>
                     {activeKey === "/profile" && <ProfilePage /> }
                     {activeKey === "/upcoming-sessions" && <UpcomingSessionsPage /> }
                 </Col>

@@ -357,6 +357,18 @@
     padding: 25px 30px;
 }
 
+@media (min-width: 1400px) {
+    #dashboard-sidebar .sidebar-logo{
+        width: 300px;
+    }
+}
+
+@media (max-width: 1399px) {
+    #dashboard-sidebar .sidebar-logo{
+        width: 250px;
+    }
+}
+
 #dashboard-sidebar .sidebar-link{
     font-family: 'Open Sans', sans-serif;
     font-size: 16px;
@@ -364,7 +376,18 @@
     color: #909394;
     margin: 3px 10px;
     padding: 25px 30px;
-    /* border: solid grey 1px; */
+}
+
+@media (min-width: 1400px) {
+    #dashboard-sidebar .sidebar-link{
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 1399px) {
+    #dashboard-sidebar .sidebar-link{
+        font-size: 14px;
+    }
 }
 
 #dashboard-sidebar .sidebar-link:hover, #dashboard-sidebar .sidebar-link.active{
