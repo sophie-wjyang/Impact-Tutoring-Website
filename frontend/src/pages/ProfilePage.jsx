@@ -9,22 +9,34 @@ import DashboardSidebar from "../components/DashboardSidebar";
 import { Container, Row, Col, Table } from "react-bootstrap";
 
 export default function ProfilePage() {
-    const [profile, setProfile] = useState({});
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [grade, setGrade] = useState("");
+    const [gender, setGender] = useState("");
+    const [location, setLocation] = useState("");
+    const [subjects, setSubjects] = useState("");
+    const [languages, setLanguages] = useState("");
+    const [availability, setAvailability] = useState("");
+    const [studentCapacity, setStudentCapacity] = useState("");
 
     // get all relevant profile information on component render
     useEffect(() => {
         axios.get("http://localhost:5000/get-profile-info", { withCredentials: true })
             .then((res) => {
-                const profileInfo = res.data;
+                // return the first profile in the list of tuples
+                const profileInfo = res.data[0];
 
-                // accessing fields from the first profile
-                console.log('First name:', profileInfo[0]);
-                console.log('Last name:', profileInfo[1]);
-                console.log('Email:', profileInfo[2]);
-                console.log('Grade:', profileInfo[3]);
-
-                // setProfile(res.data);  
-                // consider context, redux, recoil for state management
+                setFirstName(profileInfo[0]);
+                setLastName(profileInfo[1]);
+                setEmail(profileInfo[2]);
+                setGrade(profileInfo[3]);
+                setGender(profileInfo[4]);
+                setLocation(profileInfo[5]);
+                setSubjects(profileInfo[6]);
+                setLanguages(profileInfo[7]);
+                setAvailability(profileInfo[8]);
+                setStudentCapacity(profileInfo[9]);
             });
     }, []);
 
@@ -35,7 +47,7 @@ export default function ProfilePage() {
                     <DashboardSidebar />
                 </Col>
                 <Col id="dashboard-main-content" xs={9}>
-                    <h1 className="profile-welcome">Welcome, Sophie</h1>
+                    <h1 className="profile-welcome">Welcome, {firstName}</h1>
 
                     <Container className="table-container">
                         <Table className="profile-table">
@@ -48,23 +60,23 @@ export default function ProfilePage() {
                             <tbody>
                                 <tr>
                                     <td className="profile-table-header"><b>Name</b></td>
-                                    <td className="profile-table-text">Sophie Yang</td>
+                                    <td className="profile-table-text">{firstName} {lastName}</td>
                                 </tr>
                                 <tr>
                                     <td className="profile-table-header"><b>Email</b></td>
-                                    <td className="profile-table-text">sophie.wjyang@gmail.com</td>
+                                    <td className="profile-table-text">{email}</td>
                                 </tr>
                                 <tr>
                                     <td className="profile-table-header"><b>Grade</b></td>
-                                    <td className="profile-table-text">12</td>
+                                    <td className="profile-table-text">{grade}</td>
                                 </tr>
                                 <tr>
                                     <td className="profile-table-header"><b>Gender</b></td>
-                                    <td className="profile-table-text">Female</td>
+                                    <td className="profile-table-text">{gender}</td>
                                 </tr>
                                 <tr>
                                     <td className="profile-table-header"><b>Location</b></td>
-                                    <td className="profile-table-text">Toronto, Canada</td>
+                                    <td className="profile-table-text">{location}</td>
                                 </tr>
                             </tbody>
                         </Table>
@@ -81,19 +93,19 @@ export default function ProfilePage() {
                             <tbody>
                                 <tr>
                                     <td className="profile-table-header"><b>Subjects</b></td>
-                                    <td className="profile-table-text">Grade 8 math, Grade 10 english</td>
+                                    <td className="profile-table-text">{Array.isArray(subjects) ? subjects.join(", ") : ""}</td>
                                 </tr>
                                 <tr>
                                     <td className="profile-table-header"><b>Languages</b></td>
-                                    <td className="profile-table-text">English, Mandarin</td>
+                                    <td className="profile-table-text">{Array.isArray(languages) ? languages.join(", ") : ""}</td>
                                 </tr>
                                 <tr>
                                     <td className="profile-table-header"><b>Availability</b></td>
-                                    <td className="profile-table-text">Tuesday, Thursday, Sunday</td>
+                                    <td className="profile-table-text">{Array.isArray(availability) ? availability.join(", ") : ""}</td>
                                 </tr>
                                 <tr>
                                     <td className="profile-table-header"><b>Maximum student capacity</b></td>
-                                    <td className="profile-table-text">3</td>
+                                    <td className="profile-table-text">{studentCapacity}</td>
                                 </tr>
                             </tbody>
                         </Table>

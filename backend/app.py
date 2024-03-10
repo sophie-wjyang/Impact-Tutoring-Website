@@ -79,7 +79,7 @@ def getProfileInfo():
 
     result = cur.fetchall()
 
-    print("RESULT:", result)
+    print("PROFILE INFO:", result)
 
     conn.commit()
     cur.close()
