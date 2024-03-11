@@ -29,4 +29,5 @@ CREATE TABLE tutees (
     languages TEXT[],
     availability TEXT[],
     additional_information TEXT
+    tutor_subjects JSONB
 );

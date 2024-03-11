@@ -86,6 +86,18 @@ def getProfileInfo():
 
     return jsonify(result)
 
+@app.route('/get-tutees', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def getTutees():
+    if 'email' not in session:
+        return jsonify({'message': 'error', 'details': 'Email not found in session'})
+    
+    cur = conn.cursor()
+
+    cur.execute('''SELECT first_name, last_name, email, grade, languages, availability
+                FROM tutees
+                WHERE ''')
+
 if __name__ == '__main__':
     app.secret_key = 'secret_key'
     app.run(debug=True)
