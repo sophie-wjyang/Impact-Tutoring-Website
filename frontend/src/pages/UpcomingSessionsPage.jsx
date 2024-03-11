@@ -38,7 +38,7 @@ export default function UpcomingSessionsPage() {
 
     return (
         <Container fluid>
-            {/* profile heading */}
+            {/* heading */}
             <h1 className="profile-welcome">Upcoming sessions</h1>
 
             {/* profile table */}

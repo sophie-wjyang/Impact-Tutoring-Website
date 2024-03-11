@@ -440,7 +440,7 @@
     }
 }
 
-/********************************* PROFILE **********************************/
+/********************************* PROFILE PAGE **********************************/
 
 .table-container{
     background-color: white;
@@ -453,6 +453,7 @@
     font-size: 35px;
     color: var(--it-dark-grey);
     margin-bottom: 30px;
+    margin-right: auto;
 }
 
 .profile-table{
@@ -481,4 +482,52 @@
 .profile-table .profile-table-text{
     color: var(--it-light-grey);
     padding: 20px 10px !important;
+}
+
+/********************************* MY TUTEES PAGE **********************************/
+
+.tutee-card{
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px 50px !important;
+    margin: 12px;
+}
+
+.tutee-card .tutee-name{
+    font-family: 'Yeseva One', serif;
+    font-size: 24px;
+    color: var(--it-dark-grey);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.tutee-card .tutee-information{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    color: var(--it-light-grey);
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+
+.tutee-card .tutee-information p{
+    margin-bottom: 10px !important;
+}
+
+.tutee-card .tutee-information p span{
+    color: var(--it-dark-grey);
+    font-weight: 600;
+}
+
+.tutee-card .tutoring-history-button{
+    background-color: var(--it-teal);
+    border-color: transparent;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    width: 100%;
+}
+
+.tutee-card .tutoring-history-button:hover, .tutee-card .tutoring-history-button:active{
+    background-color: #13989f !important;
+    border-color: transparent !important;
 }

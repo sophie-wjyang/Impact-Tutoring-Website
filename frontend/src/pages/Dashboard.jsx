@@ -16,6 +16,7 @@ import Logo from "../assets/logos/logo-full.png";
 // pages
 import ProfilePage from "./ProfilePage";
 import UpcomingSessionsPage from "./UpcomingSessionsPage";
+import MyTuteesPage from "./MyTuteesPage";
 
 // bootstrap
 import { Container, Row, Col, Nav, Navbar } from "react-bootstrap";
@@ -84,6 +85,8 @@ export default function DashboardSidebar() {
                 <Col id="dashboard-main-content" xl={9}>
                     {activeKey === "/profile" && <ProfilePage />}
                     {activeKey === "/upcoming-sessions" && <UpcomingSessionsPage />}
+                    {activeKey === "/my-tutees" && <MyTuteesPage />}
+
                 </Col>
             </Row>
         </Container>
