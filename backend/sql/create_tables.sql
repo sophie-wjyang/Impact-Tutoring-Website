@@ -31,3 +31,10 @@ CREATE TABLE tutees (
     additional_information TEXT
     tutor_subjects JSONB
 );
+
+CREATE TABLE pairings (
+    id serial PRIMARY KEY,
+    tutor_id integer REFERENCES tutors(id),
+    tutee_id integer REFERENCES tutees(id),
+    subjects TEXT[]
+);

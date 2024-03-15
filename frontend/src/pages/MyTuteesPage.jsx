@@ -9,12 +9,15 @@ import TuteeCard from "../components/TuteeCard";
 import { Container, Row, Col, Table, Image } from "react-bootstrap";
 
 export default function MyTutees() {
+    // array of tutees taught by the current tutor
+    // each tutee is an object
+    const [tutees, setTutees] = useState([]);
+
     // get all relevant profile information on component render
     useEffect(() => {
-        axios.get("http://localhost:5000/get-profile-info", { withCredentials: true }).then((res) => {
+        axios.get("http://localhost:5000/get-tutees", { withCredentials: true }).then((res) => {
             // return the first profile in the list of tuples
             const profileInfo = res.data[0];
-
         });
     }, []);
 
@@ -25,19 +28,20 @@ export default function MyTutees() {
 
             {/* tutees */}
             <Row>
-                <Col xs={12} md={6}>
-                    <TuteeCard />
-                </Col>
-                <Col xs={12} md={6}>
-                    <TuteeCard />
-                </Col>
-                <Col xs={12} md={6}>
-                    <TuteeCard />
-                </Col>
+                {tutees.map((tutee, index) => (
+                    <Col xs={12} md={6}>
+                        <TuteeCard
+                            firstName={tutee.firstName}
+                            lastName={tutee.lastName}
+                            email={tutee.email}
+                            grade={tutee.grade}
+                            subjects={tutee.subjects}
+                            languages={tutee.languages}
+                            availability={tutee.availability}
+                        />
+                    </Col>
+                ))}
             </Row>
-
-            
-            
         </Container>
     );
 }

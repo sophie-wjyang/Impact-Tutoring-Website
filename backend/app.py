@@ -97,6 +97,13 @@ def getTutees():
     cur.execute('''SELECT first_name, last_name, email, grade, languages, availability
                 FROM tutees
                 WHERE ''')
+    
+    result = cur.fetchall()
+
+    conn.commit()
+    cur.close()
+
+    return jsonify(result)
 
 if __name__ == '__main__':
     app.secret_key = 'secret_key'
