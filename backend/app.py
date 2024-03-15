@@ -81,7 +81,6 @@ def getProfileInfo():
 
     # print("PROFILE INFO:", result)
 
-    conn.commit()
     cur.close()
 
     return jsonify(result)
@@ -94,13 +93,16 @@ def getTutees():
     
     cur = conn.cursor()
 
-    cur.execute('''SELECT first_name, last_name, email, grade, languages, availability
-                FROM tutees
-                WHERE ''')
+    cur.execute('''SELECT tutees.first_name, tutees.last_name, tutees.email, tutees.grade, tutees.languages, tutees.availability, pairings.subjects
+                FROM pairings
+                JOIN tutees
+                ON pairings.tutee_id = tutees.id
+                WHERE tutor_id = (SELECT id FROM tutors WHERE email = %s)''', (session['email'],))
     
     result = cur.fetchall()
 
-    conn.commit()
+    print(result)
+
     cur.close()
 
     return jsonify(result)

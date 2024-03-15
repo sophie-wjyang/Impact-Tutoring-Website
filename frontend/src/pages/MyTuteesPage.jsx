@@ -15,10 +15,11 @@ export default function MyTutees() {
 
     // get all relevant profile information on component render
     useEffect(() => {
-        axios.get("http://localhost:5000/get-tutees", { withCredentials: true }).then((res) => {
-            // return the first profile in the list of tuples
-            const profileInfo = res.data[0];
-        });
+        axios.get("http://localhost:5000/get-tutees", { withCredentials: true })
+            .then((res) => {
+                console.log(res.data);
+                setTutees(res.data);
+            });
     }, []);
 
     return (
@@ -31,13 +32,13 @@ export default function MyTutees() {
                 {tutees.map((tutee, index) => (
                     <Col xs={12} md={6}>
                         <TuteeCard
-                            firstName={tutee.firstName}
-                            lastName={tutee.lastName}
-                            email={tutee.email}
-                            grade={tutee.grade}
-                            subjects={tutee.subjects}
-                            languages={tutee.languages}
-                            availability={tutee.availability}
+                            firstName={tutee[0]}
+                            lastName={tutee[1]}
+                            email={tutee[2]}
+                            grade={tutee[3]}
+                            languages={tutee[4]}
+                            availability={tutee[5]}
+                            subjects={tutee[6]}
                         />
                     </Col>
                 ))}
