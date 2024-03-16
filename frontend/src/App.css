@@ -191,6 +191,8 @@
 #footer-section{
     background-color: var(--it-dark-grey);
     color: white;
+    position: relative;
+    width: 100%;
 }
 
 #footer-section .footer-text{
@@ -349,6 +351,7 @@
 
 #dashboard-sidebar{
     background-color: white;
+    min-height: 100vh;
 }
 
 /* sidebar width */
@@ -419,6 +422,7 @@
 
 #dashboard-main-content{
     background-color: #f4f4f4;
+    min-height: 100vh;
 }
 
 /* main content padding */

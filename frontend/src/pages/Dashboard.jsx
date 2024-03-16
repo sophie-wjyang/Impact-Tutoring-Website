@@ -17,6 +17,7 @@ import Logo from "../assets/logos/logo-full.png";
 import ProfilePage from "./ProfilePage";
 import UpcomingSessionsPage from "./UpcomingSessionsPage";
 import MyTuteesPage from "./MyTuteesPage";
+import Footer from "../components/Footer";
 
 // bootstrap
 import { Container, Row, Col, Nav, Navbar } from "react-bootstrap";
@@ -50,7 +51,7 @@ export default function DashboardSidebar() {
     };
 
     return (
-        <Container fluid>
+        <Container fluid className="p-0" style={{ height: '100vh' }}>
             <Row>
                 {/* sidebar */}
                 <Col id="dashboard-sidebar" xl={3}>
@@ -100,6 +101,12 @@ export default function DashboardSidebar() {
 
                 </Col>
             </Row>
+
+            {/* footer */}
+            <Row>
+                <Footer/>
+            </Row>
         </Container>
+
     );
 }
