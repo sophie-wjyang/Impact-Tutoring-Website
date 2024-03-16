@@ -531,3 +531,144 @@
     background-color: #13989f !important;
     border-color: transparent !important;
 }
+
+/********************************* UPCOMING SESSIONS PAGE **********************************/
+.upcoming-session-card{
+    background-color: white;
+    border-radius: 10px;
+    padding: 50px !important;
+    margin: 12px;
+}
+
+.upcoming-session-card .session-date{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+/* mobile view */
+@media(max-width: 767px){
+    .upcoming-session-card .session-date{
+        align-items: start;
+        border-bottom: 1px solid rgb(211, 211, 211);
+        padding: 0 0 40px 0;
+    }
+}
+
+/* desktop view */
+@media(min-width: 768px){
+    .upcoming-session-card .session-date{
+        align-items: center;
+        border-right: 1px solid rgb(211, 211, 211);
+    }
+}
+
+.upcoming-session-card .session-date .session-month{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: var(--it-light-grey);
+    margin: 0;
+}
+
+.upcoming-session-card .session-date .session-day{
+    font-family: 'Yeseva One', serif;
+    font-size: 65px;
+    color: var(--it-dark-grey);
+    margin: 0;
+}
+
+.upcoming-session-card .session-date .session-time{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: var(--it-light-grey);
+    margin: 0;
+}
+
+.upcoming-session-card .session-information{
+    padding: 5px 40px;
+}
+
+/* mobile view */
+@media(max-width: 767px){
+    .upcoming-session-card .session-information{
+        padding: 40px 0 0 0;
+    }
+}
+
+/* desktop view */
+@media(min-width: 768px){
+    .upcoming-session-card .session-information{
+    }
+}
+
+.upcoming-session-card .tutee-name{
+    font-family: 'Yeseva One', serif;
+    font-size: 24px;
+    color: var(--it-dark-grey);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.upcoming-session-card .tutee-information{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    color: var(--it-light-grey);
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+
+.upcoming-session-card .tutee-information p{
+    margin-bottom: 12px !important;
+}
+
+.upcoming-session-card .tutee-information span, .upcoming-session-card .tutee-information div{
+    color: var(--it-dark-grey);
+    font-weight: 600;
+}
+
+.upcoming-session-card .join-meeting-button{
+    background-color: var(--it-teal);
+    border-color: transparent;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    width: 100%;
+}
+
+/* mobile view */
+@media(max-width: 767px){
+    .upcoming-session-card .join-meeting-button{
+        margin-top: 20px;
+    }
+}
+
+/* desktop view */
+@media(min-width: 768px){
+    .upcoming-session-card .join-meeting-button{
+        margin-top: 30px;
+    }
+}
+
+.upcoming-session-card .join-meeting-button:hover, .upcoming-session-card .join-meeting-button:active{
+    background-color: #13989f !important;
+    border-color: transparent !important;
+}
+
+.upcoming-session-card .lesson-plan-button, .upcoming-session-card .session-notes-button{
+    background-color: white;
+    border: 1px solid var(--it-dark-grey);
+    color: var(--it-dark-grey);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    width: 250px;
+    margin-top: 5px;
+}
+
+.upcoming-session-card .lesson-plan-button:hover, .upcoming-session-card .lesson-plan-button:active, .upcoming-session-card .session-notes-button:hover, .upcoming-session-card .session-notes-button:active{
+    background-color: rgb(214, 214, 214) !important;
+    border-color: transparent !important;
+}
