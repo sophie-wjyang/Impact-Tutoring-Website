@@ -22,7 +22,11 @@ import MyTuteesPage from "./MyTuteesPage";
 import { Container, Row, Col, Nav, Navbar } from "react-bootstrap";
 
 export default function DashboardSidebar() {
-    const [activeKey, setActiveKey] = useState("/profile");
+    const [activeKey, setActiveKey] = useState(() => {
+        const savedActiveKey = localStorage.getItem("activeKey");
+        return savedActiveKey ? savedActiveKey : "/profile";
+    });
+
     const [flexDirection, setFlexDirection] = useState(window.innerWidth >= 1200);
 
     // change flex direction based on window width
@@ -38,12 +42,19 @@ export default function DashboardSidebar() {
         };
     }, []);
 
+    // when we select a page in the sidebar, set the active key, and save it to local storage
+    // this is so that when we refresh the page, the selected page is still the same
+    const handleSelect = (selectedKey) => {
+        setActiveKey(selectedKey);
+        localStorage.setItem("activeKey", selectedKey);
+    };
+
     return (
         <Container fluid>
             <Row>
                 {/* sidebar */}
                 <Col id="dashboard-sidebar" xl={3}>
-                    <Navbar className={`flex-${flexDirection ? "column" : "row"}`} expand="xl" activeKey={activeKey} onSelect={(selectedKey) => setActiveKey(selectedKey)} collapseOnSelect>
+                    <Navbar className={`flex-${flexDirection ? "column" : "row"}`} expand="xl" activeKey={activeKey} onSelect={(selectedKey) => handleSelect(selectedKey)} collapseOnSelect>
                         <Navbar.Brand>
                             <img src={Logo} className="d-inline-block sidebar-logo" alt="Logo" />
                         </Navbar.Brand>
