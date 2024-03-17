@@ -347,6 +347,28 @@
     color: rgb(202, 20, 20);
 }
 
+/* dropdowns */
+#form-container .form-select.dropdown-placeholder{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    color: #B8B8B8;
+    font-weight: 300;
+}
+
+#form-container .form-select.dropdown-option{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    color: var(--it-dark-grey);
+    font-weight: 300;
+}
+
+/* override default form focus styles */
+#form-container .form-select:focus{
+    border-color: #dee2e6;
+    outline: none;
+    box-shadow: none;
+}
+
 /********************************* DASHBOARD SIDEBAR **********************************/
 
 #dashboard-sidebar{

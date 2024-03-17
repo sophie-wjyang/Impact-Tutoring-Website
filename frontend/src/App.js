@@ -7,7 +7,7 @@ import HomePage from "./pages/HomePage";
 import SignUpPage from "./pages/SignUpPage";
 import LogInPage from "./pages/LogInPage";
 import Dashboard from "./pages/Dashboard";
-import Footer from "./components/Footer";
+import TutorApplication from "./pages/TutorApplication";
 
 // bootstrap
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -22,6 +22,7 @@ export default function App() {
 					<Route path="/signup" element={<SignUpPage />} />
 					<Route path="/login" element={<LogInPage />} />
 					<Route path="/dashboard" element={<Dashboard />} />
+					<Route path="/tutor-application" element={<TutorApplication />} />
 				</Routes>
 			</BrowserRouter>
 		</div>
