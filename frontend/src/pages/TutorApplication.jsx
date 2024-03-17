@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useEffect } from "react";
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -23,6 +25,17 @@ export default function TutorApplication() {
     const [resume, setResume] = useState("");
     const [previousExperience, setPreviousExperience] = useState("");
 
+    useEffect(() => {
+        const inputBox = document.getElementById("location-input");
+        // create a new instance of the google autocomplete class, and bind it to the input field
+        const autocomplete = new window.google.maps.places.Autocomplete(inputBox);
+        autocomplete.setTypes(["(cities)"]);
+
+        autocomplete.addListener("place_changed", () => {
+            setLocation(autocomplete.getPlace());
+        });
+    }, []);
+
     return (
         <div className="d-flex justify-content-center align-items-center">
             <Container id="form-container">
@@ -35,9 +48,9 @@ export default function TutorApplication() {
                 <Form>
                     {/* grade */}
                     <Dropdown
-                        controlId={"formEmail"}
-                        label={"Grade"}
-                        placeholder={"Grade"}
+                        controlId="formEmail"
+                        label="Grade"
+                        placeholder="Grade"
                         value={grade}
                         options={["Grade 9", "Grade 10", "Grade 11", "Grade 12", "University/College"]}
                         onChange={(e) => setGrade(e.target.value)}
@@ -46,9 +59,9 @@ export default function TutorApplication() {
 
                     {/* gender */}
                     <Dropdown
-                        controlId={"formGender"}
-                        label={"Gender"}
-                        placeholder={"Gender"}
+                        controlId="formGender"
+                        label="Gender"
+                        placeholder="Gender"
                         value={gender}
                         options={["Male", "Female", "Non-binary", "Prefer not to say"]}
                         onChange={(e) => setGender(e.target.value)}
@@ -56,12 +69,12 @@ export default function TutorApplication() {
                     />
 
                     {/* location */}
-                    <TextBox controlId={"formLocation"} label={"Location"} placeholder={"Location"} value={location} onChange={(e) => setLocation(e.target.value)} />
+                    <TextBox id="location-input" controlId="formLocation" label="Location" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} autocomplete="on" />
 
                     {/* subjects */}
                     <MultiSelect
-                        controlId={"formSubjects"}
-                        label={"Subjects"}
+                        controlId="formSubjects"
+                        label="Subjects"
                         value={subjects}
                         options={[
                             "Grade 1-8 Mathematics",
@@ -90,8 +103,8 @@ export default function TutorApplication() {
 
                     {/* availability */}
                     <MultiSelect
-                        controlId={"formAvailability"}
-                        label={"Availability"}
+                        controlId="formAvailability"
+                        label="Availability"
                         value={availability}
                         options={["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]}
                         onChange={(e) => {
@@ -103,9 +116,9 @@ export default function TutorApplication() {
 
                     {/* student capacity */}
                     <Dropdown
-                        controlId={"formStudentCapacity"}
-                        label={"Student capacity"}
-                        placeholder={"Student capacity"}
+                        controlId="formStudentCapacity"
+                        label="Student capacity"
+                        placeholder="Student capacity"
                         value={studentCapacity}
                         options={["1", "2", "3"]}
                         onChange={(e) => setStudentCapacity(e.target.value)}
