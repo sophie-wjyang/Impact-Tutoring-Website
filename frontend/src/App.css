@@ -347,7 +347,7 @@
     color: rgb(202, 20, 20);
 }
 
-/* dropdowns */
+/* dropdown */
 #form-container .form-select.dropdown-placeholder{
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
@@ -360,6 +360,15 @@
     font-size: 14px;
     color: var(--it-dark-grey);
     font-weight: 300;
+}
+
+/* multiselect */
+#form-container .input-description{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13px;
+    color: var(--it-light-grey);
+    font-weight: 300;
+    margin-bottom: 5px;
 }
 
 /* override default form focus styles */
