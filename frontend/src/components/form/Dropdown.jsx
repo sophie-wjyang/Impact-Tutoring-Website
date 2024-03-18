@@ -4,8 +4,6 @@ import Form from "react-bootstrap/Form";
 export default function Dropdown(props) {
     const { controlId, label, placeholder, value, options, onChange, description } = props;
 
-    console.log(placeholder);
-
     return (
         <Form.Group className="mb-3" controlId={controlId}>
             {/* dropdown label */}

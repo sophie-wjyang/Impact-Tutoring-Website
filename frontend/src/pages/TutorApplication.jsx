@@ -26,13 +26,14 @@ export default function TutorApplication() {
     const [previousExperience, setPreviousExperience] = useState("");
 
     useEffect(() => {
-        const inputBox = document.getElementById("location-input");
         // create a new instance of the google autocomplete class, and bind it to the input field
+        const inputBox = document.getElementById("formLocation");
         const autocomplete = new window.google.maps.places.Autocomplete(inputBox);
         autocomplete.setTypes(["(cities)"]);
 
+        // create event listener for the place_changed event
         autocomplete.addListener("place_changed", () => {
-            setLocation(autocomplete.getPlace());
+            setLocation(autocomplete.getPlace().formatted_address);
         });
     }, []);
 
@@ -69,7 +70,7 @@ export default function TutorApplication() {
                     />
 
                     {/* location */}
-                    <TextBox id="location-input" controlId="formLocation" label="Location" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} autocomplete="on" />
+                    <TextBox controlId="formLocation" label="Location" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} autocomplete="on" />
 
                     {/* subjects */}
                     <MultiSelect
