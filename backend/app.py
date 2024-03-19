@@ -107,6 +107,13 @@ def getTutees():
 
     return jsonify(result)
 
+@app.route('/save-tutor-application-data', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def saveTutorApplicationData():
+    cur = conn.cursor()
+
+    
+
 if __name__ == '__main__':
     app.secret_key = 'secret_key'
     app.run(debug=True)

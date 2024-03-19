@@ -378,6 +378,13 @@
     box-shadow: none;
 }
 
+/* file upload */
+#form-container .file-upload-box{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    color: var(--it-dark-grey);
+}
+
 /********************************* DASHBOARD SIDEBAR **********************************/
 
 #dashboard-sidebar{

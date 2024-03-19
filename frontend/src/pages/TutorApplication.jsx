@@ -8,12 +8,17 @@ import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
+
+// components
 import TextBox from "../components/form/TextBox";
-import RadioButtons from "../components/form/RadioButtons";
+import TextArea from "../components/form/TextArea";
 import Dropdown from "../components/form/Dropdown";
+import FileUpload from "../components/form/FileUpload";
 import MultiSelect from "../components/form/MultiSelect";
 
 export default function TutorApplication() {
+    const navigate = useNavigate();
+
     const [grade, setGrade] = useState("");
     const [gender, setGender] = useState("");
     const [location, setLocation] = useState("");
@@ -25,6 +30,7 @@ export default function TutorApplication() {
     const [resume, setResume] = useState("");
     const [previousExperience, setPreviousExperience] = useState("");
 
+    // google maps location autocomplete
     useEffect(() => {
         // create a new instance of the google autocomplete class, and bind it to the input field
         const inputBox = document.getElementById("formLocation");
@@ -37,6 +43,27 @@ export default function TutorApplication() {
         });
     }, []);
 
+    function saveTutorApplicationData(event){
+        event.preventDefault();
+
+        const data = {
+            grade: grade,
+            gender: gender,
+            location: location,
+            subjects: subjects,
+            languages: languages,
+            availability: availability,
+            studentCapacity: studentCapacity
+        }
+
+        console.log(data);
+
+        axios.post("http://localhost:5000/save-tutor-application-data", data)
+            .then(() => {
+                navigate("/login");
+            })
+    }
+
     return (
         <div className="d-flex justify-content-center align-items-center">
             <Container id="form-container">
@@ -46,7 +73,7 @@ export default function TutorApplication() {
                     impacttutoringca@gmail.com.
                 </p>
 
-                <Form>
+                <Form onSubmit={(e) => {saveTutorApplicationData(e)}}>
                     {/* grade */}
                     <Dropdown
                         controlId="formEmail"
@@ -126,9 +153,28 @@ export default function TutorApplication() {
                         description="Please select the maximum number of students you would be comfortable tutoring."
                     />
 
+                    {/* report card */}
+                    <FileUpload
+                        controlId="formReportCard"
+                        label="Report card"
+                        description="Please upload a copy of your most recent report card."
+                    />
+
+                    {/* resume */}
+                    <FileUpload
+                        controlId="formResume"
+                        label="Resume"
+                        description=""
+                    />
+
+                    {/* previous experience */}
+                    <TextArea controlId="previousExperience" label="Previous experience" placeholder="Additional information" value={previousExperience} rows={5} onChange={(e) => setPreviousExperience(e.target.value)} />
+
                     <Button variant="primary" size="lg" type="submit" className="w-100 form-submit-button">
                         Submit application
                     </Button>
+
+
                 </Form>
             </Container>
         </div>
