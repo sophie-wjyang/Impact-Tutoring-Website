@@ -3,6 +3,7 @@ from flask_session import Session
 from flask_cors import CORS, cross_origin
 import os 
 import psycopg2
+import boto3
 
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -17,6 +18,9 @@ conn = psycopg2.connect(
     user=os.environ['DB_USERNAME'],
     password=os.environ['DB_PASSWORD']
 )
+
+# create a new S3 client object using aws credentials
+s3 = boto3.client('s3', aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'], aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY'])
 
 @app.route('/')
 def index():
@@ -38,6 +42,9 @@ def saveSignUpFormData():
 
     conn.commit()
     cur.close()
+    
+    return jsonify({'message': 'success'})
+
 
 # validate that email exists in database
 @app.route('/validate-login-form-data', methods=['GET', 'POST'])
@@ -110,9 +117,65 @@ def getTutees():
 @app.route('/save-tutor-application-data', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def saveTutorApplicationData():
+    # save data to database
     cur = conn.cursor()
 
+
+@app.route('/save-tutor-application-resume', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def saveTutorApplicationResume():
+    # get the name of the tutor that's currently logged in
+    if 'email' not in session:
+        print("EMAIL NOT FOUND IN SESSION")
+        return jsonify({'message': 'error', 'details': 'Email not found in session'})
+
+    print("GET SESSION EMAIL:", session['email'])
+    cur = conn.cursor()
+
+    cur.execute('''SELECT first_name, last_name
+                FROM tutors
+                WHERE email = %s ''', (session['email'],))
+
+    result = cur.fetchall()
+
+    file = request.files['resume']
+    first_name, last_name = result[0]
+    file_name = f"{first_name}-{last_name}-Resume.pdf"
     
+    # save file to S3
+    s3.upload_fileobj(file, os.environ['BUCKET_NAME'], file_name)
+
+    print("FILE UPLOADED TO S3")
+    
+    return jsonify({'message': 'success'})
+
+@app.route('/save-tutor-application-report-card', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def saveTutorApplicationReportCard():
+    # get the name of the tutor that's currently logged in
+    if 'email' not in session:
+        print("EMAIL NOT FOUND IN SESSION")
+        return jsonify({'message': 'error', 'details': 'Email not found in session'})
+
+    print("GET SESSION EMAIL:", session['email'])
+    cur = conn.cursor()
+
+    cur.execute('''SELECT first_name, last_name
+                FROM tutors
+                WHERE email = %s ''', (session['email'],))
+
+    result = cur.fetchall()
+
+    file = request.files['report-card']
+    first_name, last_name = result[0]
+    file_name = f"{first_name}-{last_name}-Report-Card.pdf"
+    
+    # save file to S3
+    s3.upload_fileobj(file, os.environ['BUCKET_NAME'], file_name)
+
+    print("FILE UPLOADED TO S3")
+    
+    return jsonify({'message': 'success'})
 
 if __name__ == '__main__':
     app.secret_key = 'secret_key'

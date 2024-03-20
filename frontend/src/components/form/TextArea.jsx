@@ -2,12 +2,18 @@ import React from "react";
 import Form from "react-bootstrap/Form";
 
 export default function TextArea(props) {
-    const { controlId, label, placeholder, value, rows, onChange } = props;
+    const { controlId, label, description, placeholder, value, rows, onChange } = props;
 
     return (
         <Form.Group className="mb-3" controlId={controlId}>
+            {/* label */}
             <Form.Label>{label}</Form.Label>
-            <Form.Control id={id} as="textarea" rows={rows} className="input-text" placeholder={placeholder} value={value} onChange={onChange} />
+
+            {/* optional description */}
+            {description !== "" && <p className="input-description">{description}</p>}
+
+            {/* text area */}
+            <Form.Control as="textarea" rows={rows} className="input-text" placeholder={placeholder} value={value} onChange={onChange} />
         </Form.Group>
     );
 }

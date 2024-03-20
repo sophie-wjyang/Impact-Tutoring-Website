@@ -2,7 +2,7 @@ import React from "react";
 import Form from "react-bootstrap/Form";
 
 export default function FileUpload(props) {
-    const { controlId, label, description } = props;
+    const { controlId, label, description, onChange } = props;
 
     return (
         <Form.Group className="mb-3" controlId={controlId}>
@@ -13,7 +13,8 @@ export default function FileUpload(props) {
             {description !== "" && <p className="input-description">{description}</p>}
 
             {/* file upload button */}
-            <Form.Control type="file" className="file-upload-box"/>
+            {/* get the file that was just uploaded */}
+            <Form.Control type="file" className="file-upload-box" onChange={onChange}/>
         </Form.Group>
     );
 }

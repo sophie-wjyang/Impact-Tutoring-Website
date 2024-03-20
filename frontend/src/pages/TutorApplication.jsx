@@ -26,8 +26,8 @@ export default function TutorApplication() {
     const [languages, setLanguages] = useState([]);
     const [availability, setAvailability] = useState([]);
     const [studentCapacity, setStudentCapacity] = useState("");
-    const [reportCard, setReportCard] = useState("");
-    const [resume, setResume] = useState("");
+    const [reportCard, setReportCard] = useState(null);
+    const [resume, setResume] = useState(null);
     const [previousExperience, setPreviousExperience] = useState("");
 
     // google maps location autocomplete
@@ -44,23 +44,47 @@ export default function TutorApplication() {
     }, []);
 
     function saveTutorApplicationData(event){
-        event.preventDefault();
+        // event.preventDefault();
 
-        const data = {
-            grade: grade,
-            gender: gender,
-            location: location,
-            subjects: subjects,
-            languages: languages,
-            availability: availability,
-            studentCapacity: studentCapacity
-        }
+        // const data = {
+        //     grade: grade,
+        //     gender: gender,
+        //     location: location,
+        //     subjects: subjects,
+        //     languages: languages,
+        //     availability: availability,
+        //     studentCapacity: studentCapacity
+        // }
 
-        console.log(data);
+        // console.log(data);
 
-        axios.post("http://localhost:5000/save-tutor-application-data", data)
+        // axios.post("http://localhost:5000/save-tutor-application-data", data)
+        //     .then(() => {
+        //         navigate("/login");
+        //     })
+    }
+
+    function saveTutorApplicationResume(){
+        console.log("the file to be uploaded is: ", resume)
+        const data = new FormData();
+        data.append("resume", resume);
+
+        axios.post("http://localhost:5000/save-tutor-application-resume", data, { withCredentials: true })
             .then(() => {
-                navigate("/login");
+                console.log("posted to backend")
+                // navigate("/login");
+            })
+    }
+
+    function saveTutorApplicationReportCard(){
+        console.log("the file to be uploaded is: ", reportCard)
+        const data = new FormData();
+        data.append("report-card", reportCard);
+
+        axios.post("http://localhost:5000/save-tutor-application-report-card", data, { withCredentials: true })
+            .then(() => {
+                console.log("posted to backend")
+                // navigate("/login");
             })
     }
 
@@ -73,7 +97,11 @@ export default function TutorApplication() {
                     impacttutoringca@gmail.com.
                 </p>
 
-                <Form onSubmit={(e) => {saveTutorApplicationData(e)}}>
+                <Form onSubmit={(e) => {
+                        saveTutorApplicationData(e);
+                        saveTutorApplicationResume();
+                        saveTutorApplicationReportCard();
+                    }}>
                     {/* grade */}
                     <Dropdown
                         controlId="formEmail"
@@ -158,6 +186,10 @@ export default function TutorApplication() {
                         controlId="formReportCard"
                         label="Report card"
                         description="Please upload a copy of your most recent report card."
+                        onChange={(e) => {
+                            console.log(e.target.files[0]);
+                            setReportCard(e.target.files[0])
+                        }}
                     />
 
                     {/* resume */}
@@ -165,10 +197,14 @@ export default function TutorApplication() {
                         controlId="formResume"
                         label="Resume"
                         description=""
+                        onChange={(e) => {
+                            console.log(e.target.files[0]);
+                            setResume(e.target.files[0])
+                        }}
                     />
 
                     {/* previous experience */}
-                    <TextArea controlId="previousExperience" label="Previous experience" placeholder="Additional information" value={previousExperience} rows={5} onChange={(e) => setPreviousExperience(e.target.value)} />
+                    <TextArea controlId="previousExperience" label="Previous experience" description="If you have any previous experience with tutoring, or have any additional information you would like to share with us, please do so here." placeholder="Additional information" value={previousExperience} rows={5} onChange={(e) => setPreviousExperience(e.target.value)} />
 
                     <Button variant="primary" size="lg" type="submit" className="w-100 form-submit-button">
                         Submit application
