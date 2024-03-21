@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -19,7 +18,7 @@ import MultiSelect from "../components/form/MultiSelect";
 export default function TutorApplication() {
     const navigate = useNavigate();
 
-    const [grade, setGrade] = useState("");
+    const [grade, setGrade] = useState(0);
     const [gender, setGender] = useState("");
     const [location, setLocation] = useState("");
     const [subjects, setSubjects] = useState([]);
@@ -32,6 +31,8 @@ export default function TutorApplication() {
 
     // google maps location autocomplete
     useEffect(() => {
+        if (!window.google) return;
+
         // create a new instance of the google autocomplete class, and bind it to the input field
         const inputBox = document.getElementById("formLocation");
         const autocomplete = new window.google.maps.places.Autocomplete(inputBox);
@@ -41,51 +42,50 @@ export default function TutorApplication() {
         autocomplete.addListener("place_changed", () => {
             setLocation(autocomplete.getPlace().formatted_address);
         });
-    }, []);
+    }, [window.google]);
 
-    function saveTutorApplicationData(event){
-        // event.preventDefault();
+    function saveTutorApplicationData(event) {
+        event.preventDefault();
 
-        // const data = {
-        //     grade: grade,
-        //     gender: gender,
-        //     location: location,
-        //     subjects: subjects,
-        //     languages: languages,
-        //     availability: availability,
-        //     studentCapacity: studentCapacity
-        // }
+        const data = {
+            grade: grade,
+            gender: gender,
+            location: location,
+            subjects: subjects,
+            languages: languages,
+            availability: availability,
+            studentCapacity: studentCapacity,
+            previousExperience: previousExperience
+        }
 
-        // console.log(data);
+        console.log(data);
 
-        // axios.post("http://localhost:5000/save-tutor-application-data", data)
-        //     .then(() => {
-        //         navigate("/login");
-        //     })
+        axios.post("http://localhost:5000/save-tutor-application-data", data, { withCredentials: true })
+            .then(() => {
+                navigate("/login");
+            })
     }
 
-    function saveTutorApplicationResume(){
-        console.log("the file to be uploaded is: ", resume)
+    function saveTutorApplicationResume() {
+        console.log("the file to be uploaded is: ", resume);
         const data = new FormData();
         data.append("resume", resume);
 
-        axios.post("http://localhost:5000/save-tutor-application-resume", data, { withCredentials: true })
-            .then(() => {
-                console.log("posted to backend")
-                // navigate("/login");
-            })
+        axios.post("http://localhost:5000/save-tutor-application-resume", data, { withCredentials: true }).then(() => {
+            console.log("posted to backend");
+            // navigate("/login");
+        });
     }
 
-    function saveTutorApplicationReportCard(){
-        console.log("the file to be uploaded is: ", reportCard)
+    function saveTutorApplicationReportCard() {
+        console.log("the file to be uploaded is: ", reportCard);
         const data = new FormData();
         data.append("report-card", reportCard);
 
-        axios.post("http://localhost:5000/save-tutor-application-report-card", data, { withCredentials: true })
-            .then(() => {
-                console.log("posted to backend")
-                // navigate("/login");
-            })
+        axios.post("http://localhost:5000/save-tutor-application-report-card", data, { withCredentials: true }).then(() => {
+            console.log("posted to backend");
+            // navigate("/login");
+        });
     }
 
     return (
@@ -97,11 +97,13 @@ export default function TutorApplication() {
                     impacttutoringca@gmail.com.
                 </p>
 
-                <Form onSubmit={(e) => {
+                <Form
+                    onSubmit={(e) => {
                         saveTutorApplicationData(e);
                         saveTutorApplicationResume();
                         saveTutorApplicationReportCard();
-                    }}>
+                    }}
+                >
                     {/* grade */}
                     <Dropdown
                         controlId="formEmail"
@@ -109,7 +111,13 @@ export default function TutorApplication() {
                         placeholder="Grade"
                         value={grade}
                         options={["Grade 9", "Grade 10", "Grade 11", "Grade 12", "University/College"]}
-                        onChange={(e) => setGrade(e.target.value)}
+                        onChange={(e) => {
+                            const selectedOption = e.target.value;
+                            // extract the number from the selected option
+                            const gradeNumber = parseInt(selectedOption.match(/\d+/)[0]);
+                            console.log(gradeNumber)
+                            setGrade(gradeNumber);
+                        }}
                         description=""
                     />
 
@@ -155,7 +163,18 @@ export default function TutorApplication() {
                     />
 
                     {/* languages */}
-                    <TextBox controlId={"formLanguages"} label={"Languages"} placeholder={"Languages"} value={languages} onChange={(e) => setLanguages(e.target.value)} />
+                    <MultiSelect
+                        controlId="formLanguages"
+                        label="Languages"
+                        value={languages}
+                        options={["English", "Chinese", "Spanish", "Hindi", "French"]}
+                        onChange={(e) => {
+                            // get all selected options, extract the value of each option, turn it into an array, store it in subjects
+                            const selectedOptions = Array.from(e.target.selectedOptions, (option) => option.value);
+                            setLanguages(selectedOptions);
+                        }}
+                        description="Please check all the languages you would be comfortable tutoring in."
+                    />
 
                     {/* availability */}
                     <MultiSelect
@@ -188,7 +207,7 @@ export default function TutorApplication() {
                         description="Please upload a copy of your most recent report card."
                         onChange={(e) => {
                             console.log(e.target.files[0]);
-                            setReportCard(e.target.files[0])
+                            setReportCard(e.target.files[0]);
                         }}
                     />
 
@@ -199,18 +218,24 @@ export default function TutorApplication() {
                         description=""
                         onChange={(e) => {
                             console.log(e.target.files[0]);
-                            setResume(e.target.files[0])
+                            setResume(e.target.files[0]);
                         }}
                     />
 
                     {/* previous experience */}
-                    <TextArea controlId="previousExperience" label="Previous experience" description="If you have any previous experience with tutoring, or have any additional information you would like to share with us, please do so here." placeholder="Additional information" value={previousExperience} rows={5} onChange={(e) => setPreviousExperience(e.target.value)} />
+                    <TextArea
+                        controlId="previousExperience"
+                        label="Previous experience"
+                        description="If you have any previous experience with tutoring, or have any additional information you would like to share with us, please do so here."
+                        placeholder="Additional information"
+                        value={previousExperience}
+                        rows={5}
+                        onChange={(e) => setPreviousExperience(e.target.value)}
+                    />
 
                     <Button variant="primary" size="lg" type="submit" className="w-100 form-submit-button">
                         Submit application
                     </Button>
-
-
                 </Form>
             </Container>
         </div>

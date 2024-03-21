@@ -26,7 +26,10 @@ s3 = boto3.client('s3', aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'], aws_s
 def index():
     return 'index!'
 
+
+############################################################################################################
 # save sign up form data to database
+############################################################################################################
 @app.route('/save-signup-form-data', methods=['POST'])
 def saveSignUpFormData():
     data = request.json
@@ -46,7 +49,9 @@ def saveSignUpFormData():
     return jsonify({'message': 'success'})
 
 
-# validate that email exists in database
+############################################################################################################
+# validate that email exists in database for login
+############################################################################################################
 @app.route('/validate-login-form-data', methods=['GET', 'POST'])
 @cross_origin(supports_credentials=True)
 def validateLoginFormData():
@@ -70,6 +75,10 @@ def validateLoginFormData():
     else:
         return jsonify({'message': 'error', 'details': 'Did not find matching email and password'})
 
+
+############################################################################################################
+# get profile information
+############################################################################################################
 @app.route('/get-profile-info', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def getProfileInfo():
@@ -92,6 +101,10 @@ def getProfileInfo():
 
     return jsonify(result)
 
+
+############################################################################################################
+# get all tutees and subjects paired with the tutor
+############################################################################################################
 @app.route('/get-tutees', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def getTutees():
@@ -114,13 +127,34 @@ def getTutees():
 
     return jsonify(result)
 
+
+############################################################################################################
+# save data from tutor application form
+############################################################################################################
 @app.route('/save-tutor-application-data', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def saveTutorApplicationData():
-    # save data to database
+    if 'email' not in session:
+        return jsonify({'message': 'error', 'details': 'Email not found in session'})
+    
+    data = request.json
+    print(data)
+
     cur = conn.cursor()
 
+    cur.execute('''UPDATE tutors 
+                SET grade = %s, gender = %s, location = %s, subjects = %s, languages = %s, availability = %s, student_capacity = %s, previous_experience = %s
+                WHERE email = %s ''', (data['grade'], data['gender'], data['location'], data['subjects'], data['languages'], data['availability'], data['studentCapacity'], data['previousExperience'], session['email']))
 
+    conn.commit()
+    cur.close()
+    
+    return jsonify({'message': 'success'})
+
+
+############################################################################################################
+# save tutor application resume
+############################################################################################################
 @app.route('/save-tutor-application-resume', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def saveTutorApplicationResume():
@@ -149,6 +183,10 @@ def saveTutorApplicationResume():
     
     return jsonify({'message': 'success'})
 
+
+############################################################################################################
+# save tutor application report card
+############################################################################################################
 @app.route('/save-tutor-application-report-card', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def saveTutorApplicationReportCard():
