@@ -18,7 +18,7 @@ import MultiSelect from "../components/form/MultiSelect";
 export default function TutorApplication() {
     const navigate = useNavigate();
 
-    const [grade, setGrade] = useState(0);
+    const [grade, setGrade] = useState("");
     const [gender, setGender] = useState("");
     const [location, setLocation] = useState("");
     const [subjects, setSubjects] = useState([]);
@@ -111,13 +111,7 @@ export default function TutorApplication() {
                         placeholder="Grade"
                         value={grade}
                         options={["Grade 9", "Grade 10", "Grade 11", "Grade 12", "University/College"]}
-                        onChange={(e) => {
-                            const selectedOption = e.target.value;
-                            // extract the number from the selected option
-                            const gradeNumber = parseInt(selectedOption.match(/\d+/)[0]);
-                            console.log(gradeNumber)
-                            setGrade(gradeNumber);
-                        }}
+                        onChange={(e) => setGrade(e.target.value)}
                         description=""
                     />
 

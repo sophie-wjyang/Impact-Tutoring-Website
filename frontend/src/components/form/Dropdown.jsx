@@ -14,7 +14,7 @@ export default function Dropdown(props) {
 
             {/* dropdown options */}
             {/* initially pass in an empty value, value only changes when an option is selected and the component is re-rendered, then the class changes */}
-            <Form.Select value={value} onChange={onChange} className={(value === "" || value === 0) ? "dropdown-placeholder" : "dropdown-option"}>
+            <Form.Select value={value} onChange={onChange} className={(value === "") ? "dropdown-placeholder" : "dropdown-option"}>
                 <option value="" className="dropdown-placeholder" disabled hidden>
                     {placeholder}
                 </option>
