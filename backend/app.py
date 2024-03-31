@@ -215,6 +215,61 @@ def saveTutorApplicationReportCard():
     
     return jsonify({'message': 'success'})
 
+############################################################################################################
+# save volunteer hours data
+############################################################################################################
+@app.route('/save-volunteer-hours-data', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def saveVolunteerHoursData():
+    if 'email' not in session:
+        return jsonify({'message': 'error', 'details': 'Email not found in session'})
+    
+    data = request.json
+    print(data)
+
+    cur = conn.cursor()
+
+    cur.execute('''UPDATE tutors 
+                SET grade = %s, gender = %s, location = %s, subjects = %s, languages = %s, availability = %s, student_capacity = %s, previous_experience = %s
+                WHERE email = %s ''', (data['grade'], data['gender'], data['location'], data['subjects'], data['languages'], data['availability'], data['studentCapacity'], data['previousExperience'], session['email']))
+
+    conn.commit()
+    cur.close()
+    
+    return jsonify({'message': 'success'})
+
+
+############################################################################################################
+# save tutor application report card
+############################################################################################################
+@app.route('/save-volunteer-hours-form', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def saveVolunteerHoursForm():
+    # get the name of the tutor that's currently logged in
+    if 'email' not in session:
+        print("EMAIL NOT FOUND IN SESSION")
+        return jsonify({'message': 'error', 'details': 'Email not found in session'})
+
+    print("GET SESSION EMAIL:", session['email'])
+    cur = conn.cursor()
+
+    cur.execute('''SELECT first_name, last_name
+                FROM tutors
+                WHERE email = %s ''', (session['email'],))
+
+    result = cur.fetchall()
+
+    file = request.files['report-card']
+    first_name, last_name = result[0]
+    file_name = f"{first_name}-{last_name}-Report-Card.pdf"
+    
+    # save file to S3
+    s3.upload_fileobj(file, os.environ['BUCKET_NAME'], file_name)
+
+    print("FILE UPLOADED TO S3")
+    
+    return jsonify({'message': 'success'})
+
 
 ############################################################################################################
 # 

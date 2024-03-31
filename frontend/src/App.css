@@ -1,22 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600&display=swap");
 
 /********************************* UNIVERSAL STYLES **********************************/
-:root{
-    --it-teal: #19BDC7;
+:root {
+    --it-teal: #19bdc7;
     --it-light-grey: #909394;
-    --it-dark-grey: #3C4048;
+    --it-dark-grey: #3c4048;
 }
 
 /********************************* NAVBAR **********************************/
 
-#navbar-section{
+#navbar-section {
     background-color: white !important;
     border-bottom: 1px solid #f1f1f1;
 }
 
-.navbar-links .navbar-link{
-    font-family: 'Open Sans', sans-serif;
+.navbar-links .navbar-link {
+    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     font-weight: 500;
     color: var(--it-light-grey);
@@ -38,42 +38,42 @@
     }
 }
 
-#banner-section h1{
-    font-family: 'Yeseva One', serif;
+#banner-section h1 {
+    font-family: "Yeseva One", serif;
     font-size: 45px;
     color: var(--it-dark-grey) !important;
     line-height: 1.4 !important;
 }
 
-#banner-section p{
-    font-family: 'Open Sans', sans-serif;
+#banner-section p {
+    font-family: "Open Sans", sans-serif;
     font-size: 18px;
     font-weight: 300;
     color: var(--it-light-grey);
     line-height: 1.7 !important;
 }
 
-#banner-section .tutor-button{
+#banner-section .tutor-button {
     background-color: var(--it-teal);
     border-color: transparent;
     color: white;
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-size: 18px;
 }
 
-#banner-section .tutor-button:hover{
+#banner-section .tutor-button:hover {
     background-color: #13989f;
 }
 
-#banner-section .tutee-button{
+#banner-section .tutee-button {
     background-color: transparent;
     border-color: var(--it-teal);
     color: var(--it-teal);
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-size: 18px;
 }
 
-#banner-section .tutee-button:hover{
+#banner-section .tutee-button:hover {
     background-color: var(--it-teal);
     border-color: transparent;
     color: white;
@@ -82,28 +82,32 @@
 /********************************* WHO WE ARE, WHAT WE DO **********************************/
 
 @media (min-width: 992px) {
-    #who-we-are-section, #what-we-do-section {
+    #who-we-are-section,
+    #what-we-do-section {
         margin-top: 150px;
         margin-bottom: 150px;
     }
 }
 
 @media (max-width: 991px) {
-    #who-we-are-section, #what-we-do-section {
+    #who-we-are-section,
+    #what-we-do-section {
         margin-top: 50px;
         margin-bottom: 50px;
     }
 }
 
-#who-we-are-section h1, #what-we-do-section h1{
-    font-family: 'Yeseva One', serif;
+#who-we-are-section h1,
+#what-we-do-section h1 {
+    font-family: "Yeseva One", serif;
     font-size: 35px;
     color: var(--it-dark-grey) !important;
     line-height: 1.4 !important;
 }
 
-#who-we-are-section p, #what-we-do-section p{
-    font-family: 'Open Sans', sans-serif;
+#who-we-are-section p,
+#what-we-do-section p {
+    font-family: "Open Sans", sans-serif;
     font-size: 16px;
     font-weight: 300;
     color: var(--it-light-grey);
@@ -126,39 +130,39 @@
     }
 }
 
-#call-to-action-section h1{
-    font-family: 'Yeseva One', serif;
+#call-to-action-section h1 {
+    font-family: "Yeseva One", serif;
     font-size: 40px;
     color: var(--it-dark-grey) !important;
     line-height: 1.4 !important;
 }
 
-#call-to-action-section p{
-    font-family: 'Open Sans', sans-serif;
+#call-to-action-section p {
+    font-family: "Open Sans", sans-serif;
     font-size: 16px;
     font-weight: 300;
     color: var(--it-light-grey);
     line-height: 1.7 !important;
 }
 
-#call-to-action-section .tutor-button{
+#call-to-action-section .tutor-button {
     background-color: var(--it-teal);
     border-color: transparent;
     color: white;
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-size: 16px;
 }
 
-#call-to-action-section .tutee-button{
+#call-to-action-section .tutee-button {
     background-color: transparent;
     border-color: var(--it-teal);
     color: var(--it-teal);
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-size: 16px;
 }
 
 @media (min-width: 992px) {
-    #call-to-action-section .call-to-action{
+    #call-to-action-section .call-to-action {
         width: 60%;
         margin-left: auto;
         margin-right: auto;
@@ -166,78 +170,78 @@
 }
 
 @media (min-width: 992px) {
-    #call-to-action-section .tutor-section{
+    #call-to-action-section .tutor-section {
         border-right: 1px solid #dfdfdf;
     }
 }
 
-#call-to-action-section .horizontal-divider{
+#call-to-action-section .horizontal-divider {
     margin-top: 80px;
     margin-bottom: 80px;
     background-color: #dfdfdf;
 }
 
-#call-to-action-section .tutor-button:hover{
+#call-to-action-section .tutor-button:hover {
     background-color: #13989f;
 }
 
-#call-to-action-section .tutee-button:hover{
+#call-to-action-section .tutee-button:hover {
     background-color: var(--it-teal);
     border-color: transparent;
     color: white;
 }
 
 /********************************* FOOTER **********************************/
-#footer-section{
+#footer-section {
     background-color: var(--it-dark-grey);
     color: white;
     position: relative;
     width: 100%;
 }
 
-#footer-section .footer-text{
-    font-family: 'Open Sans', sans-serif;
+#footer-section .footer-text {
+    font-family: "Open Sans", sans-serif;
     font-size: 15px;
     margin-bottom: 0;
     padding-left: 15px;
 }
 
 @media (max-width: 575px) {
-    #footer-section .footer-text{
+    #footer-section .footer-text {
         font-size: 14px;
     }
 
-    #footer-section .footer-logo{
+    #footer-section .footer-logo {
         width: 40px;
     }
 }
 
-#footer-section .social-icon-list{
+#footer-section .social-icon-list {
     margin-bottom: 0;
 }
 
-#footer-section .social-icon{
+#footer-section .social-icon {
     color: white;
     font-size: 22px;
     margin-right: 10px;
 }
 
-#footer-section .social-icon:hover{
+#footer-section .social-icon:hover {
     color: var(--it-teal);
 }
 
-/********************************* FORMS **********************************/
+/********************************* FORMS (LOGIN, SIGNUP, APPLICATION) **********************************/
 
-#form-container{
+#form-container {
     background-color: white;
     padding: 50px;
     margin: 100px;
     border-radius: 10px;
-    box-shadow: 0 0 10px 0 rgba(0,0,0,.1);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 }
 
 @media (min-width: 0px) {
-    #form-container{
+    #form-container {
         width: 90%;
         margin-left: auto;
         margin-right: auto;
@@ -245,7 +249,7 @@
 }
 
 @media (min-width: 768px) {
-    #form-container{
+    #form-container {
         width: 70%;
         margin-left: auto;
         margin-right: auto;
@@ -253,7 +257,7 @@
 }
 
 @media (min-width: 992px) {
-    #form-container{
+    #form-container {
         width: 50%;
         margin-left: auto;
         margin-right: auto;
@@ -261,21 +265,21 @@
 }
 
 /* heading and description */
-#form-container .form-heading{
-    font-family: 'Yeseva One', serif;
+#form-container .form-heading {
+    font-family: "Yeseva One", serif;
     font-size: 30px;
     color: var(--it-dark-grey);
 }
 
-#form-container .form-description{
-    font-family: 'Open Sans', sans-serif;
+#form-container .form-description {
+    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     color: var(--it-light-grey);
     font-weight: 300;
 }
 
-#form-container .form-link{
-    font-family: 'Open Sans', sans-serif;
+#form-container .form-link {
+    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     color: var(--it-light-grey);
     font-weight: 300;
@@ -283,88 +287,88 @@
 }
 
 /* text boxes */
-#form-container .form-label{
-    font-family: 'Open Sans', sans-serif;
+#form-container .form-label {
+    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     color: var(--it-dark-grey);
     font-weight: 600;
     margin-bottom: 5px;
 }
 
-#form-container .form-control::placeholder{
-    font-family: 'Open Sans', sans-serif;
+#form-container .form-control::placeholder {
+    font-family: "Open Sans", sans-serif;
     font-size: 14px;
-    color: #B8B8B8;
+    color: #b8b8b8;
     font-weight: 300;
 }
 
-#form-container .input-text{
-    font-family: 'Open Sans', sans-serif;
+#form-container .input-text {
+    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     color: var(--it-dark-grey);
     font-weight: 400;
 }
 
-#form-container .form-control:focus{
+#form-container .form-control:focus {
     border-color: #dee2e6;
     box-shadow: none;
 }
 
 /* radio buttons */
-#form-container .form-check-label{
-    font-family: 'Open Sans', sans-serif;
+#form-container .form-check-label {
+    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     color: var(--it-dark-grey);
     font-weight: 400;
 }
 
-#form-container .form-check-input:focus{
+#form-container .form-check-input:focus {
     background-color: var(--it-teal);
     border-color: var(--it-teal);
     box-shadow: 0 0 0 0.25rem rgba(25, 189, 199, 0.25);
 }
 
-#form-container .form-check-input:checked{
+#form-container .form-check-input:checked {
     background-color: var(--it-teal);
     border-color: var(--it-teal);
 }
 
 /* submit button */
-#form-container .form-submit-button{
+#form-container .form-submit-button {
     background-color: var(--it-teal);
     border-color: transparent;
     color: white;
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-size: 16px;
     font-weight: 500;
-    padding: 10px 20px;  
+    padding: 10px 20px;
     margin-top: 15px;
 }
 
-#form-container .invalid-login-message{
-    font-family: 'Open Sans', sans-serif;
+#form-container .invalid-login-message {
+    font-family: "Open Sans", sans-serif;
     font-size: 13px;
     color: rgb(202, 20, 20);
 }
 
 /* dropdown */
-#form-container .form-select.dropdown-placeholder{
-    font-family: 'Open Sans', sans-serif;
+#form-container .form-select.dropdown-placeholder {
+    font-family: "Open Sans", sans-serif;
     font-size: 14px;
-    color: #B8B8B8;
+    color: #b8b8b8;
     font-weight: 300;
 }
 
-#form-container .form-select.dropdown-option{
-    font-family: 'Open Sans', sans-serif;
+#form-container .form-select.dropdown-option {
+    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     color: var(--it-dark-grey);
     font-weight: 300;
 }
 
 /* multiselect */
-#form-container .input-description{
-    font-family: 'Open Sans', sans-serif;
+#form-container .input-description {
+    font-family: "Open Sans", sans-serif;
     font-size: 13px;
     color: var(--it-light-grey);
     font-weight: 300;
@@ -372,61 +376,61 @@
 }
 
 /* override default form focus styles */
-#form-container .form-select:focus{
+#form-container .form-select:focus {
     border-color: #dee2e6;
     outline: none;
     box-shadow: none;
 }
 
 /* file upload */
-#form-container .file-upload-box{
-    font-family: 'Open Sans', sans-serif;
+#form-container .file-upload-box {
+    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     color: var(--it-dark-grey);
 }
 
 /********************************* DASHBOARD SIDEBAR **********************************/
 
-#dashboard-sidebar{
+#dashboard-sidebar {
     background-color: white;
     min-height: 100vh;
 }
 
 /* sidebar width */
 @media (min-width: 1400px) {
-    #dashboard-sidebar .sidebar-logo{
+    #dashboard-sidebar .sidebar-logo {
         width: 300px;
     }
 }
 
 @media (max-width: 1399px) {
-    #dashboard-sidebar .sidebar-logo{
+    #dashboard-sidebar .sidebar-logo {
         width: 250px;
     }
 }
 
 @media (max-width: 1199px) {
-    #dashboard-sidebar .sidebar-logo{
+    #dashboard-sidebar .sidebar-logo {
         width: 230px;
     }
 }
 
 /* sidebar logo padding and margin */
 @media (min-width: 1200px) {
-    #dashboard-sidebar .sidebar-logo{
+    #dashboard-sidebar .sidebar-logo {
         margin: 20px 10px;
         padding: 25px 30px;
     }
 }
 
 @media (max-width: 1199px) {
-    #dashboard-sidebar .sidebar-logo{
+    #dashboard-sidebar .sidebar-logo {
         padding: 15px 20px;
     }
 }
 
-#dashboard-sidebar .sidebar-link{
-    font-family: 'Open Sans', sans-serif;
+#dashboard-sidebar .sidebar-link {
+    font-family: "Open Sans", sans-serif;
     font-size: 16px;
     font-weight: 500;
     color: #909394;
@@ -435,154 +439,156 @@
 }
 
 @media (min-width: 1400px) {
-    #dashboard-sidebar .sidebar-link{
+    #dashboard-sidebar .sidebar-link {
         font-size: 16px;
     }
 }
 
 @media (max-width: 1399px) {
-    #dashboard-sidebar .sidebar-link{
+    #dashboard-sidebar .sidebar-link {
         font-size: 14px;
     }
 }
 
-#dashboard-sidebar .sidebar-link:hover, #dashboard-sidebar .sidebar-link.active{
+#dashboard-sidebar .sidebar-link:hover,
+#dashboard-sidebar .sidebar-link.active {
     background-color: #e7fafb;
     border-radius: 10px;
     color: var(--it-teal);
 }
 
-#dashboard-sidebar .sidebar-icon{
+#dashboard-sidebar .sidebar-icon {
     padding-right: 25px;
 }
 
 /********************************* MAIN CONTENT **********************************/
 
-#dashboard-main-content{
+#dashboard-main-content {
     background-color: #f4f4f4;
     min-height: 100vh;
 }
 
 /* main content padding */
 @media (min-width: 1400px) {
-    #dashboard-main-content{
+    #dashboard-main-content {
         padding: 70px 150px;
     }
 }
 
 @media (max-width: 1399px) {
-    #dashboard-main-content{
+    #dashboard-main-content {
         padding: 70px 80px;
     }
 }
 
 @media (max-width: 767px) {
-    #dashboard-main-content{
+    #dashboard-main-content {
         padding: 70px 10px;
     }
 }
 
 /********************************* PROFILE PAGE **********************************/
 
-.table-container{
+.table-container {
     background-color: white;
     border-radius: 10px;
     padding: 0px 20px !important;
 }
 
-.profile-welcome{
-    font-family: 'Yeseva One', serif;
+.dashboard-header {
+    font-family: "Yeseva One", serif;
     font-size: 35px;
     color: var(--it-dark-grey);
     margin-bottom: 30px;
     margin-right: auto;
 }
 
-.profile-table{
-    font-family: 'Open Sans', sans-serif;
+.profile-table {
+    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     margin-bottom: 50px !important;
 }
 
-.profile-table tbody tr:last-child td{
+.profile-table tbody tr:last-child td {
     border-bottom: none;
     padding-bottom: 30px !important;
 }
 
-.profile-table .profile-table-title{
-    font-family: 'Yeseva One', serif;
+.profile-table .profile-table-title {
+    font-family: "Yeseva One", serif;
     color: var(--it-dark-grey);
     font-size: 18px;
     padding: 20px 10px !important;
 }
 
-.profile-table .profile-table-header{
+.profile-table .profile-table-header {
     color: var(--it-dark-grey);
     padding: 20px 10px !important;
 }
 
-.profile-table .profile-table-text{
+.profile-table .profile-table-text {
     color: var(--it-light-grey);
     padding: 20px 10px !important;
 }
 
 /********************************* MY TUTEES PAGE **********************************/
 
-.tutee-card{
+.tutee-card {
     background-color: white;
     border-radius: 10px;
     padding: 30px 50px !important;
     margin: 12px;
 }
 
-.tutee-card .tutee-name{
-    font-family: 'Yeseva One', serif;
+.tutee-card .tutee-name {
+    font-family: "Yeseva One", serif;
     font-size: 24px;
     color: var(--it-dark-grey);
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
-.tutee-card .tutee-information{
-    font-family: 'Open Sans', sans-serif;
+.tutee-card .tutee-information {
+    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     color: var(--it-light-grey);
     margin-top: 15px;
     margin-bottom: 30px;
 }
 
-.tutee-card .tutee-information div{
+.tutee-card .tutee-information div {
     margin-bottom: 10px !important;
 }
 
-.tutee-card .tutee-information div span{
+.tutee-card .tutee-information div span {
     color: var(--it-dark-grey);
     font-weight: 600;
 }
 
-.tutee-card .tutoring-history-button{
+.tutee-card .tutoring-history-button {
     background-color: var(--it-teal);
     border-color: transparent;
     color: white;
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     width: 100%;
 }
 
-.tutee-card .tutoring-history-button:hover, .tutee-card .tutoring-history-button:active{
+.tutee-card .tutoring-history-button:hover,
+.tutee-card .tutoring-history-button:active {
     background-color: #13989f !important;
     border-color: transparent !important;
 }
 
 /********************************* UPCOMING SESSIONS PAGE **********************************/
-.upcoming-session-card{
+.upcoming-session-card {
     background-color: white;
     border-radius: 10px;
     padding: 50px !important;
     margin: 12px;
 }
 
-.upcoming-session-card .session-date{
+.upcoming-session-card .session-date {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -591,8 +597,8 @@
 }
 
 /* mobile view */
-@media(max-width: 767px){
-    .upcoming-session-card .session-date{
+@media (max-width: 767px) {
+    .upcoming-session-card .session-date {
         align-items: start;
         border-bottom: 1px solid rgb(211, 211, 211);
         padding: 0 0 40px 0;
@@ -600,117 +606,279 @@
 }
 
 /* desktop view */
-@media(min-width: 768px){
-    .upcoming-session-card .session-date{
+@media (min-width: 768px) {
+    .upcoming-session-card .session-date {
         align-items: center;
         border-right: 1px solid rgb(211, 211, 211);
     }
 }
 
-.upcoming-session-card .session-date .session-month{
-    font-family: 'Open Sans', sans-serif;
+.upcoming-session-card .session-date .session-month {
+    font-family: "Open Sans", sans-serif;
     font-size: 18px;
     text-transform: uppercase;
     color: var(--it-light-grey);
     margin: 0;
 }
 
-.upcoming-session-card .session-date .session-day{
-    font-family: 'Yeseva One', serif;
+.upcoming-session-card .session-date .session-day {
+    font-family: "Yeseva One", serif;
     font-size: 65px;
     color: var(--it-dark-grey);
     margin: 0;
 }
 
-.upcoming-session-card .session-date .session-time{
-    font-family: 'Open Sans', sans-serif;
+.upcoming-session-card .session-date .session-time {
+    font-family: "Open Sans", sans-serif;
     font-size: 18px;
     text-transform: uppercase;
     color: var(--it-light-grey);
     margin: 0;
 }
 
-.upcoming-session-card .session-information{
+.upcoming-session-card .session-information {
     padding: 5px 40px;
 }
 
 /* mobile view */
-@media(max-width: 767px){
-    .upcoming-session-card .session-information{
+@media (max-width: 767px) {
+    .upcoming-session-card .session-information {
         padding: 40px 0 0 0;
     }
 }
 
 /* desktop view */
-@media(min-width: 768px){
-    .upcoming-session-card .session-information{
+@media (min-width: 768px) {
+    .upcoming-session-card .session-information {
     }
 }
 
-.upcoming-session-card .tutee-name{
-    font-family: 'Yeseva One', serif;
+.upcoming-session-card .tutee-name {
+    font-family: "Yeseva One", serif;
     font-size: 24px;
     color: var(--it-dark-grey);
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
-.upcoming-session-card .tutee-information{
-    font-family: 'Open Sans', sans-serif;
+.upcoming-session-card .tutee-information {
+    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     color: var(--it-light-grey);
     margin-top: 15px;
     margin-bottom: 30px;
 }
 
-.upcoming-session-card .tutee-information p{
+.upcoming-session-card .tutee-information p {
     margin-bottom: 12px !important;
 }
 
-.upcoming-session-card .tutee-information span, .upcoming-session-card .tutee-information div{
+.upcoming-session-card .tutee-information span,
+.upcoming-session-card .tutee-information div {
     color: var(--it-dark-grey);
     font-weight: 600;
 }
 
-.upcoming-session-card .join-meeting-button{
+.upcoming-session-card .join-meeting-button {
     background-color: var(--it-teal);
     border-color: transparent;
     color: white;
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     width: 100%;
 }
 
 /* mobile view */
-@media(max-width: 767px){
-    .upcoming-session-card .join-meeting-button{
+@media (max-width: 767px) {
+    .upcoming-session-card .join-meeting-button {
         margin-top: 20px;
     }
 }
 
 /* desktop view */
-@media(min-width: 768px){
-    .upcoming-session-card .join-meeting-button{
+@media (min-width: 768px) {
+    .upcoming-session-card .join-meeting-button {
         margin-top: 30px;
     }
 }
 
-.upcoming-session-card .join-meeting-button:hover, .upcoming-session-card .join-meeting-button:active{
+.upcoming-session-card .join-meeting-button:hover,
+.upcoming-session-card .join-meeting-button:active {
     background-color: #13989f !important;
     border-color: transparent !important;
 }
 
-.upcoming-session-card .lesson-plan-button, .upcoming-session-card .session-notes-button{
+.upcoming-session-card .lesson-plan-button,
+.upcoming-session-card .session-notes-button {
     background-color: white;
     border: 1px solid var(--it-dark-grey);
     color: var(--it-dark-grey);
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     width: 250px;
     margin-top: 5px;
 }
 
-.upcoming-session-card .lesson-plan-button:hover, .upcoming-session-card .lesson-plan-button:active, .upcoming-session-card .session-notes-button:hover, .upcoming-session-card .session-notes-button:active{
+.upcoming-session-card .lesson-plan-button:hover,
+.upcoming-session-card .lesson-plan-button:active,
+.upcoming-session-card .session-notes-button:hover,
+.upcoming-session-card .session-notes-button:active {
     background-color: rgb(214, 214, 214) !important;
     border-color: transparent !important;
+}
+
+/********************************* VOLUNTEER HOURS PAGE **********************************/
+.dashboard-form-container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 50px !important;
+}
+
+@media (min-width: 0px) {
+    .dashboard-form-container {
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media (min-width: 768px) {
+    .dashboard-form-container {
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media (min-width: 992px) {
+    .dashboard-form-container {
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* heading and description */
+.dashboard-form-container .form-heading {
+    font-family: "Yeseva One", serif;
+    font-size: 24px;
+    color: var(--it-dark-grey);
+}
+
+.dashboard-form-container .form-description {
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    color: var(--it-light-grey);
+    font-weight: 300;
+}
+
+.dashboard-form-container .form-link {
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    color: var(--it-light-grey);
+    font-weight: 300;
+    color: var(--it-teal);
+}
+
+/* text boxes */
+.dashboard-form-container .form-label {
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    color: var(--it-dark-grey);
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.dashboard-form-container .form-control::placeholder {
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    color: #b8b8b8;
+    font-weight: 300;
+}
+
+.dashboard-form-container .input-text {
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    color: var(--it-dark-grey);
+    font-weight: 400;
+}
+
+.dashboard-form-container .form-control:focus {
+    border-color: #dee2e6;
+    box-shadow: none;
+}
+
+/* radio buttons */
+.dashboard-form-container .form-check-label {
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    color: var(--it-dark-grey);
+    font-weight: 400;
+}
+
+.dashboard-form-container .form-check-input:focus {
+    background-color: var(--it-teal);
+    border-color: var(--it-teal);
+    box-shadow: 0 0 0 0.25rem rgba(25, 189, 199, 0.25);
+}
+
+.dashboard-form-container .form-check-input:checked {
+    background-color: var(--it-teal);
+    border-color: var(--it-teal);
+}
+
+/* submit button */
+.dashboard-form-container .form-submit-button {
+    background-color: var(--it-teal);
+    border-color: transparent;
+    color: white;
+    font-family: "Open Sans", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 20px;
+    margin-top: 15px;
+}
+
+.dashboard-form-container .invalid-login-message {
+    font-family: "Open Sans", sans-serif;
+    font-size: 13px;
+    color: rgb(202, 20, 20);
+}
+
+/* dropdown */
+.dashboard-form-container .form-select.dropdown-placeholder {
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    color: #b8b8b8;
+    font-weight: 300;
+}
+
+.dashboard-form-container .form-select.dropdown-option {
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    color: var(--it-dark-grey);
+    font-weight: 300;
+}
+
+/* multiselect */
+.dashboard-form-container .input-description {
+    font-family: "Open Sans", sans-serif;
+    font-size: 13px;
+    color: var(--it-light-grey);
+    font-weight: 300;
+    margin-bottom: 5px;
+}
+
+/* override default form focus styles */
+.dashboard-form-container .form-select:focus {
+    border-color: #dee2e6;
+    outline: none;
+    box-shadow: none;
+}
+
+/* file upload */
+.dashboard-form-container .file-upload-box {
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    color: var(--it-dark-grey);
 }

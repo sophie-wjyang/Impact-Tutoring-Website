@@ -17,6 +17,7 @@ import Logo from "../assets/logos/logo-full.png";
 import ProfilePage from "./ProfilePage";
 import UpcomingSessionsPage from "./UpcomingSessionsPage";
 import MyTuteesPage from "./MyTuteesPage";
+import VolunteerHoursPage from "./VolunteerHoursPage";
 import LogOutPage from "./LogOutPage";
 import Footer from "../components/Footer";
 
@@ -102,6 +103,7 @@ export default function DashboardSidebar() {
                     {activeKey === "/profile" && <ProfilePage />}
                     {activeKey === "/upcoming-sessions" && <UpcomingSessionsPage />}
                     {activeKey === "/my-tutees" && <MyTuteesPage />}
+                    {activeKey === "/volunteer-hours" && <VolunteerHoursPage/>}
                     {activeKey === "/log-out" && (
                         <LogOutPage
                             resetActiveKey={() => {

@@ -15,30 +15,21 @@ export default function MyTutees() {
 
     // get all relevant profile information on component render
     useEffect(() => {
-        axios.get("http://localhost:5000/get-tutees", { withCredentials: true })
-            .then((res) => {
-                setTutees(res.data);
-            });
+        axios.get("http://localhost:5000/get-tutees", { withCredentials: true }).then((res) => {
+            setTutees(res.data);
+        });
     }, []);
 
     return (
         <Container fluid>
             {/* heading */}
-            <h1 className="profile-welcome">My Tutees</h1>
+            <h1 className="dashboard-header">My Tutees</h1>
 
             {/* tutees */}
             <Row>
                 {tutees.map((tutee, index) => (
                     <Col key={index} xs={12} md={6}>
-                        <TuteeCard
-                            firstName={tutee[0]}
-                            lastName={tutee[1]}
-                            email={tutee[2]}
-                            grade={tutee[3]}
-                            languages={tutee[4]}
-                            availability={tutee[5]}
-                            subjects={tutee[6]}
-                        />
+                        <TuteeCard firstName={tutee[0]} lastName={tutee[1]} email={tutee[2]} grade={tutee[3]} languages={tutee[4]} availability={tutee[5]} subjects={tutee[6]} />
                     </Col>
                 ))}
             </Row>

@@ -23,7 +23,7 @@ export default function UpcomingSessions() {
     return (
         <Container fluid>
             {/* heading */}
-            <h1 className="profile-welcome">Upcoming Sessions</h1>
+            <h1 className="dashboard-header">Upcoming Sessions</h1>
 
             {/* upcoming sessions */}
             <Row>
@@ -42,15 +42,8 @@ export default function UpcomingSessions() {
                 ))} */}
 
                 <Col xs={12} md={12}>
-                    <UpcomingSessionCard
-                        firstName="Gloria"
-                        lastName="Li"
-                        subject="Grade 10 math"
-                        lessonPlan="lesson plan"
-                        sessionNotes="session notes"
-                    />
+                    <UpcomingSessionCard firstName="Gloria" lastName="Li" subject="Grade 10 math" lessonPlan="lesson plan" sessionNotes="session notes" />
                 </Col>
-                
             </Row>
         </Container>
     );

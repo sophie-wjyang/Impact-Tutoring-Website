@@ -45,7 +45,7 @@ export default function ProfilePage() {
             {/* profile picture */}
             <Container className="mb-5">
                 {/* profile heading */}
-                <h1 className="profile-welcome">Welcome, {firstName}</h1>
+                <h1 className="dashboard-header">Welcome, {firstName}</h1>
 
                 <Row>
                     <Col xs={6} md={4}>
