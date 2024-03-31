@@ -215,6 +215,22 @@ def saveTutorApplicationReportCard():
     
     return jsonify({'message': 'success'})
 
+
+############################################################################################################
+# 
+############################################################################################################
+@app.route('/log-out', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
+def logOut():
+    if 'email' not in session:
+        print("EMAIL NOT FOUND IN SESSION")
+        return jsonify({'message': 'error', 'details': 'Email not found in session'})
+
+    session.pop('email')
+    print("LOGGED OUT")
+    return jsonify({'message': 'success'})
+
+
 if __name__ == '__main__':
     app.secret_key = 'secret_key'
     app.run(debug=True)

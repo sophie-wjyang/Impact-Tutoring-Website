@@ -8,7 +8,7 @@ import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import TextBox from '../components/form/TextBox';
 
-export default function LogInPage() {
+export default function LogInPage(resetActiveKey) {    
     const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
@@ -38,7 +38,6 @@ export default function LogInPage() {
     }
 
     return (
-        
         <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
             <Container id="form-container">
                 <h2 className="form-heading">Log In</h2>

@@ -17,16 +17,20 @@ import Logo from "../assets/logos/logo-full.png";
 import ProfilePage from "./ProfilePage";
 import UpcomingSessionsPage from "./UpcomingSessionsPage";
 import MyTuteesPage from "./MyTuteesPage";
+import LogOutPage from "./LogOutPage";
 import Footer from "../components/Footer";
 
 // bootstrap
 import { Container, Row, Col, Nav, Navbar } from "react-bootstrap";
 
 export default function DashboardSidebar() {
-    const [activeKey, setActiveKey] = useState(() => {
-        const savedActiveKey = localStorage.getItem("activeKey");
-        return savedActiveKey ? savedActiveKey : "/profile";
-    });
+    const [activeKey, setActiveKey] = useState("/profile");
+
+    // const [activeKey, setActiveKey] = useState(() => {
+    //     const savedActiveKey = localStorage.getItem("activeKey");
+    //     console.log("initial active key: " + (savedActiveKey ? savedActiveKey : "/profile"))
+    //     return savedActiveKey ? savedActiveKey : "/profile";
+    // });
 
     const [flexDirection, setFlexDirection] = useState(window.innerWidth >= 1200);
 
@@ -36,10 +40,10 @@ export default function DashboardSidebar() {
             setFlexDirection(window.innerWidth >= 1200);
         };
 
-        window.addEventListener('resize', handleResize);
+        window.addEventListener("resize", handleResize);
 
         return () => {
-            window.removeEventListener('resize', handleResize);
+            window.removeEventListener("resize", handleResize);
         };
     }, []);
 
@@ -51,11 +55,11 @@ export default function DashboardSidebar() {
     };
 
     return (
-        <Container fluid className="p-0" style={{ height: '100vh' }}>
+        <Container fluid className="p-0" style={{ height: "100vh" }}>
             <Row>
                 {/* sidebar */}
                 <Col id="dashboard-sidebar" xl={3}>
-                    <Navbar className={`flex-${flexDirection ? "column" : "row"}`} expand="xl" activeKey={activeKey} onSelect={(selectedKey) => handleSelect(selectedKey)} collapseOnSelect>
+                    <Navbar className={`flex-${flexDirection ? "column" : "row"}`} expand="xl" collapseOnSelect>
                         <Navbar.Brand>
                             <img src={Logo} className="d-inline-block sidebar-logo" alt="Logo" />
                         </Navbar.Brand>
@@ -98,14 +102,20 @@ export default function DashboardSidebar() {
                     {activeKey === "/profile" && <ProfilePage />}
                     {activeKey === "/upcoming-sessions" && <UpcomingSessionsPage />}
                     {activeKey === "/my-tutees" && <MyTuteesPage />}
+                    {activeKey === "/log-out" && (
+                        <LogOutPage
+                            resetActiveKey={() => {
+                                setActiveKey("profile");
+                            }}
+                        />
+                    )}
                 </Col>
             </Row>
 
             {/* footer */}
             <Row>
-                <Footer/>
+                <Footer />
             </Row>
         </Container>
-
     );
 }

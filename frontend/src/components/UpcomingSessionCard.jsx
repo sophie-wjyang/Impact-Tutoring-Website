@@ -18,21 +18,21 @@ export default function UpcomingSessionCard(props) {
                     <h2 className="tutee-name">{firstName} {lastName}</h2>
 
                     <div className="tutee-information">
-                        <p>
+                        <div>
                             <span>Subject:</span> {subject}
-                        </p>
-                        <p>
+                        </div>
+                        <div>
                             <div>Lesson plan:</div> {}
                             <Button size="lg" className="lesson-plan-button">
                                 View/edit lesson plan
                             </Button>
-                        </p>
-                        <p>
+                        </div>
+                        <div>
                             <div>Session notes:</div> {}
                             <Button size="lg" className="session-notes-button">
                                 View/edit session notes
                             </Button>
-                        </p>
+                        </div>
                     </div>
                 </Col>
             </Row>

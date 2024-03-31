@@ -45,6 +45,7 @@ export default function TutorApplication() {
     }, [window.google]);
 
     function saveTutorApplicationData(event) {
+        // save data to database
         event.preventDefault();
 
         const data = {
@@ -55,37 +56,24 @@ export default function TutorApplication() {
             languages: languages,
             availability: availability,
             studentCapacity: studentCapacity,
-            previousExperience: previousExperience
-        }
+            previousExperience: previousExperience,
+        };
 
-        console.log(data);
+        axios.post("http://localhost:5000/save-tutor-application-data", data, { withCredentials: true });
 
-        axios.post("http://localhost:5000/save-tutor-application-data", data, { withCredentials: true })
-            .then(() => {
-                navigate("/login");
-            })
-    }
+        // save resume data to S3
+        const resumeData = new FormData();
+        resumeData.append("resume", resume);
 
-    function saveTutorApplicationResume() {
-        console.log("the file to be uploaded is: ", resume);
-        const data = new FormData();
-        data.append("resume", resume);
+        axios.post("http://localhost:5000/save-tutor-application-resume", resumeData, { withCredentials: true });
 
-        axios.post("http://localhost:5000/save-tutor-application-resume", data, { withCredentials: true }).then(() => {
-            console.log("posted to backend");
-            // navigate("/login");
-        });
-    }
+        // save report card data to S3
+        const reportCardData = new FormData();
+        reportCardData.append("report-card", reportCard);
 
-    function saveTutorApplicationReportCard() {
-        console.log("the file to be uploaded is: ", reportCard);
-        const data = new FormData();
-        data.append("report-card", reportCard);
+        axios.post("http://localhost:5000/save-tutor-application-report-card", reportCardData, { withCredentials: true });
 
-        axios.post("http://localhost:5000/save-tutor-application-report-card", data, { withCredentials: true }).then(() => {
-            console.log("posted to backend");
-            // navigate("/login");
-        });
+        navigate("/login");
     }
 
     return (
@@ -100,8 +88,6 @@ export default function TutorApplication() {
                 <Form
                     onSubmit={(e) => {
                         saveTutorApplicationData(e);
-                        saveTutorApplicationResume();
-                        saveTutorApplicationReportCard();
                     }}
                 >
                     {/* grade */}
@@ -200,7 +186,6 @@ export default function TutorApplication() {
                         label="Report card"
                         description="Please upload a copy of your most recent report card."
                         onChange={(e) => {
-                            console.log(e.target.files[0]);
                             setReportCard(e.target.files[0]);
                         }}
                     />
@@ -211,7 +196,6 @@ export default function TutorApplication() {
                         label="Resume"
                         description=""
                         onChange={(e) => {
-                            console.log(e.target.files[0]);
                             setResume(e.target.files[0]);
                         }}
                     />

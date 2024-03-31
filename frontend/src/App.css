@@ -551,11 +551,11 @@
     margin-bottom: 30px;
 }
 
-.tutee-card .tutee-information p{
+.tutee-card .tutee-information div{
     margin-bottom: 10px !important;
 }
 
-.tutee-card .tutee-information p span{
+.tutee-card .tutee-information div span{
     color: var(--it-dark-grey);
     font-weight: 600;
 }

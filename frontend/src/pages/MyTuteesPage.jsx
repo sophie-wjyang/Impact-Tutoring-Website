@@ -17,7 +17,6 @@ export default function MyTutees() {
     useEffect(() => {
         axios.get("http://localhost:5000/get-tutees", { withCredentials: true })
             .then((res) => {
-                console.log(res.data);
                 setTutees(res.data);
             });
     }, []);
@@ -30,7 +29,7 @@ export default function MyTutees() {
             {/* tutees */}
             <Row>
                 {tutees.map((tutee, index) => (
-                    <Col xs={12} md={6}>
+                    <Col key={index} xs={12} md={6}>
                         <TuteeCard
                             firstName={tutee[0]}
                             lastName={tutee[1]}
