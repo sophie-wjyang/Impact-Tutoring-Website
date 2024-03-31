@@ -33,12 +33,12 @@ export default function DashboardSidebar() {
     //     return savedActiveKey ? savedActiveKey : "/profile";
     // });
 
-    const [flexDirection, setFlexDirection] = useState(window.innerWidth >= 1200);
+    const [flexDirection, setFlexDirection] = useState(window.outerWidth >= 1200);
 
     // change flex direction based on window width
     useEffect(() => {
         const handleResize = () => {
-            setFlexDirection(window.innerWidth >= 1200);
+            setFlexDirection(window.outerWidth >= 1200);
         };
 
         window.addEventListener("resize", handleResize);
@@ -103,7 +103,7 @@ export default function DashboardSidebar() {
                     {activeKey === "/profile" && <ProfilePage />}
                     {activeKey === "/upcoming-sessions" && <UpcomingSessionsPage />}
                     {activeKey === "/my-tutees" && <MyTuteesPage />}
-                    {activeKey === "/volunteer-hours" && <VolunteerHoursPage/>}
+                    {activeKey === "/volunteer-hours" && <VolunteerHoursPage />}
                     {activeKey === "/log-out" && (
                         <LogOutPage
                             resetActiveKey={() => {

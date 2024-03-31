@@ -393,7 +393,6 @@
 
 #dashboard-sidebar {
     background-color: white;
-    min-height: 100vh;
 }
 
 /* sidebar width */
@@ -465,7 +464,6 @@
 
 #dashboard-main-content {
     background-color: #f4f4f4;
-    min-height: 100vh;
 }
 
 /* main content padding */
@@ -669,12 +667,12 @@
     margin-bottom: 30px;
 }
 
-.upcoming-session-card .tutee-information p {
+.upcoming-session-card .tutee-information > div {
     margin-bottom: 12px !important;
 }
 
-.upcoming-session-card .tutee-information span,
-.upcoming-session-card .tutee-information div {
+.upcoming-session-card .tutee-information div span,
+.upcoming-session-card .tutee-information div div {
     color: var(--it-dark-grey);
     font-weight: 600;
 }
@@ -833,10 +831,16 @@
     border-color: transparent;
     color: white;
     font-family: "Open Sans", sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     padding: 10px 20px;
     margin-top: 15px;
+}
+
+.dashboard-form-container .form-submit-button:hover,
+.dashboard-form-container .form-submit-button:active {
+    background-color: #13989f !important;
+    border-color: transparent !important;
 }
 
 .dashboard-form-container .invalid-login-message {
