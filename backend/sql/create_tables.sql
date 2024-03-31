@@ -1,30 +1,30 @@
 CREATE TABLE tutors (
-    id serial PRIMARY KEY,
-    first_name varchar(255) NOT NULL,
-    last_name varchar(255) NOT NULL,
-    email varchar(255) NOT NULL,
-    password varchar(255) NOT NULL,
-    grade integer,
-    gender varchar(255),
-    location varchar(255),
+    id SERIAL PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    grade INTEGER,
+    gender VARCHAR(255),
+    location VARCHAR(255),
     subjects TEXT[],
     languages TEXT[],
     availability TEXT[],
-    student_capacity integer,
+    student_capacity INTEGER,
     report_card BYTEA,
     resume BYTEA,
     previous_experience TEXT
 );
 
 CREATE TABLE tutees (
-    id serial PRIMARY KEY,
-    first_name varchar(255) NOT NULL,
-    last_name varchar(255) NOT NULL,
-    email varchar(255) NOT NULL,
-    password varchar(255) NOT NULL,
-    grade integer,
-    gender varchar(255),
-    location varchar(255),
+    id SERIAL PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    grade INTEGER,
+    gender VARCHAR(255),
+    location VARCHAR(255),
     subjects TEXT[],
     languages TEXT[],
     availability TEXT[],
@@ -32,8 +32,17 @@ CREATE TABLE tutees (
 );
 
 CREATE TABLE pairings (
-    id serial PRIMARY KEY,
-    tutor_id integer REFERENCES tutors(id),
-    tutee_id integer REFERENCES tutees(id),
+    id SERIAL PRIMARY KEY,
+    tutor_id INTEGER REFERENCES tutors(id),
+    tutee_id INTEGER REFERENCES tutees(id),
     subjects TEXT[]
+);
+
+CREATE TABLE volunteer_hours_requests (
+    id SERIAL PRIMARY KEY,
+    date_submitted DATE,
+    tutor_id INTEGER REFERENCES tutors(id),
+    num_hours INTEGER,
+    status VARCHAR(255),
+    description TEXT
 );

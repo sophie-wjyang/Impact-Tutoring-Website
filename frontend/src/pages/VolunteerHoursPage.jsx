@@ -24,22 +24,20 @@ export default function VolunteerHoursPage() {
 
     function saveVolunteerHoursData(event) {
         // save data to database
-        event.preventDefault();
-
         const data = {
+            dateSubmitted: new Date(),
             numHours: numHours,
+            status: "Pending",
             description: description,
         };
 
         axios.post("http://localhost:5000/save-volunteer-hours-data", data, { withCredentials: true });
 
-        // save resume data to S3
+        // save volunteer hours form data to S3
         const volunteerHoursFormData = new FormData();
-        volunteerHoursFormData.append("volunteerHoursForm", volunteerHoursForm);
+        volunteerHoursFormData.append("volunteer-hours-form", volunteerHoursForm);
 
         axios.post("http://localhost:5000/save-volunteer-hours-form", volunteerHoursFormData, { withCredentials: true });
-
-        // navigate("/login");
     }
 
     return (

@@ -4,6 +4,7 @@ from flask_cors import CORS, cross_origin
 import os 
 import psycopg2
 import boto3
+from datetime import date
 
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -138,7 +139,6 @@ def saveTutorApplicationData():
         return jsonify({'message': 'error', 'details': 'Email not found in session'})
     
     data = request.json
-    print(data)
 
     cur = conn.cursor()
 
@@ -172,12 +172,14 @@ def saveTutorApplicationResume():
 
     result = cur.fetchall()
 
+    cur.close()
+
     file = request.files['resume']
     first_name, last_name = result[0]
     file_name = f"{first_name}-{last_name}-Resume.pdf"
     
     # save file to S3
-    s3.upload_fileobj(file, os.environ['BUCKET_NAME'], file_name)
+    s3.upload_fileobj(file, os.environ['TUTOR_APPLICATION_BUCKET_NAME'], file_name)
 
     print("FILE UPLOADED TO S3")
     
@@ -203,13 +205,15 @@ def saveTutorApplicationReportCard():
                 WHERE email = %s ''', (session['email'],))
 
     result = cur.fetchall()
+    cur.close()
 
+    # get the file and the name of the tutor
     file = request.files['report-card']
     first_name, last_name = result[0]
     file_name = f"{first_name}-{last_name}-Report-Card.pdf"
     
     # save file to S3
-    s3.upload_fileobj(file, os.environ['BUCKET_NAME'], file_name)
+    s3.upload_fileobj(file, os.environ['TUTOR_APPLICATION_BUCKET_NAME'], file_name)
 
     print("FILE UPLOADED TO S3")
     
@@ -225,13 +229,11 @@ def saveVolunteerHoursData():
         return jsonify({'message': 'error', 'details': 'Email not found in session'})
     
     data = request.json
-    print(data)
 
     cur = conn.cursor()
 
-    cur.execute('''UPDATE tutors 
-                SET grade = %s, gender = %s, location = %s, subjects = %s, languages = %s, availability = %s, student_capacity = %s, previous_experience = %s
-                WHERE email = %s ''', (data['grade'], data['gender'], data['location'], data['subjects'], data['languages'], data['availability'], data['studentCapacity'], data['previousExperience'], session['email']))
+    cur.execute('''INSERT INTO volunteer_hours_requests (date_submitted, tutor_id, num_hours, status, description)
+                VALUES (%s, (SELECT id FROM tutors WHERE email = %s), %s, %s, %s)''', (data['dateSubmitted'], session['email'], data['numHours'], data['status'], data['description']))
 
     conn.commit()
     cur.close()
@@ -240,7 +242,7 @@ def saveVolunteerHoursData():
 
 
 ############################################################################################################
-# save tutor application report card
+# save volunteer hours request form
 ############################################################################################################
 @app.route('/save-volunteer-hours-form', methods=['POST'])
 @cross_origin(supports_credentials=True)
@@ -258,13 +260,16 @@ def saveVolunteerHoursForm():
                 WHERE email = %s ''', (session['email'],))
 
     result = cur.fetchall()
+    cur.close()
 
-    file = request.files['report-card']
+    # get the file, name of the tutor, and the current date
+    file = request.files['volunteer-hours-form']
     first_name, last_name = result[0]
-    file_name = f"{first_name}-{last_name}-Report-Card.pdf"
+    current_date = date.today()
+    file_name = f"{first_name}-{last_name}-{current_date}-Volunteer-Hours-Request.pdf"
     
     # save file to S3
-    s3.upload_fileobj(file, os.environ['BUCKET_NAME'], file_name)
+    s3.upload_fileobj(file, os.environ['VOLUNTEER_HOURS_BUCKET_NAME'], file_name)
 
     print("FILE UPLOADED TO S3")
     
