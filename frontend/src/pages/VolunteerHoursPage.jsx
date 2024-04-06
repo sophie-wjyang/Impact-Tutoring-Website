@@ -7,6 +7,7 @@ import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
+import Table from "react-bootstrap/Table";
 
 // components
 import TextBox from "../components/form/TextBox";
@@ -45,12 +46,9 @@ export default function VolunteerHoursPage() {
             {/* heading */}
             <h1 className="dashboard-header">Volunteer hours</h1>
 
+            {/* volunteer hours request form */}
             <Container className="dashboard-form-container">
                 <h2 className="form-heading">Request hours</h2>
-                <p className="mb-4 form-description">
-                    Thank you for making an account with us! Please fill out the following fields to apply to be a tutor with Impact Tutoring. If you have any questions, please contact us at
-                    impacttutoringca@gmail.com.
-                </p>
 
                 <Form
                     onSubmit={(e) => {
@@ -85,6 +83,38 @@ export default function VolunteerHoursPage() {
                         Submit application
                     </Button>
                 </Form>
+            </Container>
+
+            {/* volunteer hours history */}
+            <Container className="table-container">
+                <h3 className="past-hours-requests-title">Past hours requests</h3>
+
+                <Table className="past-hours-requests-table">
+                    <thead>
+                        <tr>
+                            <th className="past-hours-requests-header">
+                                <b>Date requested</b>
+                            </th>
+                            <th className="past-hours-requests-header">
+                                <b>Number of hours</b>
+                            </th>
+                            <th className="past-hours-requests-header">
+                                <b>Status</b>
+                            </th>
+                            <th className="past-hours-requests-header">
+                                <b>Download form</b>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td className="past-hours-requests-text">Sophie Yang</td>
+                            <td className="past-hours-requests-text">Sophie Yang</td>
+                            <td className="past-hours-requests-text">Sophie Yang</td>
+                            <td className="past-hours-requests-text">Sophie Yang</td>
+                        </tr>
+                    </tbody>
+                </Table>
             </Container>
         </Container>
     );

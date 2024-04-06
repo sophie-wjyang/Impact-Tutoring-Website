@@ -515,8 +515,8 @@
 .profile-table .profile-table-title {
     font-family: "Yeseva One", serif;
     color: var(--it-dark-grey);
-    font-size: 18px;
-    padding: 20px 10px !important;
+    font-size: 24px;
+    padding: 30px 10px !important;
 }
 
 .profile-table .profile-table-header {
@@ -730,6 +730,7 @@
     background-color: white;
     border-radius: 10px;
     padding: 50px !important;
+    margin-bottom: 50px !important;
 }
 
 @media (min-width: 0px) {
@@ -885,4 +886,39 @@
     font-family: "Open Sans", sans-serif;
     font-size: 14px;
     color: var(--it-dark-grey);
+}
+
+.table-container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 0px 20px !important;
+}
+
+.past-hours-requests-title {
+    font-family: "Yeseva One", serif;
+    color: var(--it-dark-grey);
+    font-size: 24px;
+    padding: 30px 10px 10px 10px !important;
+    margin-bottom: 0 !important;
+}
+
+.past-hours-requests-table {
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    margin-bottom: 50px !important;
+}
+
+.past-hours-requests-table tbody tr:last-child td {
+    border-bottom: none;
+    padding-bottom: 30px !important;
+}
+
+.past-hours-requests-table .past-hours-requests-header {
+    color: var(--it-dark-grey);
+    padding: 20px 10px !important;
+}
+
+.past-hours-requests-table .past-hours-requests-text {
+    color: var(--it-light-grey);
+    padding: 20px 10px !important;
 }
