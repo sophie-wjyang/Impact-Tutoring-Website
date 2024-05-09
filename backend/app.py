@@ -92,7 +92,7 @@ def getProfileInfo():
 
     cur.execute('''SELECT first_name, last_name, email, grade, gender, location, subjects, languages, availability, student_capacity
                 FROM tutors
-                WHERE email = %s ''', (session['email'],))
+                WHERE email = %s''', (session['email'],))
 
     result = cur.fetchall()
 
@@ -122,7 +122,7 @@ def getTutees():
     
     result = cur.fetchall()
 
-    print(result)
+    # print("TUTEES:", result)
 
     cur.close()
 
@@ -232,7 +232,7 @@ def saveVolunteerHoursData():
 
     cur = conn.cursor()
 
-    cur.execute('''INSERT INTO volunteer_hours_requests (date_submitted, tutor_id, num_hours, status, description)
+    cur.execute('''INSERT INTO volunteer_hours_requests (date_submitted, tutee_id, num_hours, status, description)
                 VALUES (%s, (SELECT id FROM tutors WHERE email = %s), %s, %s, %s)''', (data['dateSubmitted'], session['email'], data['numHours'], data['status'], data['description']))
 
     conn.commit()
@@ -259,6 +259,8 @@ def saveVolunteerHoursForm():
                 FROM tutors
                 WHERE email = %s ''', (session['email'],))
 
+    # CHANGE TO TUTEES LATER
+
     result = cur.fetchall()
     cur.close()
 
@@ -277,7 +279,42 @@ def saveVolunteerHoursForm():
 
 
 ############################################################################################################
-# 
+# get past volunteer requests
+############################################################################################################
+@app.route('/get-past-volunteer-hours-request-history', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def getPastVolunteerHoursRequestHistory():
+    if 'email' not in session:
+        return jsonify({'message': 'error', 'details': 'Email not found in session'})
+    
+    cur = conn.cursor()
+
+    cur.execute('''SELECT id
+                FROM tutors 
+                WHERE email = %s''', (session['email'],))
+    
+    # CHANGE TO TUTEES LATER
+
+    tutee_id = cur.fetchall()
+
+    cur.execute('''SELECT date_submitted, num_hours, status
+                FROM volunteer_hours_requests
+                WHERE tutee_id = %s''', (tutee_id[0],))
+    
+    result = cur.fetchall()
+    cur.close()
+
+    formatted_result = []
+    for row in result:
+        date_submitted = row[0].strftime("%Y-%m-%d")
+        formatted_result.append((date_submitted, row[1], row[2]))
+    
+    # print("VOLUNTEER HOURS REQUEST HISTORY:", result)
+    return jsonify(formatted_result)
+
+
+############################################################################################################
+# log out
 ############################################################################################################
 @app.route('/log-out', methods=['GET', 'POST'])
 @cross_origin(supports_credentials=True)

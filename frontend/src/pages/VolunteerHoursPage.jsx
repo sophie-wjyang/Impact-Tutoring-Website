@@ -22,6 +22,16 @@ export default function VolunteerHoursPage() {
     const [numHours, setNumHours] = useState("");
     const [description, setDescription] = useState("");
     const [volunteerHoursForm, setVolunteerHoursForm] = useState(null);
+    const [pastVolunteerRequests, setPastVolunteerRequests] = useState([]);
+
+    // get past volunteer hour requests
+    useEffect(() => {
+        axios.get("http://localhost:5000/get-past-volunteer-hours-request-history", { withCredentials: true }).then((res) => {
+            setPastVolunteerRequests(res.data);
+            console.log(pastVolunteerRequests)
+        });
+    
+    }, []);
 
     function saveVolunteerHoursData(event) {
         // save data to database
@@ -107,12 +117,14 @@ export default function VolunteerHoursPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td className="past-hours-requests-text">Sophie Yang</td>
-                            <td className="past-hours-requests-text">Sophie Yang</td>
-                            <td className="past-hours-requests-text">Sophie Yang</td>
-                            <td className="past-hours-requests-text">Sophie Yang</td>
-                        </tr>
+                            {pastVolunteerRequests.map((request, index) => (
+                            <tr key={index}>
+                                <td className="past-hours-requests-text">{request[0]}</td>
+                                <td className="past-hours-requests-text">{request[1]}</td>
+                                <td className="past-hours-requests-text">{request[2]}</td>
+                                <td className="past-hours-requests-text">{request[3]}</td>
+                            </tr>   
+                        ))}
                     </tbody>
                 </Table>
             </Container>
