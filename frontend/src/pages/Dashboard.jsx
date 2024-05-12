@@ -5,10 +5,10 @@ import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
+import { faChalkboardUser } from "@fortawesome/free-solid-svg-icons";
 import { faFileLines } from "@fortawesome/free-regular-svg-icons";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { faChalkboardUser } from "@fortawesome/free-solid-svg-icons";
 
 // assets
 import Logo from "../assets/logos/logo-full.png";
@@ -18,6 +18,7 @@ import ProfilePage from "./ProfilePage";
 import UpcomingSessionsPage from "./UpcomingSessionsPage";
 import MyTuteesPage from "./MyTuteesPage";
 import VolunteerHoursPage from "./VolunteerHoursPage";
+import Editor from "../components/Editor";
 import LogOutPage from "./LogOutPage";
 import Footer from "../components/Footer";
 
@@ -103,6 +104,7 @@ export default function DashboardSidebar() {
                     {activeKey === "/profile" && <ProfilePage />}
                     {activeKey === "/upcoming-sessions" && <UpcomingSessionsPage />}
                     {activeKey === "/my-tutees" && <MyTuteesPage />}
+                    {activeKey === "/resources" && <Editor />}
                     {activeKey === "/volunteer-hours" && <VolunteerHoursPage />}
                     {activeKey === "/log-out" && (
                         <LogOutPage

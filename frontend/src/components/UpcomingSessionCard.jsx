@@ -1,10 +1,15 @@
 import React from "react";
+import { useHistory } from 'react-router-dom';
 
 // bootstrap
 import { Container, Row, Col, Table, Image, Button } from "react-bootstrap";
 
 export default function UpcomingSessionCard(props) {
     const { firstName, lastName, subject, lessonPlan, sessionNotes } = props;
+
+    function openLessonPlan() {
+        
+    }
 
     return (
         <Container fluid className="upcoming-session-card">
@@ -23,7 +28,7 @@ export default function UpcomingSessionCard(props) {
                         </div>
                         <div>
                             <div>Lesson plan:</div> {}
-                            <Button size="lg" className="lesson-plan-button">
+                            <Button size="lg" className="lesson-plan-button" onClick={openLessonPlan}>
                                 View/edit lesson plan
                             </Button>
                         </div>

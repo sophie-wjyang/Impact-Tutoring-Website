@@ -28,7 +28,6 @@ export default function VolunteerHoursPage() {
     useEffect(() => {
         axios.get("http://localhost:5000/get-past-volunteer-hours-request-history", { withCredentials: true }).then((res) => {
             setPastVolunteerRequests(res.data);
-            console.log(pastVolunteerRequests)
         });
     
     }, []);

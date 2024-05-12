@@ -922,3 +922,76 @@
     color: var(--it-light-grey);
     padding: 20px 10px !important;
 }
+
+/********************************* EDITOR **********************************/
+.editor-heading{
+    font-family: "Yeseva One", serif;
+    font-size: 35px;
+    color: var(--it-dark-grey);
+    margin-bottom: 30px;
+}
+
+.editor-details{
+    margin-bottom: 20px;
+}
+
+.editor-date, .editor-tutee{
+    font-family: "Open Sans", sans-serif;
+    font-size: 16px;
+    color: var(--it-dark-grey);
+    margin-bottom: 5px;
+}
+
+.tiptap > * + * {
+    margin-top: 0.75em;
+}
+
+.tiptap ul,
+.tiptap ol {
+    padding: 0 1rem;
+}
+
+.tiptap h1,
+.tiptap h2,
+.tiptap h3,
+.tiptap h4,
+.tiptap h5,
+.tiptap h6 {
+    line-height: 1.1;
+}
+
+.tiptap code {
+    background-color: #d1d1d1;
+    color: #616161;
+}
+
+.tiptap pre {
+    background: #0d0d0d;
+    color: #fff;
+    font-family: "JetBrainsMono", monospace;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+}
+
+.tiptap pre code {
+    color: inherit;
+    padding: 0;
+    background: none;
+    font-size: 0.8rem;
+}
+
+.tiptap img {
+    max-width: 100%;
+    height: auto;
+}
+
+.tiptap blockquote {
+    padding-left: 1rem;
+    border-left: 2px solid #9c9c9c;
+}
+
+.tiptap hr {
+    border: none;
+    border-top: 2px solid #9c9c9c;
+    margin: 2rem 0;
+}
