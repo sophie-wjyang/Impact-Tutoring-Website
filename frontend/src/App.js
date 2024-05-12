@@ -8,6 +8,7 @@ import SignUpPage from "./pages/SignUpPage";
 import LogInPage from "./pages/LogInPage";
 import Dashboard from "./pages/Dashboard";
 import TutorApplication from "./pages/TutorApplication";
+import Tiptap from "./pages/Tiptap";
 
 // bootstrap
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -23,6 +24,7 @@ export default function App() {
 					<Route path="/login" element={<LogInPage />} />
 					<Route path="/dashboard" element={<Dashboard />} />
 					<Route path="/tutor-application" element={<TutorApplication />} />
+					<Route path="/tiptap" element={<Tiptap />} />
 				</Routes>
 			</BrowserRouter>
 		</div>
