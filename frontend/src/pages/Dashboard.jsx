@@ -1,5 +1,9 @@
+// react hooks
 import { useState } from "react";
 import { useEffect } from "react";
+
+// routing
+import { BrowserRouter, Routes, Route, Link, Switch, Redirect, useLocation, useNavigate } from "react-router-dom";
 
 // fontawesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -26,15 +30,16 @@ import Footer from "../components/Footer";
 import { Container, Row, Col, Nav, Navbar } from "react-bootstrap";
 
 export default function DashboardSidebar() {
-    const [activeKey, setActiveKey] = useState("/profile");
-
-    // const [activeKey, setActiveKey] = useState(() => {
-    //     const savedActiveKey = localStorage.getItem("activeKey");
-    //     console.log("initial active key: " + (savedActiveKey ? savedActiveKey : "/profile"))
-    //     return savedActiveKey ? savedActiveKey : "/profile";
-    // });
-
+    const location = useLocation();
+    const navigate = useNavigate();
+    
     const [flexDirection, setFlexDirection] = useState(window.outerWidth >= 1200);
+
+    // initial value of activeKey is the value saved in local storage, or "/profile" if there is no saved value
+    const [activeKey, setActiveKey] = useState(() => {
+        const savedActiveKey = localStorage.getItem("activeKey");
+        return savedActiveKey ? savedActiveKey : "/profile";
+    });
 
     // change flex direction based on window width
     useEffect(() => {
@@ -49,11 +54,12 @@ export default function DashboardSidebar() {
         };
     }, []);
 
-    // when we select a page in the sidebar, set the active key, and save it to local storage
+    // when we select a page in the sidebar, set the active key, save it to local storage, and add it to the browser history
     // this is so that when we refresh the page, the selected page is still the same
     const handleSelect = (selectedKey) => {
         setActiveKey(selectedKey);
         localStorage.setItem("activeKey", selectedKey);
+        navigate(`/dashboard/${selectedKey}`);
     };
 
     return (
@@ -69,28 +75,28 @@ export default function DashboardSidebar() {
                         <Navbar.Toggle aria-controls="sidebar-nav" />
 
                         <Navbar.Collapse className="w-100">
-                            <Nav className="flex-column sidebar-links w-100" activeKey={activeKey} onSelect={(selectedKey) => setActiveKey(selectedKey)}>
-                                <Nav.Link eventKey="/profile" className="sidebar-link">
+                            <Nav className="flex-column sidebar-links w-100" activeKey={activeKey} onSelect={(selectedKey) => handleSelect(selectedKey)}>
+                                <Nav.Link eventKey="profile" className="sidebar-link">
                                     <FontAwesomeIcon icon={faUser} className="sidebar-icon" />
                                     Profile
                                 </Nav.Link>
-                                <Nav.Link eventKey="/upcoming-sessions" className="sidebar-link">
+                                <Nav.Link eventKey="upcoming-sessions" className="sidebar-link">
                                     <FontAwesomeIcon icon={faCalendarDays} className="sidebar-icon" />
                                     Upcoming sessions
                                 </Nav.Link>
-                                <Nav.Link eventKey="/my-tutees" className="sidebar-link">
+                                <Nav.Link eventKey="my-tutees" className="sidebar-link">
                                     <FontAwesomeIcon icon={faChalkboardUser} className="sidebar-icon" />
                                     My tutees
                                 </Nav.Link>
-                                <Nav.Link eventKey="/resources" className="sidebar-link">
+                                <Nav.Link eventKey="resources" className="sidebar-link">
                                     <FontAwesomeIcon icon={faFileLines} className="sidebar-icon" />
                                     Resources
                                 </Nav.Link>
-                                <Nav.Link eventKey="/volunteer-hours" className="sidebar-link">
+                                <Nav.Link eventKey="volunteer-hours" className="sidebar-link">
                                     <FontAwesomeIcon icon={faClock} className="sidebar-icon" />
                                     Volunteer hours
                                 </Nav.Link>
-                                <Nav.Link eventKey="/log-out" className="sidebar-link">
+                                <Nav.Link eventKey="log-out" className="sidebar-link">
                                     <FontAwesomeIcon icon={faArrowRightFromBracket} className="sidebar-icon" />
                                     Log out
                                 </Nav.Link>
@@ -101,7 +107,7 @@ export default function DashboardSidebar() {
 
                 {/* main content */}
                 <Col id="dashboard-main-content" xl={9}>
-                    {activeKey === "/profile" && <ProfilePage />}
+                    {/* {activeKey === "/profile" && <ProfilePage />}
                     {activeKey === "/upcoming-sessions" && <UpcomingSessionsPage />}
                     {activeKey === "/my-tutees" && <MyTuteesPage />}
                     {activeKey === "/resources" && <Editor />}
@@ -109,10 +115,19 @@ export default function DashboardSidebar() {
                     {activeKey === "/log-out" && (
                         <LogOutPage
                             resetActiveKey={() => {
-                                setActiveKey("profile");
+                                handleSelect("profile");
                             }}
                         />
-                    )}
+                    )} */}
+                    <Routes>
+                        <Route path="/profile" element={<ProfilePage />} />
+                        <Route path="/upcoming-sessions" element={<UpcomingSessionsPage />} />
+                        <Route path="/my-tutees" element={<MyTuteesPage />} />
+                        <Route path="/resources" element={<Editor />} />
+                        <Route path="/volunteer-hours" element={<VolunteerHoursPage />} />
+                        <Route path="/log-out" element={<LogOutPage resetActiveKey={() => setActiveKey("/profile")} />} />
+                        {/* <Route path="/" element={<Navigate to="/dashboard/profile" />} /> */}
+                    </Routes>
                 </Col>
             </Row>
 

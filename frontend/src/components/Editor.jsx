@@ -23,9 +23,8 @@ const MenuBar = () => {
 
     if (!editor) {
         return null;
-    }
-    else{
-        console.log("NOT NULL")
+    } else {
+        console.log("NOT NULL");
     }
 
     return (
@@ -37,17 +36,29 @@ const MenuBar = () => {
                 </button>
 
                 {/* italic */}
-                <button onClick={() => editor.chain().focus().toggleItalic().run()} disabled={!editor.can().chain().focus().toggleItalic().run()} className={editor.isActive("italic") ? "is-active" : ""}>
+                <button
+                    onClick={() => editor.chain().focus().toggleItalic().run()}
+                    disabled={!editor.can().chain().focus().toggleItalic().run()}
+                    className={editor.isActive("italic") ? "is-active" : ""}
+                >
                     <FontAwesomeIcon icon={faItalic} />
                 </button>
 
                 {/* underline */}
-                <button onClick={() => editor.chain().focus().toggleUnderline().run()} disabled={!editor.can().chain().focus().toggleUnderline().run()} className={editor.isActive("underline") ? "is-active" : ""}>
+                <button
+                    onClick={() => editor.chain().focus().toggleUnderline().run()}
+                    disabled={!editor.can().chain().focus().toggleUnderline().run()}
+                    className={editor.isActive("underline") ? "is-active" : ""}
+                >
                     <FontAwesomeIcon icon={faUnderline} />
                 </button>
 
                 {/* strikethrough */}
-                <button onClick={() => editor.chain().focus().toggleStrike().run()} disabled={!editor.can().chain().focus().toggleStrike().run()} className={editor.isActive("strike") ? "is-active" : ""}>
+                <button
+                    onClick={() => editor.chain().focus().toggleStrike().run()}
+                    disabled={!editor.can().chain().focus().toggleStrike().run()}
+                    className={editor.isActive("strike") ? "is-active" : ""}
+                >
                     <FontAwesomeIcon icon={faStrikethrough} />
                 </button>
 
@@ -68,7 +79,7 @@ const MenuBar = () => {
                 <button onClick={() => editor.chain().focus().setParagraph().run()} className={editor.isActive("paragraph") ? "is-active" : ""}>
                     text
                 </button>
-            
+
                 {/* bullet list */}
                 <button onClick={() => editor.chain().focus().toggleBulletList().run()} className={editor.isActive("bulletList") ? "is-active" : ""}>
                     <FontAwesomeIcon icon={faListUl} />
@@ -79,7 +90,7 @@ const MenuBar = () => {
                     <FontAwesomeIcon icon={faListOl} />
                 </button>
             </div>
-            
+
             <div>
                 {/* undo */}
                 <button onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().chain().focus().undo().run()}>
@@ -107,7 +118,7 @@ const extensions = [
             keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
         },
     }),
-    Underline
+    Underline,
 ];
 
 const content = ``;
@@ -120,24 +131,32 @@ export default function Editor() {
     //     return null;
     // }
 
-    function saveEditorContent(){
+    function saveEditorContent() {
         // console.log(editor.getHTML());
     }
-    
-    return <>
-        {/* title */}
-        <h1 className="editor-heading">Lesson plan</h1>
-        <div className="editor-details">
-            <p className="editor-date"><b>Date:</b> January 23, 2024</p>
-            <p className="editor-tutee"><b>Tutee:</b> Gloria Li</p>
-        </div>
 
-        {/* editor */}
-        <div className="editor">
-            <EditorProvider slotBefore={<MenuBar />} extensions={extensions} content={content}></EditorProvider>
-        </div>
+    return (
+        <>
+            {/* title */}
+            <h1 className="editor-heading">Lesson plan</h1>
+            <div className="editor-details">
+                <p className="editor-date">
+                    <b>Date:</b> January 23, 2024
+                </p>
+                <p className="editor-tutee">
+                    <b>Tutee:</b> Gloria Li
+                </p>
+            </div>
 
-        {/* save button */}
-        <Button className="editor-save-button" onClick={saveEditorContent}>Save</Button>
-    </>
-};
+            {/* editor */}
+            <div className="editor">
+                <EditorProvider slotBefore={<MenuBar />} extensions={extensions} content={content}></EditorProvider>
+            </div>
+
+            {/* save button */}
+            <Button className="editor-save-button" onClick={saveEditorContent}>
+                Save
+            </Button>
+        </>
+    );
+}
