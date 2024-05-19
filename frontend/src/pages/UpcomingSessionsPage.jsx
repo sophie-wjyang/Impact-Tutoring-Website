@@ -7,7 +7,8 @@ import axios from "axios";
 import UpcomingSessionCard from "../components/UpcomingSessionCard";
 
 // bootstrap
-import { Container, Row, Col, Table, Image } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
+import { Outlet } from "react-router-dom";
 
 export default function UpcomingSessions() {
     const [upcomingSessions, setUpcomingSessions] = useState([]);

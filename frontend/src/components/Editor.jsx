@@ -107,6 +107,7 @@ const MenuBar = () => {
 };
 
 const extensions = [
+    // @ts-ignore
     TextStyle.configure({ types: [ListItem.name] }),
     StarterKit.configure({
         bulletList: {
@@ -123,7 +124,9 @@ const extensions = [
 
 const content = ``;
 
-export default function Editor() {
+export default function Editor(props) {
+    const { title, date, tutee } = props;
+
     function saveEditorContent() {
         // console.log(editor.getHTML());
     }
@@ -131,7 +134,7 @@ export default function Editor() {
     return (
         <>
             {/* title */}
-            <h1 className="editor-heading">Lesson plan</h1>
+            <h1 className="editor-heading">{title}</h1>
             <div className="editor-details">
                 <p className="editor-date">
                     <b>Date:</b> January 23, 2024
@@ -149,6 +152,11 @@ export default function Editor() {
             {/* save button */}
             <Button className="editor-save-button" onClick={saveEditorContent}>
                 Save
+            </Button>
+
+            {/* return button */}
+            <Button className="editor-return-button" onClick={saveEditorContent}>
+                Return
             </Button>
         </>
     );

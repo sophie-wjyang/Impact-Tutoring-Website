@@ -2,12 +2,18 @@ import React from "react";
 
 // bootstrap
 import { Container, Row, Col, Table, Image, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 export default function UpcomingSessionCard(props) {
     const { firstName, lastName, subject, lessonPlan, sessionNotes } = props;
+    const navigate = useNavigate();
 
     function openLessonPlan() {
-        
+        navigate("lesson-plan");
+    }
+
+    function openSessionNotes() {
+        navigate("session-notes");
     }
 
     return (
@@ -33,7 +39,7 @@ export default function UpcomingSessionCard(props) {
                         </div>
                         <div>
                             <div>Session notes:</div> {}
-                            <Button size="lg" className="session-notes-button">
+                            <Button size="lg" className="session-notes-button" onClick={openSessionNotes}>
                                 View/edit session notes
                             </Button>
                         </div>

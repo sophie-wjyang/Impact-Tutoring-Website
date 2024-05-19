@@ -26,19 +26,28 @@ export default function App() {
 				<Routes>
                     {/* top level routes */}
 					<Route index element={<HomePage />} />
-					<Route path="/signup" element={<SignUpPage />} />
-					<Route path="/login" element={<LogInPage />} />
-					<Route path="/dashboard/" element={<Dashboard />}>
-						{/* dashboard routes */}
+					<Route path="signup" element={<SignUpPage />} />
+					<Route path="login" element={<LogInPage />} />
+					<Route path="tutor-application" element={<TutorApplication />} />
+
+                    {/* dashboard routes */}
+					<Route path="dashboard" element={<Dashboard />}>
 						<Route index element={<Navigate to="profile" />} />
 						<Route path="profile" element={<ProfilePage />} />
-						<Route path="upcoming-sessions" element={<UpcomingSessionsPage />} />
+
+                        {/* upcoming sessions routes */}
+						<Route path="upcoming-sessions">
+					        <Route index element={<UpcomingSessionsPage />} />
+						    <Route path="lesson-plan" element={<Editor title="Lesson Plan"/>} />
+						    <Route path="session-notes" element={<Editor title="Session Notes" />} />
+                        </Route>
+
 						<Route path="my-tutees" element={<MyTuteesPage />} />
-						<Route path="resources/" element={<Editor />} />
+						<Route path="resources" />
 						<Route path="volunteer-hours" element={<VolunteerHoursPage />} />
                         <Route path="log-out" element={<LogOutPage />} />
 					</Route>
-					<Route path="/tutor-application" element={<TutorApplication />} />
+
 				</Routes>
 			</BrowserRouter>
 		</div>

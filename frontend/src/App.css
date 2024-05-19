@@ -719,8 +719,8 @@
 .upcoming-session-card .lesson-plan-button,
 .upcoming-session-card .session-notes-button {
     background-color: white;
-    border: 1px solid var(--it-dark-grey);
-    color: var(--it-dark-grey);
+    border: 1px solid var(--it-teal);
+    color: var(--it-teal);
     font-family: "Open Sans", sans-serif;
     font-size: 14px;
     width: 250px;
@@ -731,7 +731,8 @@
 .upcoming-session-card .lesson-plan-button:active,
 .upcoming-session-card .session-notes-button:hover,
 .upcoming-session-card .session-notes-button:active {
-    background-color: rgb(214, 214, 214) !important;
+    background-color: var(--it-teal) !important;
+    color: white;
     border-color: transparent !important;
 }
 
@@ -1015,14 +1016,34 @@
 .editor-save-button {
     background-color: var(--it-teal) !important;
     border-color: transparent !important;
+    color: white;
     font-family: "Open Sans", sans-serif !important;
     font-size: 14px !important;
     margin-top: 20px;
+    margin-right: 10px;
     width: 100px;
 }
 
 .editor-save-button:hover,
 .editor-save-button:active {
     background-color: #13989f !important;
+    border-color: transparent !important;
+}
+
+/* return button */
+.editor-return-button {
+    background-color: transparent !important;
+    border-color: var(--it-teal) !important;
+    color: var(--it-teal) !important;
+    font-family: "Open Sans", sans-serif !important;
+    font-size: 14px !important;
+    margin-top: 20px;
+    width: 100px;
+}
+
+.editor-return-button:hover,
+.editor-return-button:active {
+    background-color: var(--it-teal) !important;
+    color: white !important;
     border-color: transparent !important;
 }
