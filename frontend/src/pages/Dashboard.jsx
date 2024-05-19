@@ -1,9 +1,10 @@
 // react hooks
+import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 
 // routing
-import { BrowserRouter, Routes, Route, Link, Switch, Redirect, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 // fontawesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,28 +19,19 @@ import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../assets/logos/logo-full.png";
 
 // pages
-import ProfilePage from "./ProfilePage";
-import UpcomingSessionsPage from "./UpcomingSessionsPage";
-import MyTuteesPage from "./MyTuteesPage";
-import VolunteerHoursPage from "./VolunteerHoursPage";
-import Editor from "../components/Editor";
-import LogOutPage from "./LogOutPage";
 import Footer from "../components/Footer";
 
 // bootstrap
 import { Container, Row, Col, Nav, Navbar } from "react-bootstrap";
 
 export default function DashboardSidebar() {
-    const location = useLocation();
     const navigate = useNavigate();
-    
-    const [flexDirection, setFlexDirection] = useState(window.outerWidth >= 1200);
+    const { pathname } = useLocation();
 
-    // initial value of activeKey is the value saved in local storage, or "/profile" if there is no saved value
-    const [activeKey, setActiveKey] = useState(() => {
-        const savedActiveKey = localStorage.getItem("activeKey");
-        return savedActiveKey ? savedActiveKey : "/profile";
-    });
+    // sets the active key to the first item in the array that is found in the path name
+    const activeKey = ["profile", "upcoming-sessions", "my-tutees", "resources", "volunteer-hours"].find((key) => pathname.includes(key)) || "profile";
+
+    const [flexDirection, setFlexDirection] = useState(window.outerWidth >= 1200);
 
     // change flex direction based on window width
     useEffect(() => {
@@ -57,14 +49,12 @@ export default function DashboardSidebar() {
     // when we select a page in the sidebar, set the active key, save it to local storage, and add it to the browser history
     // this is so that when we refresh the page, the selected page is still the same
     const handleSelect = (selectedKey) => {
-        setActiveKey(selectedKey);
-        localStorage.setItem("activeKey", selectedKey);
-        navigate(`/dashboard/${selectedKey}`);
+        navigate(selectedKey);
     };
 
     return (
-        <Container fluid className="p-0" style={{ height: "100vh" }}>
-            <Row>
+        <Container fluid className="p-0 dashboard-container">
+            <Row className="dashboard-content">
                 {/* sidebar */}
                 <Col id="dashboard-sidebar" xl={3}>
                     <Navbar className={`flex-${flexDirection ? "column" : "row"}`} expand="xl" collapseOnSelect>
@@ -107,27 +97,7 @@ export default function DashboardSidebar() {
 
                 {/* main content */}
                 <Col id="dashboard-main-content" xl={9}>
-                    {/* {activeKey === "/profile" && <ProfilePage />}
-                    {activeKey === "/upcoming-sessions" && <UpcomingSessionsPage />}
-                    {activeKey === "/my-tutees" && <MyTuteesPage />}
-                    {activeKey === "/resources" && <Editor />}
-                    {activeKey === "/volunteer-hours" && <VolunteerHoursPage />}
-                    {activeKey === "/log-out" && (
-                        <LogOutPage
-                            resetActiveKey={() => {
-                                handleSelect("profile");
-                            }}
-                        />
-                    )} */}
-                    <Routes>
-                        <Route path="/profile" element={<ProfilePage />} />
-                        <Route path="/upcoming-sessions" element={<UpcomingSessionsPage />} />
-                        <Route path="/my-tutees" element={<MyTuteesPage />} />
-                        <Route path="/resources" element={<Editor />} />
-                        <Route path="/volunteer-hours" element={<VolunteerHoursPage />} />
-                        <Route path="/log-out" element={<LogOutPage resetActiveKey={() => setActiveKey("/profile")} />} />
-                        {/* <Route path="/" element={<Navigate to="/dashboard/profile" />} /> */}
-                    </Routes>
+                    <Outlet />
                 </Col>
             </Row>
 

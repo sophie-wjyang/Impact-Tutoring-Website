@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
@@ -26,6 +27,14 @@ export default function ProfilePage() {
         axios.get("http://localhost:5000/get-profile-info", { withCredentials: true }).then((res) => {
             // return the first profile in the list of tuples
             const profileInfo = res.data[0];
+
+            /*
+            {
+                "firstName": "firstName",
+                "lastName": "lastName",
+                "email": "...
+            }
+            */
 
             setFirstName(profileInfo[0]);
             setLastName(profileInfo[1]);

@@ -124,13 +124,6 @@ const extensions = [
 const content = ``;
 
 export default function Editor() {
-    // const { editor } = useCurrentEditor();
-
-    // if (!editor) {
-    //     console.log("NULL")
-    //     return null;
-    // }
-
     function saveEditorContent() {
         // console.log(editor.getHTML());
     }
@@ -150,7 +143,7 @@ export default function Editor() {
 
             {/* editor */}
             <div className="editor">
-                <EditorProvider slotBefore={<MenuBar />} extensions={extensions} content={content}></EditorProvider>
+                <EditorProvider slotBefore={<MenuBar />} extensions={extensions} content={content} children={undefined}></EditorProvider>
             </div>
 
             {/* save button */}

@@ -391,6 +391,16 @@
 
 /********************************* DASHBOARD SIDEBAR **********************************/
 
+.dashboard-container{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-content{
+    flex-grow: 1;
+}
+
 #dashboard-sidebar {
     background-color: white;
 }

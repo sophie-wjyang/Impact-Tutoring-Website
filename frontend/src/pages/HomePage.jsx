@@ -15,6 +15,7 @@ import Image from 'react-bootstrap/Image';
 import Row from 'react-bootstrap/Row';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import Footer from '../components/Footer';
 
 export default function LandingPage() {
     return (
@@ -185,6 +186,9 @@ export default function LandingPage() {
                     </Col>
                 </Row>
             </Container>
+
+            {/* FOOTER */}
+            <Footer />
         </>
     )
 }
