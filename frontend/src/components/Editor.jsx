@@ -156,7 +156,7 @@ export default function Editor(props) {
 
             {/* return button */}
             <Button className="editor-return-button" onClick={saveEditorContent}>
-                Return
+                Back
             </Button>
         </>
     );

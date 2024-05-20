@@ -5,7 +5,7 @@ import { Container, Row, Col, Table, Image, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 export default function UpcomingSessionCard(props) {
-    const { firstName, lastName, subject, lessonPlan, sessionNotes } = props;
+    const { firstName, lastName, subject, month, day, year, startTime, endTime, lessonPlan, sessionNotes, meetingLink } = props;
     const navigate = useNavigate();
 
     function openLessonPlan() {
@@ -20,8 +20,8 @@ export default function UpcomingSessionCard(props) {
         <Container fluid className="upcoming-session-card">
             <Row>
                 <Col md={4} className="session-date">
-                    <p className="session-month">January</p>
-                    <p className="session-day">23</p>
+                    <p className="session-month">{month}</p>
+                    <p className="session-day">{day}</p>
                     <p className="session-time">8:00-9:00PM</p>
                 </Col>
                 <Col md={8} className="session-information">

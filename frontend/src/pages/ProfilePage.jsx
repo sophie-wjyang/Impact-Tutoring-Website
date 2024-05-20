@@ -28,14 +28,6 @@ export default function ProfilePage() {
             // return the first profile in the list of tuples
             const profileInfo = res.data[0];
 
-            /*
-            {
-                "firstName": "firstName",
-                "lastName": "lastName",
-                "email": "...
-            }
-            */
-
             setFirstName(profileInfo[0]);
             setLastName(profileInfo[1]);
             setEmail(profileInfo[2]);

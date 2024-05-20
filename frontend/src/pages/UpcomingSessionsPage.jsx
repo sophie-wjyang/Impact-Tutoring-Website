@@ -8,19 +8,18 @@ import UpcomingSessionCard from "../components/UpcomingSessionCard";
 
 // bootstrap
 import { Container, Row, Col } from "react-bootstrap";
-import { Outlet } from "react-router-dom";
 
 export default function UpcomingSessions() {
     const [upcomingSessions, setUpcomingSessions] = useState([]);
 
     // get all relevant profile information on component render
-    // useEffect(() => {
-    //     axios.get("http://localhost:5000/get-tutees", { withCredentials: true })
-    //         .then((res) => {
-    //             console.log(res.data);
-    //             setTutees(res.data);
-    //         });
-    // }, []);
+    useEffect(() => {
+        axios.get("http://localhost:5000/get-upcoming-sessions", { withCredentials: true })
+            .then((res) => {
+                // upcoming sessions goes from list of dictionaries -> array of objects
+                setUpcomingSessions(res.data);
+            });
+    }, []);
 
     return (
         <Container fluid>
@@ -29,23 +28,23 @@ export default function UpcomingSessions() {
 
             {/* upcoming sessions */}
             <Row>
-                {/* {upcomingSessions.map((upcomingSession, index) => (
-                    <Col xs={12} md={6}>
+                {upcomingSessions.map((upcomingSession, index) => (
+                    <Col xs={12} md={12}>
                         <UpcomingSessionCard
-                            firstName={upcomingSession[0]}
-                            lastName={upcomingSession[1]}
-                            email={upcomingSession[2]}
-                            grade={upcomingSession[3]}
-                            languages={upcomingSession[4]}
-                            availability={upcomingSession[5]}
-                            subjects={upcomingSession[6]}
+                            firstName={upcomingSession["tuteeFirstName"]}
+                            lastName={upcomingSession["tuteeLastName"]}
+                            subject={upcomingSession["subject"]}
+                            month={upcomingSession["month"]}
+                            day={upcomingSession["day"]}
+                            year={upcomingSession["year"]}
+                            startTime={upcomingSession["startTime"]}
+                            endTime={upcomingSession["endTime"]}
+                            lessonPlan={upcomingSession["lessonPlan"]}
+                            sessionNotes={upcomingSession["sessionNotes"]}
+                            meetingLink={upcomingSession["meetingLink"]}
                         />
                     </Col>
-                ))} */}
-
-                <Col xs={12} md={12}>
-                    <UpcomingSessionCard firstName="Gloria" lastName="Li" subject="Grade 10 math" lessonPlan="lesson plan" sessionNotes="session notes" />
-                </Col>
+                ))}
             </Row>
         </Container>
     );

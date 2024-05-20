@@ -11,8 +11,6 @@ CREATE TABLE tutors (
     languages TEXT[],
     availability TEXT[],
     student_capacity INTEGER,
-    report_card BYTEA,
-    resume BYTEA,
     previous_experience TEXT
 );
 
@@ -35,7 +33,8 @@ CREATE TABLE pairings (
     id SERIAL PRIMARY KEY,
     tutor_id INTEGER REFERENCES tutors(id),
     tutee_id INTEGER REFERENCES tutees(id),
-    subjects TEXT[]
+    subjects TEXT[],
+    meeting_days TEXT[]
 );
 
 CREATE TABLE volunteer_hours_requests (
@@ -46,3 +45,18 @@ CREATE TABLE volunteer_hours_requests (
     status VARCHAR(255),
     description TEXT
 );
+
+CREATE TABLE sessions (
+    id SERIAL PRIMARY KEY,
+    pairing_id INTEGER REFERENCES pairings(id),
+    date DATE,
+    start_time TIME,
+    end_time TIME,
+    lesson_plan TEXT,
+    session_notes TEXT,
+    meeting_link TEXT
+);
+
+
+ALTER TABLE pairings
+ALTER COLUMN subjects SET DATA TYPE VARCHAR(255);

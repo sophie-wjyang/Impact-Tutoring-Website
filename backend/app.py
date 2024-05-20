@@ -104,6 +104,79 @@ def getProfileInfo():
 
 
 ############################################################################################################
+# get the tutor's upcoming sessions
+############################################################################################################
+@app.route('/get-upcoming-sessions', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def getUpcomingSessions():
+    if 'email' not in session:
+        return jsonify({'message': 'error', 'details': 'Email not found in session'})
+    
+    cur = conn.cursor()
+
+    # get tutor id
+    cur.execute('''SELECT id
+                FROM tutors
+                WHERE email = %s''', (session['email'],))
+    
+    tutor_id = cur.fetchall()[0][0]
+
+    # get all pairing ids associated with the tutor
+    cur.execute('''SELECT id
+                FROM pairings
+                WHERE tutor_id = %s''', (tutor_id,))
+    
+    pairing_ids = cur.fetchall()
+
+    for i in range(len(pairing_ids)):
+        pairing_ids[i] = pairing_ids[i][0]
+        
+    # get all sessions associated with the pairing ids within the next 2 weeks
+    cur.execute('''SELECT id
+                FROM sessions
+                WHERE pairing_id = ANY(%s) AND date >= CURRENT_DATE AND date <= CURRENT_DATE + INTERVAL '14 days' ''', (pairing_ids,))
+
+    session_ids = cur.fetchall()
+
+    for i in range(len(session_ids)):
+        session_ids[i] = session_ids[i][0]
+
+    # get the upcoming session card data
+    cur.execute('''SELECT tutees.first_name, tutees.last_name, pairings.subject, sessions.date, sessions.start_time, sessions.end_time, sessions.lesson_plan, sessions.session_notes, sessions.meeting_link
+                FROM tutees
+                JOIN pairings
+                ON tutees.id = pairings.tutee_id
+                JOIN sessions
+                ON pairings.id = sessions.pairing_id
+                WHERE sessions.id = ANY(%s)''', (session_ids,))
+
+    upcoming_sessions = cur.fetchall()
+
+    # convert into a list of dictionaries
+    result = []
+    for row in upcoming_sessions:
+        upcoming_session = {
+            'tuteeFirstName': row[0],
+            'tuteeLastName': row[1],
+            'subject': row[2],
+            'month': row[3].strftime("%B"),
+            'day': row[3].strftime("%d"),
+            'year': row[3].strftime("%Y"),
+            'startTime': row[4].strftime("%I:%M %p"),
+            'endTime': row[5].strftime("%I:%M %p"),
+            'lessonPlan': row[6],
+            'sessionNotes': row[7],
+            'meetingLink': row[8]
+        }
+
+        result.append(upcoming_session)
+    
+    cur.close()
+
+    return result
+
+
+############################################################################################################
 # get all tutees and subjects paired with the tutor
 ############################################################################################################
 @app.route('/get-tutees', methods=['GET'])
