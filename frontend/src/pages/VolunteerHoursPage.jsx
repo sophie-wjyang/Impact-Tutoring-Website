@@ -119,10 +119,10 @@ export default function VolunteerHoursPage() {
                     <tbody>
                             {pastVolunteerRequests.map((request, index) => (
                             <tr key={index}>
-                                <td className="past-hours-requests-text">{request[0]}</td>
-                                <td className="past-hours-requests-text">{request[1]}</td>
-                                <td className="past-hours-requests-text">{request[2]}</td>
-                                <td className="past-hours-requests-text">{request[3]}</td>
+                                <td className="past-hours-requests-text">{request["dateSubmitted"]}</td>
+                                <td className="past-hours-requests-text">{request["numHours"]}</td>
+                                <td className="past-hours-requests-text">{request["status"]}</td>
+                                <td className="past-hours-requests-text">{}</td>
                             </tr>   
                         ))}
                     </tbody>

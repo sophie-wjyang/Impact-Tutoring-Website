@@ -11,33 +11,13 @@ import TuteeProfilePicture from "../assets/images/profile-page/tutee-profile-pic
 import { Container, Row, Col, Table, Image } from "react-bootstrap";
 
 export default function ProfilePage() {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [grade, setGrade] = useState("");
-    const [gender, setGender] = useState("");
-    const [location, setLocation] = useState("");
-    const [subjects, setSubjects] = useState("");
-    const [languages, setLanguages] = useState("");
-    const [availability, setAvailability] = useState("");
-    const [studentCapacity, setStudentCapacity] = useState("");
+    const [profileInfo, setProfileInfo] = useState({});
 
     // get all relevant profile information on component render
     useEffect(() => {
         axios.get("http://localhost:5000/get-profile-info", { withCredentials: true }).then((res) => {
-            // return the first profile in the list of tuples
-            const profileInfo = res.data[0];
-
-            setFirstName(profileInfo[0]);
-            setLastName(profileInfo[1]);
-            setEmail(profileInfo[2]);
-            setGrade(profileInfo[3]);
-            setGender(profileInfo[4]);
-            setLocation(profileInfo[5]);
-            setSubjects(profileInfo[6]);
-            setLanguages(profileInfo[7]);
-            setAvailability(profileInfo[8]);
-            setStudentCapacity(profileInfo[9]);
+            // profile info goes from dictionary -> object
+            setProfileInfo(res.data);
         });
     }, []);
 
@@ -46,7 +26,7 @@ export default function ProfilePage() {
             {/* profile picture */}
             <Container className="mb-5">
                 {/* profile heading */}
-                <h1 className="dashboard-header">Welcome, {firstName}</h1>
+                <h1 className="dashboard-header">Welcome, {profileInfo["firstName"]}</h1>
 
                 <Row>
                     <Col xs={6} md={4}>
@@ -70,32 +50,32 @@ export default function ProfilePage() {
                                 <b>Name</b>
                             </td>
                             <td className="profile-table-text">
-                                {firstName} {lastName}
+                                {profileInfo["firstName"]} {profileInfo["lastName"]}
                             </td>
                         </tr>
                         <tr>
                             <td className="profile-table-header">
                                 <b>Email</b>
                             </td>
-                            <td className="profile-table-text">{email}</td>
+                            <td className="profile-table-text">{profileInfo["email"]}</td>
                         </tr>
                         <tr>
                             <td className="profile-table-header">
                                 <b>Grade</b>
                             </td>
-                            <td className="profile-table-text">{grade}</td>
+                            <td className="profile-table-text">{profileInfo["grade"]}</td>
                         </tr>
                         <tr>
                             <td className="profile-table-header">
                                 <b>Gender</b>
                             </td>
-                            <td className="profile-table-text">{gender}</td>
+                            <td className="profile-table-text">{profileInfo["gender"]}</td>
                         </tr>
                         <tr>
                             <td className="profile-table-header">
                                 <b>Location</b>
                             </td>
-                            <td className="profile-table-text">{location}</td>
+                            <td className="profile-table-text">{profileInfo["location"]}</td>
                         </tr>
                     </tbody>
                 </Table>
@@ -114,25 +94,25 @@ export default function ProfilePage() {
                             <td className="profile-table-header">
                                 <b>Subjects</b>
                             </td>
-                            <td className="profile-table-text">{Array.isArray(subjects) ? subjects.join(", ") : ""}</td>
+                            <td className="profile-table-text">{Array.isArray(profileInfo["subjects"]) ? profileInfo["subjects"].join(", ") : ""}</td>
                         </tr>
                         <tr>
                             <td className="profile-table-header">
                                 <b>Languages</b>
                             </td>
-                            <td className="profile-table-text">{Array.isArray(languages) ? languages.join(", ") : ""}</td>
+                            <td className="profile-table-text">{Array.isArray(profileInfo["languages"]) ? profileInfo["languages"].join(", ") : ""}</td>
                         </tr>
                         <tr>
                             <td className="profile-table-header">
                                 <b>Availability</b>
                             </td>
-                            <td className="profile-table-text">{Array.isArray(availability) ? availability.join(", ") : ""}</td>
+                            <td className="profile-table-text">{Array.isArray(profileInfo["availability"]) ? profileInfo["availability"].join(", ") : ""}</td>
                         </tr>
                         <tr>
                             <td className="profile-table-header">
                                 <b>Maximum student capacity</b>
                             </td>
-                            <td className="profile-table-text">{studentCapacity}</td>
+                            <td className="profile-table-text">{profileInfo["studentCapacity"]}</td>
                         </tr>
                     </tbody>
                 </Table>

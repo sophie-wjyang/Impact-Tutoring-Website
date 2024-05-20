@@ -4,7 +4,7 @@ import React from "react";
 import { Container, Row, Col, Table, Image, Button } from "react-bootstrap";
 
 export default function TuteeCard(props) {
-    const { firstName, lastName, email, grade, subjects, languages, availability } = props;
+    const { firstName, lastName, email, grade, subject, languages, meetingDays } = props;
 
     return (
         <Container fluid className="tutee-card">
@@ -18,13 +18,13 @@ export default function TuteeCard(props) {
                     <span>Grade:</span> {grade}
                 </p>
                 <p>
-                    <span>Subjects:</span> {subjects.join(", ")}
+                    <span>Subject tutored:</span> {subject}
                 </p>
                 <p>
                     <span>Languages:</span> {languages.join(", ")}
                 </p>
                 <p>
-                    <span>Availability:</span> {availability.join(", ")}
+                    <span>Meeting days:</span> {meetingDays.join(", ")}
                 </p>
             </div>
 

@@ -71,7 +71,6 @@ def validateLoginFormData():
     if result:
         # set the current session
         session['email'] = data['email']
-        # print("SET SESSION EMAIL:", session['email'])
         return jsonify({'message': 'success'})
     else:
         return jsonify({'message': 'error', 'details': 'Did not find matching email and password'})
@@ -86,21 +85,32 @@ def getProfileInfo():
     if 'email' not in session:
         return jsonify({'message': 'error', 'details': 'Email not found in session'})
 
-    # print("GET SESSION EMAIL:", session['email'])
-
     cur = conn.cursor()
 
     cur.execute('''SELECT first_name, last_name, email, grade, gender, location, subjects, languages, availability, student_capacity
                 FROM tutors
                 WHERE email = %s''', (session['email'],))
 
-    result = cur.fetchall()
+    profile = cur.fetchall()
 
-    # print("PROFILE INFO:", result)
+    result = {}
+
+    result = {
+        'firstName': profile[0][0],
+        'lastName': profile[0][1],
+        'email': profile[0][2],
+        'grade': profile[0][3],
+        'gender': profile[0][4],
+        'location': profile[0][5],
+        'subjects': profile[0][6],
+        'languages': profile[0][7],
+        'availability': profile[0][8],
+        'studentCapacity': profile[0][9]
+    }
 
     cur.close()
 
-    return jsonify(result)
+    return result
 
 
 ############################################################################################################
@@ -187,19 +197,47 @@ def getTutees():
     
     cur = conn.cursor()
 
-    cur.execute('''SELECT tutees.first_name, tutees.last_name, tutees.email, tutees.grade, tutees.languages, tutees.availability, pairings.subjects
+    # get tutor id
+    cur.execute('''SELECT id
+                FROM tutors
+                WHERE email = %s''', (session['email'],))
+    
+    tutor_id = cur.fetchall()[0][0]
+
+    # get all pairing ids associated with the tutor
+    cur.execute('''SELECT id
+                FROM pairings
+                WHERE tutor_id = %s''', (tutor_id,))
+    
+    pairing_ids = cur.fetchall()
+
+    # get all tutees and subjects associated with the pairing ids
+    cur.execute('''SELECT tutees.first_name, tutees.last_name, tutees.email, tutees.grade, pairings.subject, tutees.languages, pairings.meeting_days
                 FROM pairings
                 JOIN tutees
                 ON pairings.tutee_id = tutees.id
-                WHERE tutor_id = (SELECT id FROM tutors WHERE email = %s)''', (session['email'],))
+                WHERE pairings.id = ANY(%s)''', (pairing_ids,))
     
-    result = cur.fetchall()
+    tutees = cur.fetchall()
 
-    # print("TUTEES:", result)
+    result = []
+
+    for row in tutees:
+        tutee = {
+            'firstName': row[0],
+            'lastName': row[1],
+            'email': row[2],
+            'grade': row[3],
+            'subject': row[4],
+            'languages': row[5],
+            'meetingDays': row[6]
+        }
+
+        result.append(tutee)
 
     cur.close()
 
-    return jsonify(result)
+    return result
 
 
 ############################################################################################################
@@ -245,6 +283,7 @@ def saveTutorApplicationResume():
 
     result = cur.fetchall()
 
+    cur.commit()
     cur.close()
 
     file = request.files['resume']
@@ -255,7 +294,7 @@ def saveTutorApplicationResume():
     s3.upload_fileobj(file, os.environ['TUTOR_APPLICATION_BUCKET_NAME'], file_name)
 
     print("FILE UPLOADED TO S3")
-    
+
     return jsonify({'message': 'success'})
 
 
@@ -278,6 +317,8 @@ def saveTutorApplicationReportCard():
                 WHERE email = %s ''', (session['email'],))
 
     result = cur.fetchall()
+    
+    cur.commit()
     cur.close()
 
     # get the file and the name of the tutor
@@ -289,7 +330,7 @@ def saveTutorApplicationReportCard():
     s3.upload_fileobj(file, os.environ['TUTOR_APPLICATION_BUCKET_NAME'], file_name)
 
     print("FILE UPLOADED TO S3")
-    
+
     return jsonify({'message': 'success'})
 
 ############################################################################################################
@@ -335,6 +376,8 @@ def saveVolunteerHoursForm():
     # CHANGE TO TUTEES LATER
 
     result = cur.fetchall()
+    
+    cur.commit()
     cur.close()
 
     # get the file, name of the tutor, and the current date
@@ -347,7 +390,7 @@ def saveVolunteerHoursForm():
     s3.upload_fileobj(file, os.environ['VOLUNTEER_HOURS_BUCKET_NAME'], file_name)
 
     print("FILE UPLOADED TO S3")
-    
+
     return jsonify({'message': 'success'})
 
 
@@ -374,16 +417,25 @@ def getPastVolunteerHoursRequestHistory():
                 FROM volunteer_hours_requests
                 WHERE tutee_id = %s''', (tutee_id[0],))
     
-    result = cur.fetchall()
-    cur.close()
+    past_requests = cur.fetchall()
 
-    formatted_result = []
-    for row in result:
+    result = []
+    for row in past_requests:
         date_submitted = row[0].strftime("%Y-%m-%d")
-        formatted_result.append((date_submitted, row[1], row[2]))
+
+        past_request = {
+            'dateSubmitted': date_submitted,
+            'numHours': row[1],
+            'status': row[2]
+        }
+        
+        result.append(past_request)
     
     # print("VOLUNTEER HOURS REQUEST HISTORY:", result)
-    return jsonify(formatted_result)
+
+    cur.close()
+
+    return result
 
 
 ############################################################################################################

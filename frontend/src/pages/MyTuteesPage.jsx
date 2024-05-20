@@ -7,16 +7,16 @@ import axios from "axios";
 import TuteeCard from "../components/TuteeCard";
 
 // bootstrap
-import { Container, Row, Col, Table, Image } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 
 export default function MyTutees() {
     // array of tutees taught by the current tutor
-    // each tutee is an object
     const [tutees, setTutees] = useState([]);
 
     // get all relevant profile information on component render
     useEffect(() => {
         axios.get("http://localhost:5000/get-tutees", { withCredentials: true }).then((res) => {
+            // tutees goes from list of dictionaries -> array of objects
             setTutees(res.data);
         });
     }, []);
@@ -30,7 +30,7 @@ export default function MyTutees() {
             <Row>
                 {tutees.map((tutee, index) => (
                     <Col key={index} xs={12} md={6}>
-                        <TuteeCard firstName={tutee[0]} lastName={tutee[1]} email={tutee[2]} grade={tutee[3]} languages={tutee[4]} availability={tutee[5]} subjects={tutee[6]} />
+                        <TuteeCard firstName={tutee["firstName"]} lastName={tutee["lastName"]} email={tutee["email"]} grade={tutee["grade"]} subject={tutee["subject"]} languages={tutee["languages"]} meetingDays={tutee["meetingDays"]} />
                     </Col>
                 ))}
             </Row>

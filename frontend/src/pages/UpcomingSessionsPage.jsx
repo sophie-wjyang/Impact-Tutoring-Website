@@ -18,6 +18,7 @@ export default function UpcomingSessions() {
             .then((res) => {
                 // upcoming sessions goes from list of dictionaries -> array of objects
                 setUpcomingSessions(res.data);
+                console.log(res.data);
             });
     }, []);
 

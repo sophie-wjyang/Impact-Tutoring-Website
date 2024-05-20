@@ -37,15 +37,6 @@ CREATE TABLE pairings (
     meeting_days TEXT[]
 );
 
-CREATE TABLE volunteer_hours_requests (
-    id SERIAL PRIMARY KEY,
-    date_submitted DATE,
-    tutor_id INTEGER REFERENCES tutors(id),
-    num_hours INTEGER,
-    status VARCHAR(255),
-    description TEXT
-);
-
 CREATE TABLE sessions (
     id SERIAL PRIMARY KEY,
     pairing_id INTEGER REFERENCES pairings(id),
@@ -57,6 +48,12 @@ CREATE TABLE sessions (
     meeting_link TEXT
 );
 
+CREATE TABLE volunteer_hours_requests (
+    id SERIAL PRIMARY KEY,
+    date_submitted DATE,
+    tutor_id INTEGER REFERENCES tutors(id),
+    num_hours INTEGER,
+    status VARCHAR(255),
+    description TEXT
+);
 
-ALTER TABLE pairings
-ALTER COLUMN subjects SET DATA TYPE VARCHAR(255);
