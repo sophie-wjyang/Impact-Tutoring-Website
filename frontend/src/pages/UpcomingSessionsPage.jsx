@@ -18,7 +18,6 @@ export default function UpcomingSessions() {
             .then((res) => {
                 // upcoming sessions goes from list of dictionaries -> array of objects
                 setUpcomingSessions(res.data);
-                console.log(res.data);
             });
     }, []);
 
@@ -32,6 +31,7 @@ export default function UpcomingSessions() {
                 {upcomingSessions.map((upcomingSession, index) => (
                     <Col xs={12} md={12}>
                         <UpcomingSessionCard
+                            sessionKey={upcomingSession["sessionID"]}
                             firstName={upcomingSession["tuteeFirstName"]}
                             lastName={upcomingSession["tuteeLastName"]}
                             subject={upcomingSession["subject"]}

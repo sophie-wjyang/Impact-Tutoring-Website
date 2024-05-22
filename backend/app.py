@@ -152,13 +152,14 @@ def getUpcomingSessions():
         session_ids[i] = session_ids[i][0]
 
     # get the upcoming session card data
-    cur.execute('''SELECT tutees.first_name, tutees.last_name, pairings.subject, sessions.date, sessions.start_time, sessions.end_time, sessions.lesson_plan, sessions.session_notes, sessions.meeting_link
+    cur.execute('''SELECT sessions.id, tutees.first_name, tutees.last_name, pairings.subject, sessions.date, sessions.start_time, sessions.end_time, sessions.lesson_plan, sessions.session_notes, sessions.meeting_link
                 FROM tutees
                 JOIN pairings
                 ON tutees.id = pairings.tutee_id
                 JOIN sessions
                 ON pairings.id = sessions.pairing_id
-                WHERE sessions.id = ANY(%s)''', (session_ids,))
+                WHERE sessions.id = ANY(%s)
+                ORDER BY sessions.date, sessions.start_time''', (session_ids,))
 
     upcoming_sessions = cur.fetchall()
 
@@ -166,17 +167,18 @@ def getUpcomingSessions():
     result = []
     for row in upcoming_sessions:
         upcoming_session = {
-            'tuteeFirstName': row[0],
-            'tuteeLastName': row[1],
-            'subject': row[2],
-            'month': row[3].strftime("%B"),
-            'day': row[3].strftime("%d"),
-            'year': row[3].strftime("%Y"),
-            'startTime': row[4].strftime("%I:%M %p"),
-            'endTime': row[5].strftime("%I:%M %p"),
-            'lessonPlan': row[6],
-            'sessionNotes': row[7],
-            'meetingLink': row[8]
+            'sessionID': row[0],
+            'tuteeFirstName': row[1],
+            'tuteeLastName': row[2],
+            'subject': row[3],
+            'month': row[4].strftime("%B"),
+            'day': row[4].strftime("%d"),
+            'year': row[4].strftime("%Y"),
+            'startTime': row[5].strftime("%I:%M %p"),
+            'endTime': row[6].strftime("%I:%M %p"),
+            'lessonPlan': row[7],
+            'sessionNotes': row[8],
+            'meetingLink': row[9]
         }
 
         result.append(upcoming_session)
@@ -428,7 +430,7 @@ def getPastVolunteerHoursRequestHistory():
             'numHours': row[1],
             'status': row[2]
         }
-        
+
         result.append(past_request)
     
     # print("VOLUNTEER HOURS REQUEST HISTORY:", result)

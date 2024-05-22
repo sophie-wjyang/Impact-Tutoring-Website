@@ -1,11 +1,16 @@
 import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
+// styling
+import "../App.css";
+import { Button } from "react-bootstrap";
+
+// tiptap
 import { EditorProvider, useCurrentEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
-import { Button } from "react-bootstrap";
-import "../App.css";
 
 // fontawesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -23,9 +28,7 @@ const MenuBar = () => {
 
     if (!editor) {
         return null;
-    } else {
-        console.log("NOT NULL");
-    }
+    } 
 
     return (
         <div className="editor-menu-bar">
@@ -112,11 +115,11 @@ const extensions = [
     StarterKit.configure({
         bulletList: {
             keepMarks: true,
-            keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+            keepAttributes: false
         },
         orderedList: {
             keepMarks: true,
-            keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+            keepAttributes: false
         },
     }),
     Underline,
@@ -125,10 +128,17 @@ const extensions = [
 const content = ``;
 
 export default function Editor(props) {
-    const { title, date, tutee } = props;
+    const { title } = props;
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { sessionID, month, day, year, firstName, lastName } = location.state || {};
 
     function saveEditorContent() {
         // console.log(editor.getHTML());
+    }
+
+    function handleBackClick() {
+        navigate(-1);
     }
 
     return (
@@ -137,10 +147,10 @@ export default function Editor(props) {
             <h1 className="editor-heading">{title}</h1>
             <div className="editor-details">
                 <p className="editor-date">
-                    <b>Date:</b> January 23, 2024
+                    <b>Date:</b> {month} {day}, {year}
                 </p>
                 <p className="editor-tutee">
-                    <b>Tutee:</b> Gloria Li
+                    <b>Tutee:</b> {firstName} {lastName}
                 </p>
             </div>
 
@@ -154,8 +164,8 @@ export default function Editor(props) {
                 Save
             </Button>
 
-            {/* return button */}
-            <Button className="editor-return-button" onClick={saveEditorContent}>
+            {/* back button */}
+            <Button className="editor-back-button" onClick={handleBackClick}>
                 Back
             </Button>
         </>

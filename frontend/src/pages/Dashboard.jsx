@@ -46,8 +46,6 @@ export default function DashboardSidebar() {
         };
     }, []);
 
-    // when we select a page in the sidebar, set the active key, save it to local storage, and add it to the browser history
-    // this is so that when we refresh the page, the selected page is still the same
     const handleSelect = (selectedKey) => {
         navigate(selectedKey);
     };

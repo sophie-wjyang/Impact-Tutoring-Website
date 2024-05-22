@@ -959,7 +959,7 @@
     border-radius: 5px;
     border: 1px solid rgb(194, 194, 194);
     font-family: "Open Sans", sans-serif;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 /* menu bar */
@@ -1030,8 +1030,8 @@
     border-color: transparent !important;
 }
 
-/* return button */
-.editor-return-button {
+/* back button */
+.editor-back-button {
     background-color: transparent !important;
     border-color: var(--it-teal) !important;
     color: var(--it-teal) !important;
@@ -1041,8 +1041,8 @@
     width: 100px;
 }
 
-.editor-return-button:hover,
-.editor-return-button:active {
+.editor-back-button:hover,
+.editor-back-button:active {
     background-color: var(--it-teal) !important;
     color: white !important;
     border-color: transparent !important;

@@ -5,15 +5,15 @@ import { Container, Row, Col, Table, Image, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 export default function UpcomingSessionCard(props) {
-    const { firstName, lastName, subject, month, day, year, startTime, endTime, lessonPlan, sessionNotes, meetingLink } = props;
+    const { sessionID, firstName, lastName, subject, month, day, year, startTime, endTime, lessonPlan, sessionNotes, meetingLink } = props;
     const navigate = useNavigate();
 
     function openLessonPlan() {
-        navigate("lesson-plan");
+        navigate("lesson-plan", { state: { sessionID, month, day, year, firstName, lastName } });
     }
 
     function openSessionNotes() {
-        navigate("session-notes");
+        navigate("session-notes", { state: { sessionID, month, day, year, firstName, lastName } });
     }
 
     return (
