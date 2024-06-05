@@ -6,7 +6,7 @@ import "../App.css";
 import { Button } from "react-bootstrap";
 
 // tiptap
-import { EditorProvider, useCurrentEditor } from "@tiptap/react";
+import { EditorContent, EditorProvider, useEditor, useCurrentEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import ListItem from "@tiptap/extension-list-item";
@@ -23,9 +23,7 @@ import { faListOl } from "@fortawesome/free-solid-svg-icons";
 import { faUndo } from "@fortawesome/free-solid-svg-icons";
 import { faRedo } from "@fortawesome/free-solid-svg-icons";
 
-const MenuBar = () => {
-    const { editor } = useCurrentEditor();
-
+const MenuBar = ({ editor }) => {
     if (!editor) {
         return null;
     } 
@@ -125,7 +123,7 @@ const extensions = [
     Underline,
 ];
 
-const content = ``;
+let content = `<h1>bonjour<h1>`;
 
 export default function Editor(props) {
     const { title } = props;
@@ -133,8 +131,16 @@ export default function Editor(props) {
     const location = useLocation();
     const { sessionID, month, day, year, firstName, lastName } = location.state || {};
 
+    const editor = useEditor({
+        extensions,
+        content,
+        onUpdate: ({ editor }) => {
+            content = editor.getHTML();
+        },
+    });
+
     function saveEditorContent() {
-        // console.log(editor.getHTML());
+        console.log(editor.getHTML());
     }
 
     function handleBackClick() {
@@ -156,7 +162,8 @@ export default function Editor(props) {
 
             {/* editor */}
             <div className="editor">
-                <EditorProvider slotBefore={<MenuBar />} extensions={extensions} content={content} children={undefined}></EditorProvider>
+                <MenuBar editor={editor} />
+                <EditorContent editor={editor} />
             </div>
 
             {/* save button */}
