@@ -22,7 +22,7 @@ export default function UpcomingSessionCard(props) {
                 <Col md={4} className="session-date">
                     <p className="session-month">{month}</p>
                     <p className="session-day">{day}</p>
-                    <p className="session-time">8:00-9:00PM</p>
+                    <p className="session-time">{startTime} - {endTime}</p>
                 </Col>
                 <Col md={8} className="session-information">
                     <h2 className="tutee-name">{firstName} {lastName}</h2>

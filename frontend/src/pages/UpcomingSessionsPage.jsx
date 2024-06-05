@@ -1,6 +1,5 @@
 import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 // pages
@@ -31,7 +30,7 @@ export default function UpcomingSessions() {
                 {upcomingSessions.map((upcomingSession, index) => (
                     <Col xs={12} md={12}>
                         <UpcomingSessionCard
-                            sessionKey={upcomingSession["sessionID"]}
+                            sessionID={upcomingSession["sessionID"]}
                             firstName={upcomingSession["tuteeFirstName"]}
                             lastName={upcomingSession["tuteeLastName"]}
                             subject={upcomingSession["subject"]}

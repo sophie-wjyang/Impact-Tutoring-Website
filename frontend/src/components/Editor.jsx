@@ -1,5 +1,7 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 // styling
 import "../App.css";
@@ -123,24 +125,58 @@ const extensions = [
     Underline,
 ];
 
-let content = `<h1>bonjour<h1>`;
-
 export default function Editor(props) {
     const { title } = props;
     const navigate = useNavigate();
     const location = useLocation();
     const { sessionID, month, day, year, firstName, lastName } = location.state || {};
 
+    // retrieve saved content from database
+    const [content, setContent] = useState("");
+    const [isContentLoaded, setIsContentLoaded] = useState(false);
+    
+    useEffect(() => {
+        const data = {
+            sessionID: sessionID,
+            type: title
+        }
+
+        axios.get("http://localhost:5000/get-editor-content", { 
+            params: data,
+            withCredentials: true 
+        })
+            .then((res) => {
+                console.log(res.data[0][0])
+                setContent(res.data[0][0]);
+                setIsContentLoaded(true);
+            });
+    }, []);
+
+    // initialize editor
     const editor = useEditor({
         extensions,
         content,
         onUpdate: ({ editor }) => {
-            content = editor.getHTML();
+            setContent(editor.getHTML());
         },
     });
 
+    // update the editor with the saved content
+    useEffect(() => {
+        if (editor && content) {
+            editor.commands.setContent(content);
+        }
+    }, [isContentLoaded]);
+
+    // save new content to database
     function saveEditorContent() {
-        console.log(editor.getHTML());
+        const data = {
+            sessionID: sessionID,
+            type: title,
+            content: content
+        }
+
+        axios.post("http://localhost:5000/save-editor-content", data, { withCredentials: true });
     }
 
     function handleBackClick() {

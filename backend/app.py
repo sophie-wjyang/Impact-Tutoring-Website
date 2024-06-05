@@ -182,10 +182,64 @@ def getUpcomingSessions():
         }
 
         result.append(upcoming_session)
-    
+
     cur.close()
 
     return result
+
+############################################################################################################
+# get lesson plan/session notes
+############################################################################################################
+@app.route('/get-editor-content', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def getEditorContent():
+    session_id = request.args.get('sessionID')
+    type = request.args.get('type')
+
+    print(session_id)
+    print(type)
+    cur = conn.cursor()
+
+    if(type == "Lesson Plan"):
+        cur.execute('''SELECT lesson_plan
+                    FROM sessions
+                    WHERE id = %s''', (session_id,))
+        
+    if(type == "Session Notes"):
+        cur.execute('''SELECT session_notes
+                FROM sessions
+                WHERE id = %s''', (session_id,))
+        
+    result = cur.fetchall()
+    cur.close()
+
+    print(result)
+
+    return result
+
+############################################################################################################
+# save lesson plan/session notes
+############################################################################################################
+@app.route('/save-editor-content', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def saveEditorContent():
+    data = request.json
+    cur = conn.cursor()
+
+    if(data['type'] == "Lesson Plan"):
+        cur.execute('''UPDATE sessions
+                    SET lesson_plan = %s
+                    WHERE id = %s''', (data['content'], data['sessionID'],))
+        
+    if(data['type'] == "Session Notes"):
+        cur.execute('''UPDATE sessions
+                SET session_notes = %s
+                WHERE id = %s''', (data['content'], data['sessionID'],))
+    
+    conn.commit()
+    cur.close()
+
+    return jsonify({'message': 'success'})
 
 
 ############################################################################################################

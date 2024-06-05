@@ -638,7 +638,7 @@
 
 .upcoming-session-card .session-date .session-time {
     font-family: "Open Sans", sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     text-transform: uppercase;
     color: var(--it-light-grey);
     margin: 0;
