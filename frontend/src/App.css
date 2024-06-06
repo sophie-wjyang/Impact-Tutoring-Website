@@ -891,6 +891,66 @@
     color: #13989f;
 }
 
+/********************************* RESOURCES PAGE **********************************/
+.resource-section:not(:last-of-type){
+    margin-bottom: 70px;
+}
+
+.resources-header{
+    font-family: "Yeseva One", serif;
+    font-size: 24px;
+    color: var(--it-dark-grey);
+    margin-bottom: 20px;
+    margin-right: auto;
+}
+
+.resource-card{
+    background-color: white;
+    border-radius: 10px;
+    border: none !important;
+}
+
+.resource-card .resource-card-image{
+    width: 100%; 
+    height: 200px; 
+    object-fit: cover;
+}
+
+.resource-card .resource-card-body{
+    padding: 20px;
+}
+
+.resource-card .resource-card-title{
+    font-family: "Open Sans", sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--it-dark-grey);
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.resource-card .resource-card-text{
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--it-light-grey);
+    margin-bottom: 25px;
+}
+
+.resource-card .resource-card-button{
+    background-color: var(--it-teal);
+    border-color: transparent;
+    color: white;
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.resource-card .resource-card-button:hover {
+    background-color: #13989f;
+    border-color: transparent;
+}
 
 /********************************* VOLUNTEER HOURS PAGE **********************************/
 .dashboard-form-container {
