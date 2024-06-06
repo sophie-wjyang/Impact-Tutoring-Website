@@ -145,11 +145,10 @@ export default function Editor(props) {
             params: data,
             withCredentials: true 
         })
-            .then((res) => {
-                console.log(res.data[0][0])
-                setContent(res.data[0][0]);
-                setIsContentLoaded(true);
-            });
+        .then((res) => {
+            setContent(res.data[0][0]);
+            setIsContentLoaded(true);
+        });
     }, []);
 
     // initialize editor

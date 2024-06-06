@@ -76,6 +76,102 @@ def validateLoginFormData():
         return jsonify({'message': 'error', 'details': 'Did not find matching email and password'})
 
 
+
+
+############################################################################################################
+# save data from tutor application form
+############################################################################################################
+@app.route('/save-tutor-application-data', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def saveTutorApplicationData():
+    if 'email' not in session:
+        return jsonify({'message': 'error', 'details': 'Email not found in session'})
+    
+    data = request.json
+
+    cur = conn.cursor()
+
+    cur.execute('''UPDATE tutors 
+                SET grade = %s, gender = %s, location = %s, subjects = %s, languages = %s, availability = %s, student_capacity = %s, previous_experience = %s
+                WHERE email = %s ''', (data['grade'], data['gender'], data['location'], data['subjects'], data['languages'], data['availability'], data['studentCapacity'], data['previousExperience'], session['email']))
+
+    conn.commit()
+    cur.close()
+    
+    return jsonify({'message': 'success'})
+
+
+############################################################################################################
+# save tutor application resume
+############################################################################################################
+@app.route('/save-tutor-application-resume', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def saveTutorApplicationResume():
+    # get the name of the tutor that's currently logged in
+    if 'email' not in session:
+        print("EMAIL NOT FOUND IN SESSION")
+        return jsonify({'message': 'error', 'details': 'Email not found in session'})
+
+    print("GET SESSION EMAIL:", session['email'])
+    cur = conn.cursor()
+
+    cur.execute('''SELECT first_name, last_name
+                FROM tutors
+                WHERE email = %s ''', (session['email'],))
+
+    result = cur.fetchall()
+
+    cur.commit()
+    cur.close()
+
+    file = request.files['resume']
+    first_name, last_name = result[0]
+    file_name = f"{first_name}-{last_name}-Resume.pdf"
+    
+    # save file to S3
+    s3.upload_fileobj(file, os.environ['TUTOR_APPLICATION_BUCKET_NAME'], file_name)
+
+    print("FILE UPLOADED TO S3")
+
+    return jsonify({'message': 'success'})
+
+
+############################################################################################################
+# save tutor application report card
+############################################################################################################
+@app.route('/save-tutor-application-report-card', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def saveTutorApplicationReportCard():
+    # get the name of the tutor that's currently logged in
+    if 'email' not in session:
+        print("EMAIL NOT FOUND IN SESSION")
+        return jsonify({'message': 'error', 'details': 'Email not found in session'})
+
+    print("GET SESSION EMAIL:", session['email'])
+    cur = conn.cursor()
+
+    cur.execute('''SELECT first_name, last_name
+                FROM tutors
+                WHERE email = %s ''', (session['email'],))
+
+    result = cur.fetchall()
+    
+    cur.commit()
+    cur.close()
+
+    # get the file and the name of the tutor
+    file = request.files['report-card']
+    first_name, last_name = result[0]
+    file_name = f"{first_name}-{last_name}-Report-Card.pdf"
+    
+    # save file to S3
+    s3.upload_fileobj(file, os.environ['TUTOR_APPLICATION_BUCKET_NAME'], file_name)
+
+    print("FILE UPLOADED TO S3")
+
+    return jsonify({'message': 'success'})
+
+
 ############################################################################################################
 # get profile information
 ############################################################################################################
@@ -176,8 +272,6 @@ def getUpcomingSessions():
             'year': row[4].strftime("%Y"),
             'startTime': row[5].strftime("%I:%M %p"),
             'endTime': row[6].strftime("%I:%M %p"),
-            'lessonPlan': row[7],
-            'sessionNotes': row[8],
             'meetingLink': row[9]
         }
 
@@ -268,7 +362,7 @@ def getTutees():
     pairing_ids = cur.fetchall()
 
     # get all tutees and subjects associated with the pairing ids
-    cur.execute('''SELECT tutees.first_name, tutees.last_name, tutees.email, tutees.grade, pairings.subject, tutees.languages, pairings.meeting_days
+    cur.execute('''SELECT pairings.id, tutees.first_name, tutees.last_name, tutees.email, tutees.grade, pairings.subject, tutees.languages, pairings.meeting_days
                 FROM pairings
                 JOIN tutees
                 ON pairings.tutee_id = tutees.id
@@ -280,13 +374,14 @@ def getTutees():
 
     for row in tutees:
         tutee = {
-            'firstName': row[0],
-            'lastName': row[1],
-            'email': row[2],
-            'grade': row[3],
-            'subject': row[4],
-            'languages': row[5],
-            'meetingDays': row[6]
+            'pairingID': row[0],
+            'firstName': row[1],
+            'lastName': row[2],
+            'email': row[3],
+            'grade': row[4],
+            'subject': row[5],
+            'languages': row[6],
+            'meetingDays': row[7]
         }
 
         result.append(tutee)
@@ -295,99 +390,48 @@ def getTutees():
 
     return result
 
-
 ############################################################################################################
-# save data from tutor application form
+# get tutoring history
 ############################################################################################################
-@app.route('/save-tutor-application-data', methods=['POST'])
+@app.route('/get-tutoring-history', methods=['GET'])
 @cross_origin(supports_credentials=True)
-def saveTutorApplicationData():
-    if 'email' not in session:
-        return jsonify({'message': 'error', 'details': 'Email not found in session'})
-    
-    data = request.json
+def getTutoringHistory():
+    pairing_id = request.args.get('pairingID')
 
     cur = conn.cursor()
 
-    cur.execute('''UPDATE tutors 
-                SET grade = %s, gender = %s, location = %s, subjects = %s, languages = %s, availability = %s, student_capacity = %s, previous_experience = %s
-                WHERE email = %s ''', (data['grade'], data['gender'], data['location'], data['subjects'], data['languages'], data['availability'], data['studentCapacity'], data['previousExperience'], session['email']))
-
-    conn.commit()
-    cur.close()
+    # get all sessions associated with the pairing id
+    cur.execute('''SELECT sessions.date, sessions.id, tutees.first_name, tutees.last_name
+                FROM pairings
+                JOIN sessions
+                ON pairings.id = sessions.pairing_id
+                JOIN tutees
+                ON pairings.tutee_id = tutees.id
+                WHERE pairings.id = %s AND sessions.date < CURRENT_DATE 
+                ORDER BY sessions.date DESC''', (pairing_id,))
+                
     
-    return jsonify({'message': 'success'})
+    sessions = cur.fetchall()
 
+    result = []
 
-############################################################################################################
-# save tutor application resume
-############################################################################################################
-@app.route('/save-tutor-application-resume', methods=['POST'])
-@cross_origin(supports_credentials=True)
-def saveTutorApplicationResume():
-    # get the name of the tutor that's currently logged in
-    if 'email' not in session:
-        print("EMAIL NOT FOUND IN SESSION")
-        return jsonify({'message': 'error', 'details': 'Email not found in session'})
+    for row in sessions:
+        session = {
+            'date': row[0].strftime("%Y-%m-%d"),
+            'month': row[0].strftime("%B"),
+            'day': row[0].strftime("%d"),
+            'year': row[0].strftime("%Y"),
+            'sessionID': row[1],
+            'tuteeFirstName': row[2],
+            'tuteeLastName': row[3],
+        }
 
-    print("GET SESSION EMAIL:", session['email'])
-    cur = conn.cursor()
+        result.append(session)
 
-    cur.execute('''SELECT first_name, last_name
-                FROM tutors
-                WHERE email = %s ''', (session['email'],))
-
-    result = cur.fetchall()
-
-    cur.commit()
     cur.close()
 
-    file = request.files['resume']
-    first_name, last_name = result[0]
-    file_name = f"{first_name}-{last_name}-Resume.pdf"
-    
-    # save file to S3
-    s3.upload_fileobj(file, os.environ['TUTOR_APPLICATION_BUCKET_NAME'], file_name)
+    return result
 
-    print("FILE UPLOADED TO S3")
-
-    return jsonify({'message': 'success'})
-
-
-############################################################################################################
-# save tutor application report card
-############################################################################################################
-@app.route('/save-tutor-application-report-card', methods=['POST'])
-@cross_origin(supports_credentials=True)
-def saveTutorApplicationReportCard():
-    # get the name of the tutor that's currently logged in
-    if 'email' not in session:
-        print("EMAIL NOT FOUND IN SESSION")
-        return jsonify({'message': 'error', 'details': 'Email not found in session'})
-
-    print("GET SESSION EMAIL:", session['email'])
-    cur = conn.cursor()
-
-    cur.execute('''SELECT first_name, last_name
-                FROM tutors
-                WHERE email = %s ''', (session['email'],))
-
-    result = cur.fetchall()
-    
-    cur.commit()
-    cur.close()
-
-    # get the file and the name of the tutor
-    file = request.files['report-card']
-    first_name, last_name = result[0]
-    file_name = f"{first_name}-{last_name}-Report-Card.pdf"
-    
-    # save file to S3
-    s3.upload_fileobj(file, os.environ['TUTOR_APPLICATION_BUCKET_NAME'], file_name)
-
-    print("FILE UPLOADED TO S3")
-
-    return jsonify({'message': 'success'})
 
 ############################################################################################################
 # save volunteer hours data

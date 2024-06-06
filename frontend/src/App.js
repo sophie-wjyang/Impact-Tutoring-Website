@@ -13,44 +13,50 @@ import UpcomingSessionsPage from "./pages/UpcomingSessionsPage";
 import MyTuteesPage from "./pages/MyTuteesPage";
 import VolunteerHoursPage from "./pages/VolunteerHoursPage";
 import Editor from "./components/Editor";
+import TutoringHistory from "./components/TutoringHistory";
 import LogOutPage from "./pages/LogOutPage";
 
 // bootstrap
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function App() {
-	return (
-		<div>
-			{/* routes */}
-			<BrowserRouter>
-				<Routes>
+    return (
+        <div>
+            {/* routes */}
+            <BrowserRouter>
+                <Routes>
                     {/* top level routes */}
-					<Route index element={<HomePage />} />
-					<Route path="signup" element={<SignUpPage />} />
-					<Route path="login" element={<LogInPage />} />
-					<Route path="tutor-application" element={<TutorApplication />} />
+                    <Route index element={<HomePage />} />
+                    <Route path="signup" element={<SignUpPage />} />
+                    <Route path="login" element={<LogInPage />} />
+                    <Route path="tutor-application" element={<TutorApplication />} />
 
                     {/* dashboard routes */}
-					<Route path="dashboard" element={<Dashboard />}>
-						<Route index element={<Navigate to="profile" />} />
-						<Route path="profile" element={<ProfilePage />} />
+                    <Route path="dashboard" element={<Dashboard />}>
+                        <Route index element={<Navigate to="profile" />} />
+                        <Route path="profile" element={<ProfilePage />} />
 
                         {/* upcoming sessions routes */}
-						<Route path="upcoming-sessions">
-					        <Route index element={<UpcomingSessionsPage />} />
-						    <Route path="lesson-plan" element={<Editor title="Lesson Plan"/>} />
-						    <Route path="session-notes" element={<Editor title="Session Notes" />} />
+                        <Route path="upcoming-sessions">
+                            <Route index element={<UpcomingSessionsPage />} />
+                            <Route path="lesson-plan" element={<Editor title="Lesson Plan" />} />
+                            <Route path="session-notes" element={<Editor title="Session Notes" />} />
                         </Route>
 
-						<Route path="my-tutees" element={<MyTuteesPage />} />
-						<Route path="resources" />
-						<Route path="volunteer-hours" element={<VolunteerHoursPage />} />
+                        <Route path="my-tutees">
+                            <Route index element={<MyTuteesPage />} />
+                            <Route path="tutoring-history" >
+                                <Route index element={<TutoringHistory />}  />
+                                <Route path="lesson-plan" element={<Editor title="Lesson Plan" />} />
+                                <Route path="session-notes" element={<Editor title="Session Notes" />} />
+                            </Route>
+                        </Route>
+                        <Route path="resources" />
+                        <Route path="volunteer-hours" element={<VolunteerHoursPage />} />
                         <Route path="log-out" element={<LogOutPage />} />
-					</Route>
-
-				</Routes>
-			</BrowserRouter>
-		</div>
-	) 
+                    </Route>
+                </Routes>
+            </BrowserRouter>
+        </div>
+    );
 }
-

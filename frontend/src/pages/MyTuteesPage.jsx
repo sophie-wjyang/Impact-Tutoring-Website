@@ -30,7 +30,7 @@ export default function MyTutees() {
             <Row>
                 {tutees.map((tutee, index) => (
                     <Col key={index} xs={12} md={6}>
-                        <TuteeCard firstName={tutee["firstName"]} lastName={tutee["lastName"]} email={tutee["email"]} grade={tutee["grade"]} subject={tutee["subject"]} languages={tutee["languages"]} meetingDays={tutee["meetingDays"]} />
+                        <TuteeCard pairingID={tutee["pairingID"]} firstName={tutee["firstName"]} lastName={tutee["lastName"]} email={tutee["email"]} grade={tutee["grade"]} subject={tutee["subject"]} languages={tutee["languages"]} meetingDays={tutee["meetingDays"]} />
                     </Col>
                 ))}
             </Row>

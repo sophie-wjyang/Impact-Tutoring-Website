@@ -39,8 +39,6 @@ export default function UpcomingSessions() {
                             year={upcomingSession["year"]}
                             startTime={upcomingSession["startTime"]}
                             endTime={upcomingSession["endTime"]}
-                            lessonPlan={upcomingSession["lessonPlan"]}
-                            sessionNotes={upcomingSession["sessionNotes"]}
                             meetingLink={upcomingSession["meetingLink"]}
                         />
                     </Col>
