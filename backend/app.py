@@ -36,10 +36,12 @@ def saveSignUpFormData():
     data = request.json
     cur = conn.cursor()
 
+    # tutor signup
     if data['accountType'] == 'Tutor':
         cur.execute('''INSERT INTO tutors (first_name, last_name, email, password)
                     VALUES (%s, %s, %s, %s)''', (data['firstName'], data['lastName'], data['email'], data['password']))
     
+    # tutee signup
     elif data['accountType'] == 'Tutee':
         cur.execute('''INSERT INTO tutees (first_name, last_name, email, password)
                     VALUES (%s, %s, %s, %s)''', (data['firstName'], data['lastName'], data['email'], data['password']))
@@ -69,11 +71,11 @@ def validateLoginFormData():
     cur = conn.cursor()
 
     # tutor or tutee login
-    cur.execute('''SELECT email, 'tutors' AS user_type
+    cur.execute('''SELECT email, 'tutor' AS user_type
                 FROM tutors
                 WHERE email = %s AND password = %s
                 UNION
-                SELECT email, 'tutees' AS user_type
+                SELECT email, 'tutee' AS user_type
                 FROM tutees
                 WHERE email = %s AND password = %s''', (data['email'], data['password'], data['email'], data['password']))
 
@@ -92,8 +94,6 @@ def validateLoginFormData():
         return jsonify({'message': 'success', 'user_type': session['user_type']})
     else:
         return jsonify({'message': 'error', 'details': 'Did not find matching email and password'})
-
-
 
 
 ############################################################################################################
@@ -201,26 +201,48 @@ def getProfileInfo():
 
     cur = conn.cursor()
 
-    cur.execute('''SELECT first_name, last_name, email, grade, gender, location, subjects, languages, availability, student_capacity
-                FROM tutors
-                WHERE email = %s''', (session['email'],))
+    if(session['user_type'] == 'tutor'):
+        cur.execute('''SELECT first_name, last_name, email, grade, gender, location, subjects, languages, availability, student_capacity
+                    FROM tutors
+                    WHERE email = %s''', (session['email'],))
 
-    profile = cur.fetchone()
+        profile = cur.fetchone()
 
-    result = {}
+        result = {}
 
-    result = {
-        'firstName': profile[0],
-        'lastName': profile[1],
-        'email': profile[2],
-        'grade': profile[3],
-        'gender': profile[4],
-        'location': profile[5],
-        'subjects': profile[6],
-        'languages': profile[7],
-        'availability': profile[8],
-        'studentCapacity': profile[9]
-    }
+        result = {
+            'firstName': profile[0],
+            'lastName': profile[1],
+            'email': profile[2],
+            'grade': profile[3],
+            'gender': profile[4],
+            'location': profile[5],
+            'subjects': profile[6],
+            'languages': profile[7],
+            'availability': profile[8],
+            'studentCapacity': profile[9]
+        }
+    
+    if(session['user_type'] == 'tutee'):
+        cur.execute('''SELECT first_name, last_name, email, grade, gender, location, subjects, languages, availability
+                    FROM tutees
+                    WHERE email = %s''', (session['email'],))
+
+        profile = cur.fetchone()
+
+        result = {}
+
+        result = {
+            'firstName': profile[0],
+            'lastName': profile[1],
+            'email': profile[2],
+            'grade': profile[3],
+            'gender': profile[4],
+            'location': profile[5],
+            'subjects': profile[6],
+            'languages': profile[7],
+            'availability': profile[8]
+        }
 
     cur.close()
 

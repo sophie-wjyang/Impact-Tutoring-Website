@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useUser } from "../UserContext";
 
 // bootstrap
 import Button from 'react-bootstrap/Button';
@@ -11,6 +12,7 @@ import TextBox from '../components/form/TextBox';
 
 export default function LogInPage(resetActiveKey) {    
     const navigate = useNavigate();
+    const { setUserType } = useUser();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -29,7 +31,14 @@ export default function LogInPage(resetActiveKey) {
             .then((res) => {
                 if(res.data.message === "success"){
                     setInvalidLogin(false);
-                    navigate("/dashboard");
+
+                    if(res.data.user_type === "tutor" || res.data.user_type === "tutee"){
+                        setUserType(res.data.user_type);
+                        navigate("/dashboard");
+                    }
+                    else{
+                        // navigate("/dashboard");
+                    }
                 }
                 else{
                     console.log("Invalid login credentials")

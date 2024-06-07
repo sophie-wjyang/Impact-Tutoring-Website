@@ -8,7 +8,7 @@ import SignUpPage from "./pages/SignUpPage";
 import LogInPage from "./pages/LogInPage";
 import Dashboard from "./pages/Dashboard";
 import TutorApplication from "./pages/TutorApplication";
-import ProfilePage from "./pages/ProfilePage";
+import { ProfilePageTutor, ProfilePageTutee } from "./pages/ProfilePage";
 import UpcomingSessionsPage from "./pages/UpcomingSessionsPage";
 import MyTuteesPage from "./pages/MyTuteesPage";
 import ResourcesPage from "./pages/ResourcesPage";
@@ -35,7 +35,7 @@ export default function App() {
                     {/* dashboard routes */}
                     <Route path="dashboard" element={<Dashboard />}>
                         <Route index element={<Navigate to="profile" />} />
-                        <Route path="profile" element={<ProfilePage />} />
+                        <Route path="profile" element={<ProfilePageTutor />} />
 
                         {/* upcoming sessions routes */}
                         <Route path="upcoming-sessions">
