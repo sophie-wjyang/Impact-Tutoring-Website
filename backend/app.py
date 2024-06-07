@@ -57,21 +57,39 @@ def saveSignUpFormData():
 @cross_origin(supports_credentials=True)
 def validateLoginFormData():
     data = request.json
+
+    # admin login
+    if data['email'] == os.environ['ADMIN_EMAIL'] and data['password'] == os.environ['ADMIN_PASSWORD']:
+        session['user_type'] = 'admin'
+        print("email: ", session['email'])
+        print("type: ", session['user_type'])
+
+        return jsonify({'message': 'success', 'user_type': session['user_type']})
+
     cur = conn.cursor()
 
-    cur.execute('''SELECT *
+    # tutor or tutee login
+    cur.execute('''SELECT email, 'tutors' AS user_type
                 FROM tutors
-                WHERE email = %s and password = %s''', (data['email'], data['password']))
+                WHERE email = %s AND password = %s
+                UNION
+                SELECT email, 'tutees' AS user_type
+                FROM tutees
+                WHERE email = %s AND password = %s''', (data['email'], data['password'], data['email'], data['password']))
 
-    result = cur.fetchall()
+    result = cur.fetchone()
 
     conn.commit()
     cur.close()
 
     if result:
-        # set the current session
+        # set the current session information
         session['email'] = data['email']
-        return jsonify({'message': 'success'})
+        session['user_type'] = result[1]
+        print("email: ", session['email'])
+        print("type: ", session['user_type'])
+
+        return jsonify({'message': 'success', 'user_type': session['user_type']})
     else:
         return jsonify({'message': 'error', 'details': 'Did not find matching email and password'})
 
@@ -119,13 +137,13 @@ def saveTutorApplicationResume():
                 FROM tutors
                 WHERE email = %s ''', (session['email'],))
 
-    result = cur.fetchall()
+    result = cur.fetchone()
 
     cur.commit()
     cur.close()
 
     file = request.files['resume']
-    first_name, last_name = result[0]
+    first_name, last_name = result
     file_name = f"{first_name}-{last_name}-Resume.pdf"
     
     # save file to S3
@@ -154,14 +172,14 @@ def saveTutorApplicationReportCard():
                 FROM tutors
                 WHERE email = %s ''', (session['email'],))
 
-    result = cur.fetchall()
+    result = cur.fetchone()
     
     cur.commit()
     cur.close()
 
     # get the file and the name of the tutor
     file = request.files['report-card']
-    first_name, last_name = result[0]
+    first_name, last_name = result
     file_name = f"{first_name}-{last_name}-Report-Card.pdf"
     
     # save file to S3
@@ -187,21 +205,21 @@ def getProfileInfo():
                 FROM tutors
                 WHERE email = %s''', (session['email'],))
 
-    profile = cur.fetchall()
+    profile = cur.fetchone()
 
     result = {}
 
     result = {
-        'firstName': profile[0][0],
-        'lastName': profile[0][1],
-        'email': profile[0][2],
-        'grade': profile[0][3],
-        'gender': profile[0][4],
-        'location': profile[0][5],
-        'subjects': profile[0][6],
-        'languages': profile[0][7],
-        'availability': profile[0][8],
-        'studentCapacity': profile[0][9]
+        'firstName': profile[0],
+        'lastName': profile[1],
+        'email': profile[2],
+        'grade': profile[3],
+        'gender': profile[4],
+        'location': profile[5],
+        'subjects': profile[6],
+        'languages': profile[7],
+        'availability': profile[8],
+        'studentCapacity': profile[9]
     }
 
     cur.close()
@@ -225,7 +243,7 @@ def getUpcomingSessions():
                 FROM tutors
                 WHERE email = %s''', (session['email'],))
     
-    tutor_id = cur.fetchall()[0][0]
+    tutor_id = cur.fetchone()[0]
 
     # get all pairing ids associated with the tutor
     cur.execute('''SELECT id
@@ -352,7 +370,7 @@ def getTutees():
                 FROM tutors
                 WHERE email = %s''', (session['email'],))
     
-    tutor_id = cur.fetchall()[0][0]
+    tutor_id = cur.fetchone()[0]
 
     # get all pairing ids associated with the tutor
     cur.execute('''SELECT id
@@ -475,14 +493,14 @@ def saveVolunteerHoursForm():
 
     # CHANGE TO TUTEES LATER
 
-    result = cur.fetchall()
+    result = cur.fetchone()
     
     cur.commit()
     cur.close()
 
     # get the file, name of the tutor, and the current date
     file = request.files['volunteer-hours-form']
-    first_name, last_name = result[0]
+    first_name, last_name = result
     current_date = date.today()
     file_name = f"{first_name}-{last_name}-{current_date}-Volunteer-Hours-Request.pdf"
     
@@ -511,11 +529,11 @@ def getPastVolunteerHoursRequestHistory():
     
     # CHANGE TO TUTEES LATER
 
-    tutee_id = cur.fetchall()
+    tutee_id = cur.fetchone()
 
     cur.execute('''SELECT date_submitted, num_hours, status
                 FROM volunteer_hours_requests
-                WHERE tutee_id = %s''', (tutee_id[0],))
+                WHERE tutee_id = %s''', (tutee_id,))
     
     past_requests = cur.fetchall()
 
