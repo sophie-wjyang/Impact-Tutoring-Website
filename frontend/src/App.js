@@ -12,7 +12,7 @@ import TutorApplication from "./pages/TutorApplication";
 import { ProfilePageTutor, ProfilePageTutee } from "./pages/ProfilePage";
 import { UpcomingSessionsPageTutor, UpcomingSessionsPageTutee } from "./pages/UpcomingSessionsPage";
 import { MyTuteesPage, MySubjectsPage } from "./pages/MyCommitmentsPage";
-import ResourcesPage from "./pages/ResourcesPage";
+import { ResourcesPageTutor, ResourcesPageTutee} from "./pages/ResourcesPage";
 import VolunteerHoursPage from "./pages/VolunteerHoursPage";
 import Editor from "./components/Editor";
 import TutoringHistory from "./components/TutoringHistory";
@@ -55,7 +55,7 @@ export default function App() {
                                 <Route path="session-notes" element={<Editor title="Session Notes" />} />
                             </Route>
                         </Route>
-                        <Route path="resources" element={<ResourcesPage/>} />
+                        <Route path="resources" element={<ResourcesPageTutor/>} />
                         <Route path="volunteer-hours" element={<VolunteerHoursPage />} />
                         <Route path="log-out" element={<LogOutPage />} />
                     </Route>)}
@@ -80,7 +80,7 @@ export default function App() {
                                 <Route path="session-notes" element={<Editor title="Session Notes" />} />
                             </Route>
                         </Route>
-                        <Route path="resources" element={<ResourcesPage/>} />
+                        <Route path="resources" element={<ResourcesPageTutee/>} />
                         <Route path="volunteer-hours" element={<VolunteerHoursPage />} />
                         <Route path="log-out" element={<LogOutPage />} />
                     </Route>)}
