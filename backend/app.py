@@ -201,14 +201,13 @@ def getProfileInfo():
 
     cur = conn.cursor()
 
+    # tutor profile information
     if(session['user_type'] == 'tutor'):
         cur.execute('''SELECT first_name, last_name, email, grade, gender, location, subjects, languages, availability, student_capacity
                     FROM tutors
                     WHERE email = %s''', (session['email'],))
 
         profile = cur.fetchone()
-
-        result = {}
 
         result = {
             'firstName': profile[0],
@@ -223,14 +222,13 @@ def getProfileInfo():
             'studentCapacity': profile[9]
         }
     
+    # tutee profile information
     if(session['user_type'] == 'tutee'):
         cur.execute('''SELECT first_name, last_name, email, grade, gender, location, subjects, languages, availability
                     FROM tutees
                     WHERE email = %s''', (session['email'],))
 
         profile = cur.fetchone()
-
-        result = {}
 
         result = {
             'firstName': profile[0],
@@ -250,7 +248,7 @@ def getProfileInfo():
 
 
 ############################################################################################################
-# get the tutor's upcoming sessions
+# get upcoming sessions
 ############################################################################################################
 @app.route('/get-upcoming-sessions', methods=['GET'])
 @cross_origin(supports_credentials=True)
@@ -260,62 +258,121 @@ def getUpcomingSessions():
     
     cur = conn.cursor()
 
-    # get tutor id
-    cur.execute('''SELECT id
-                FROM tutors
-                WHERE email = %s''', (session['email'],))
-    
-    tutor_id = cur.fetchone()[0]
-
-    # get all pairing ids associated with the tutor
-    cur.execute('''SELECT id
-                FROM pairings
-                WHERE tutor_id = %s''', (tutor_id,))
-    
-    pairing_ids = cur.fetchall()
-
-    for i in range(len(pairing_ids)):
-        pairing_ids[i] = pairing_ids[i][0]
+    if(session['user_type'] == 'tutor'):
+        # get tutor id
+        cur.execute('''SELECT id
+                    FROM tutors
+                    WHERE email = %s''', (session['email'],))
         
-    # get all sessions associated with the pairing ids within the next 2 weeks
-    cur.execute('''SELECT id
-                FROM sessions
-                WHERE pairing_id = ANY(%s) AND date >= CURRENT_DATE AND date <= CURRENT_DATE + INTERVAL '14 days' ''', (pairing_ids,))
+        tutor_id = cur.fetchone()
 
-    session_ids = cur.fetchall()
+        # get all pairing ids associated with the tutor
+        cur.execute('''SELECT id
+                    FROM pairings
+                    WHERE tutor_id = %s''', (tutor_id,))
+        
+        pairing_ids = cur.fetchall()
 
-    for i in range(len(session_ids)):
-        session_ids[i] = session_ids[i][0]
+        for i in range(len(pairing_ids)):
+            pairing_ids[i] = pairing_ids[i][0]
+            
+        # get all sessions associated with the pairing ids within the next 2 weeks
+        cur.execute('''SELECT id
+                    FROM sessions
+                    WHERE pairing_id = ANY(%s) AND date >= CURRENT_DATE AND date <= CURRENT_DATE + INTERVAL '14 days' ''', (pairing_ids,))
 
-    # get the upcoming session card data
-    cur.execute('''SELECT sessions.id, tutees.first_name, tutees.last_name, pairings.subject, sessions.date, sessions.start_time, sessions.end_time, sessions.lesson_plan, sessions.session_notes, sessions.meeting_link
-                FROM tutees
-                JOIN pairings
-                ON tutees.id = pairings.tutee_id
-                JOIN sessions
-                ON pairings.id = sessions.pairing_id
-                WHERE sessions.id = ANY(%s)
-                ORDER BY sessions.date, sessions.start_time''', (session_ids,))
+        session_ids = cur.fetchall()
 
-    upcoming_sessions = cur.fetchall()
+        for i in range(len(session_ids)):
+            session_ids[i] = session_ids[i][0]
 
-    # convert into a list of dictionaries
-    result = []
-    for row in upcoming_sessions:
-        upcoming_session = {
-            'sessionID': row[0],
-            'tuteeFirstName': row[1],
-            'tuteeLastName': row[2],
-            'subject': row[3],
-            'month': row[4].strftime("%B"),
-            'day': row[4].strftime("%d"),
-            'year': row[4].strftime("%Y"),
-            'startTime': row[5].strftime("%I:%M %p"),
-            'endTime': row[6].strftime("%I:%M %p"),
-            'meetingLink': row[9]
-        }
+        # get the upcoming session card data
+        cur.execute('''SELECT sessions.id, tutees.first_name, tutees.last_name, pairings.subject, sessions.date, sessions.start_time, sessions.end_time, sessions.meeting_link
+                    FROM tutees
+                    JOIN pairings
+                    ON tutees.id = pairings.tutee_id
+                    JOIN sessions
+                    ON pairings.id = sessions.pairing_id
+                    WHERE sessions.id = ANY(%s)
+                    ORDER BY sessions.date, sessions.start_time''', (session_ids,))
 
-        result.append(upcoming_session)
+        upcoming_sessions = cur.fetchall()
+
+        # convert into a list of dictionaries
+        result = []
+        for row in upcoming_sessions:
+            upcoming_session = {
+                'sessionID': row[0],
+                'tuteeFirstName': row[1],
+                'tuteeLastName': row[2],
+                'subject': row[3],
+                'month': row[4].strftime("%B"),
+                'day': row[4].strftime("%d"),
+                'year': row[4].strftime("%Y"),
+                'startTime': row[5].strftime("%I:%M %p"),
+                'endTime': row[6].strftime("%I:%M %p"),
+                'meetingLink': row[7]
+            }
+
+            result.append(upcoming_session)
+
+    if(session['user_type'] == 'tutee'):
+        # get tutee id
+        cur.execute('''SELECT id
+                    FROM tutees
+                    WHERE email = %s''', (session['email'],))
+        
+        tutor_id = cur.fetchone()
+
+        # get all pairing ids associated with the tutee
+        cur.execute('''SELECT id
+                    FROM pairings
+                    WHERE tutee_id = %s''', (tutor_id,))
+        
+        pairing_ids = cur.fetchall()
+
+        for i in range(len(pairing_ids)):
+            pairing_ids[i] = pairing_ids[i][0]
+            
+        # get all sessions associated with the pairing ids within the next 2 weeks
+        cur.execute('''SELECT id
+                    FROM sessions
+                    WHERE pairing_id = ANY(%s) AND date >= CURRENT_DATE AND date <= CURRENT_DATE + INTERVAL '14 days' ''', (pairing_ids,))
+
+        session_ids = cur.fetchall()
+
+        for i in range(len(session_ids)):
+            session_ids[i] = session_ids[i][0]
+
+        # get the upcoming session card data
+        cur.execute('''SELECT sessions.id, tutors.first_name, tutors.last_name, pairings.subject, sessions.date, sessions.start_time, sessions.end_time, sessions.meeting_link
+                    FROM tutors 
+                    JOIN pairings
+                    ON tutors.id = pairings.tutor_id
+                    JOIN sessions
+                    ON pairings.id = sessions.pairing_id
+                    WHERE sessions.id = ANY(%s)
+                    ORDER BY sessions.date, sessions.start_time''', (session_ids,))
+
+        upcoming_sessions = cur.fetchall()
+
+        # convert into a list of dictionaries
+        result = []
+        for row in upcoming_sessions:
+            upcoming_session = {
+                'sessionID': row[0],
+                'tutorFirstName': row[1],
+                'tutorLastName': row[2],
+                'subject': row[3],
+                'month': row[4].strftime("%B"),
+                'day': row[4].strftime("%d"),
+                'year': row[4].strftime("%Y"),
+                'startTime': row[5].strftime("%I:%M %p"),
+                'endTime': row[6].strftime("%I:%M %p"),
+                'meetingLink': row[7]
+            }
+
+            result.append(upcoming_session)
 
     cur.close()
 

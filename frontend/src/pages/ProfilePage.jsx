@@ -140,7 +140,7 @@ export function ProfilePageTutee() {
 
                 <Row>
                     <Col xs={6} md={4}>
-                        <Image src={TutorProfilePicture} roundedCircle style={{ width: "200px", height: "200px" }} />
+                        <Image src={TuteeProfilePicture} roundedCircle style={{ width: "200px", height: "200px" }} />
                     </Col>
                 </Row>
             </Container>

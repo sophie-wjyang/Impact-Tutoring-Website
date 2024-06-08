@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useUser } from "../UserContext";
 import axios from "axios";
 
 // styling
@@ -130,6 +131,7 @@ export default function Editor(props) {
     const navigate = useNavigate();
     const location = useLocation();
     const { sessionID, month, day, year, firstName, lastName } = location.state || {};
+    const { userType } = useUser();
 
     // retrieve saved content from database
     const [content, setContent] = useState("");
@@ -190,9 +192,12 @@ export default function Editor(props) {
                 <p className="editor-date">
                     <b>Date:</b> {month} {day}, {year}
                 </p>
-                <p className="editor-tutee">
+                {userType === "tutor" && (<p className="editor-person">
                     <b>Tutee:</b> {firstName} {lastName}
-                </p>
+                </p>)}
+                {userType === "tutee" && (<p className="editor-person">
+                    <b>Tutor:</b> {firstName} {lastName}
+                </p>)}
             </div>
 
             {/* editor */}

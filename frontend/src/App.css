@@ -614,7 +614,7 @@
     }
 }
 
-.upcoming-session-card .tutee-name {
+.upcoming-session-card .session-information-title {
     font-family: "Yeseva One", serif;
     font-size: 24px;
     color: var(--it-dark-grey);
@@ -622,7 +622,7 @@
     margin-bottom: 10px;
 }
 
-.upcoming-session-card .tutee-information {
+.upcoming-session-card .session-information-text {
     font-family: "Open Sans", sans-serif;
     font-size: 14px;
     color: var(--it-light-grey);
@@ -630,12 +630,12 @@
     margin-bottom: 30px;
 }
 
-.upcoming-session-card .tutee-information > div {
+.upcoming-session-card .session-information-text > div {
     margin-bottom: 12px !important;
 }
 
-.upcoming-session-card .tutee-information div span,
-.upcoming-session-card .tutee-information div div {
+.upcoming-session-card .session-information-text div span,
+.upcoming-session-card .session-information-text div div {
     color: var(--it-dark-grey);
     font-weight: 600;
 }
@@ -701,7 +701,7 @@
     margin-bottom: 20px;
 }
 
-.editor-date, .editor-tutee{
+.editor-date, .editor-person{
     font-family: "Open Sans", sans-serif;
     font-size: 16px;
     color: var(--it-dark-grey);
