@@ -112,7 +112,7 @@ export function DashboardTutee() {
     const { pathname } = useLocation();
 
     // sets the active key to the first item in the array that is found in the path name
-    const activeKey = ["profile", "upcoming-sessions", "my-tutees", "resources", "volunteer-hours"].find((key) => pathname.includes(key)) || "profile";
+    const activeKey = ["profile", "upcoming-sessions", "my-tutees", "my-subjects", "resources", "volunteer-hours"].find((key) => pathname.includes(key)) || "profile";
 
     const [flexDirection, setFlexDirection] = useState(window.outerWidth >= 1200);
 
@@ -155,17 +155,13 @@ export function DashboardTutee() {
                                     <FontAwesomeIcon icon={faCalendarDays} className="sidebar-icon" />
                                     Upcoming sessions
                                 </Nav.Link>
-                                <Nav.Link eventKey="my-tutees" className="sidebar-link">
+                                <Nav.Link eventKey="my-subjects" className="sidebar-link">
                                     <FontAwesomeIcon icon={faChalkboardUser} className="sidebar-icon" />
-                                    My tutees
+                                    My subjects
                                 </Nav.Link>
                                 <Nav.Link eventKey="resources" className="sidebar-link">
                                     <FontAwesomeIcon icon={faFileLines} className="sidebar-icon" />
                                     Resources
-                                </Nav.Link>
-                                <Nav.Link eventKey="volunteer-hours" className="sidebar-link">
-                                    <FontAwesomeIcon icon={faClock} className="sidebar-icon" />
-                                    Volunteer hours
                                 </Nav.Link>
                                 <Nav.Link eventKey="log-out" className="sidebar-link">
                                     <FontAwesomeIcon icon={faArrowRightFromBracket} className="sidebar-icon" />

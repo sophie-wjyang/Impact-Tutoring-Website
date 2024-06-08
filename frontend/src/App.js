@@ -11,7 +11,7 @@ import { DashboardTutor, DashboardTutee } from "./pages/Dashboard";
 import TutorApplication from "./pages/TutorApplication";
 import { ProfilePageTutor, ProfilePageTutee } from "./pages/ProfilePage";
 import { UpcomingSessionsPageTutor, UpcomingSessionsPageTutee } from "./pages/UpcomingSessionsPage";
-import MyTuteesPage from "./pages/MyTuteesPage";
+import { MyTuteesPage, MySubjectsPage } from "./pages/MyCommitmentsPage";
 import ResourcesPage from "./pages/ResourcesPage";
 import VolunteerHoursPage from "./pages/VolunteerHoursPage";
 import Editor from "./components/Editor";
@@ -72,8 +72,8 @@ export default function App() {
                             <Route path="session-notes" element={<Editor title="Session Notes" />} />
                         </Route>
 
-                        <Route path="my-tutees">
-                            <Route index element={<MyTuteesPage />} />
+                        <Route path="my-subjects">
+                            <Route index element={<MySubjectsPage />} />
                             <Route path="tutoring-history" >
                                 <Route index element={<TutoringHistory />}  />
                                 <Route path="lesson-plan" element={<Editor title="Lesson Plan" />} />

@@ -2,9 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
-// pages
-import UpcomingSessionCard from "./UpcomingSessionCard";
+import { useUser } from "../UserContext";
 
 // bootstrap
 import { Container, Row, Col, Table } from "react-bootstrap";
@@ -12,6 +10,7 @@ import { Container, Row, Col, Table } from "react-bootstrap";
 export default function TutoringHistory() {
     const navigate = useNavigate();
     const location = useLocation();
+    const { userType } = useUser();
     const { pairingID } = location.state || {};
     const [pastSessions, setPastSessions] = useState([]);
 
@@ -56,14 +55,20 @@ export default function TutoringHistory() {
                             <tr key={index}>
                                 <td className="tutoring-history-text">{request["date"]}</td>
                                 <td className="tutoring-history-text">
-                                    <Link className="tutoring-history-link" to="lesson-plan" state={{ sessionID: request["sessionID"], month: request["month"], day: request["day"], year: request["year"], firstName: request["tuteeFirstName"], lastName: request["tuteeLastName"]}}>
+                                    {userType === "tutor" && (<Link className="tutoring-history-link" to="lesson-plan" state={{ sessionID: request["sessionID"], month: request["month"], day: request["day"], year: request["year"], firstName: request["tuteeFirstName"], lastName: request["tuteeLastName"]}}>
                                         Lesson plan
-                                    </Link>
+                                    </Link>)}
+                                    {userType === "tutee" && (<Link className="tutoring-history-link" to="lesson-plan" state={{ sessionID: request["sessionID"], month: request["month"], day: request["day"], year: request["year"], firstName: request["tutorFirstName"], lastName: request["tutorLastName"]}}>
+                                        Lesson plan
+                                    </Link>)}
                                 </td>
                                 <td className="tutoring-history-text">
-                                    <Link className="tutoring-history-link" to="session-notes" state={{ sessionID: request["sessionID"], month: request["month"], day: request["day"], year: request["year"], firstName: request["tuteeFirstName"], lastName: request["tuteeLastName"]}}>
+                                    {userType === "tutor" && (<Link className="tutoring-history-link" to="session-notes" state={{ sessionID: request["sessionID"], month: request["month"], day: request["day"], year: request["year"], firstName: request["tuteeFirstName"], lastName: request["tuteeLastName"]}}>
                                         Session notes
-                                    </Link>
+                                    </Link>)}
+                                    {userType === "tutee" && (<Link className="tutoring-history-link" to="session-notes" state={{ sessionID: request["sessionID"], month: request["month"], day: request["day"], year: request["year"], firstName: request["tutorFirstName"], lastName: request["tutorLastName"]}}>
+                                        Session notes
+                                    </Link>)}
                                 </td>
                             </tr>   
                         ))}

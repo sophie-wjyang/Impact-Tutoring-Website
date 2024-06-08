@@ -805,14 +805,14 @@
 
 /********************************* MY TUTEES PAGE **********************************/
 
-.tutee-card {
+.commitment-card {
     background-color: white;
     border-radius: 10px;
     padding: 30px 50px !important;
     margin: 12px;
 }
 
-.tutee-card .tutee-name {
+.commitment-card .commitment-name {
     font-family: "Yeseva One", serif;
     font-size: 24px;
     color: var(--it-dark-grey);
@@ -820,7 +820,7 @@
     margin-bottom: 10px;
 }
 
-.tutee-card .tutee-information {
+.commitment-card .commitment-information {
     font-family: "Open Sans", sans-serif;
     font-size: 14px;
     color: var(--it-light-grey);
@@ -828,16 +828,16 @@
     margin-bottom: 30px;
 }
 
-.tutee-card .tutee-information div {
+.commitment-card .commitment-information p {
     margin-bottom: 10px !important;
 }
 
-.tutee-card .tutee-information div span {
+.commitment-card .commitment-information p span {
     color: var(--it-dark-grey);
     font-weight: 600;
 }
 
-.tutee-card .tutoring-history-button {
+.commitment-card .tutoring-history-button {
     background-color: var(--it-teal);
     border-color: transparent;
     color: white;
@@ -846,8 +846,8 @@
     width: 100%;
 }
 
-.tutee-card .tutoring-history-button:hover,
-.tutee-card .tutoring-history-button:active {
+.commitment-card .tutoring-history-button:hover,
+.commitment-card .tutoring-history-button:active {
     background-color: #13989f !important;
     border-color: transparent !important;
 }

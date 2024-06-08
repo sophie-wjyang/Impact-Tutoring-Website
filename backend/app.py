@@ -434,54 +434,94 @@ def saveEditorContent():
 
 
 ############################################################################################################
-# get all tutees and subjects paired with the tutor
+# get all of the tutor's tutees or all of the tutee's subjects
 ############################################################################################################
-@app.route('/get-tutees', methods=['GET'])
+@app.route('/get-commitments', methods=['GET'])
 @cross_origin(supports_credentials=True)
-def getTutees():
+def getCommitments():
     if 'email' not in session:
         return jsonify({'message': 'error', 'details': 'Email not found in session'})
     
     cur = conn.cursor()
 
-    # get tutor id
-    cur.execute('''SELECT id
-                FROM tutors
-                WHERE email = %s''', (session['email'],))
-    
-    tutor_id = cur.fetchone()[0]
+    if(session['user_type'] == 'tutor'):
+        # get tutor id
+        cur.execute('''SELECT id
+                    FROM tutors
+                    WHERE email = %s''', (session['email'],))
+        
+        tutor_id = cur.fetchone()
 
-    # get all pairing ids associated with the tutor
-    cur.execute('''SELECT id
-                FROM pairings
-                WHERE tutor_id = %s''', (tutor_id,))
-    
-    pairing_ids = cur.fetchall()
+        # get all pairing ids associated with the tutor
+        cur.execute('''SELECT id
+                    FROM pairings
+                    WHERE tutor_id = %s''', (tutor_id,))
+        
+        pairing_ids = cur.fetchall()
 
-    # get all tutees and subjects associated with the pairing ids
-    cur.execute('''SELECT pairings.id, tutees.first_name, tutees.last_name, tutees.email, tutees.grade, pairings.subject, tutees.languages, pairings.meeting_days
-                FROM pairings
-                JOIN tutees
-                ON pairings.tutee_id = tutees.id
-                WHERE pairings.id = ANY(%s)''', (pairing_ids,))
-    
-    tutees = cur.fetchall()
+        # get all tutees associated with the pairing ids
+        cur.execute('''SELECT pairings.id, pairings.subject, pairings.meeting_days, tutees.first_name, tutees.last_name, tutees.email, tutees.grade, tutees.languages
+                    FROM pairings
+                    JOIN tutees
+                    ON pairings.tutee_id = tutees.id
+                    WHERE pairings.id = ANY(%s)''', (pairing_ids,))
+        
+        tutees = cur.fetchall()
 
-    result = []
+        result = []
 
-    for row in tutees:
-        tutee = {
-            'pairingID': row[0],
-            'firstName': row[1],
-            'lastName': row[2],
-            'email': row[3],
-            'grade': row[4],
-            'subject': row[5],
-            'languages': row[6],
-            'meetingDays': row[7]
-        }
+        for row in tutees:
+            tutee = {
+                'pairingID': row[0],
+                'subject': row[1],
+                'meetingDays': row[2],
+                'tuteeFirstName': row[3],
+                'tuteeLastName': row[4],
+                'tuteeEmail': row[5],
+                'tuteeGrade': row[6],
+                'tuteeLanguages': row[7]
+            }
 
-        result.append(tutee)
+            result.append(tutee)
+
+    if(session['user_type'] == 'tutee'):
+        # get tutee id
+        cur.execute('''SELECT id
+                    FROM tutees
+                    WHERE email = %s''', (session['email'],))
+        
+        tutee_id = cur.fetchone()
+
+        # get all pairing ids associated with the tutee
+        cur.execute('''SELECT id
+                    FROM pairings
+                    WHERE tutee_id = %s''', (tutee_id,))
+        
+        pairing_ids = cur.fetchall()
+
+        # get all subjects associated with the pairing ids
+        cur.execute('''SELECT pairings.id, pairings.subject, pairings.meeting_days, tutors.first_name, tutors.last_name, tutors.email, tutors.languages
+                    FROM pairings
+                    JOIN tutors
+                    ON pairings.tutor_id = tutors.id
+                    WHERE pairings.id = ANY(%s)''', (pairing_ids,))
+        
+        subjects = cur.fetchall()
+
+        result = []
+
+        for row in subjects:
+            subject = {
+                'pairingID': row[0],
+                'subject': row[1],
+                'meetingDays': row[2],
+                'tutorFirstName': row[3],
+                'tutorLastName': row[4],
+                'tutorEmail': row[5],
+                'tutorLanguages': row[6]
+            }
+
+            result.append(subject)
 
     cur.close()
 
@@ -493,37 +533,71 @@ def getTutees():
 @app.route('/get-tutoring-history', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def getTutoringHistory():
+    if 'email' not in session:
+        return jsonify({'message': 'error', 'details': 'Email not found in session'})
+    
     pairing_id = request.args.get('pairingID')
 
     cur = conn.cursor()
 
-    # get all sessions associated with the pairing id
-    cur.execute('''SELECT sessions.date, sessions.id, tutees.first_name, tutees.last_name
-                FROM pairings
-                JOIN sessions
-                ON pairings.id = sessions.pairing_id
-                JOIN tutees
-                ON pairings.tutee_id = tutees.id
-                WHERE pairings.id = %s AND sessions.date < CURRENT_DATE 
-                ORDER BY sessions.date DESC''', (pairing_id,))
-                
-    
-    sessions = cur.fetchall()
+    if(session['user_type'] == 'tutor'):
+        print('TUTOR!!!!')
+        # get all sessions associated with the pairing id
+        cur.execute('''SELECT sessions.date, sessions.id, tutees.first_name, tutees.last_name
+                    FROM pairings
+                    JOIN sessions
+                    ON pairings.id = sessions.pairing_id
+                    JOIN tutees
+                    ON pairings.tutee_id = tutees.id
+                    WHERE pairings.id = %s AND sessions.date < CURRENT_DATE 
+                    ORDER BY sessions.date DESC''', (pairing_id,))
+                    
+        
+        sessions = cur.fetchall()
 
-    result = []
+        result = []
 
-    for row in sessions:
-        session = {
-            'date': row[0].strftime("%Y-%m-%d"),
-            'month': row[0].strftime("%B"),
-            'day': row[0].strftime("%d"),
-            'year': row[0].strftime("%Y"),
-            'sessionID': row[1],
-            'tuteeFirstName': row[2],
-            'tuteeLastName': row[3],
-        }
+        for row in sessions:
+            s = {
+                'date': row[0].strftime("%Y-%m-%d"),
+                'month': row[0].strftime("%B"),
+                'day': row[0].strftime("%d"),
+                'year': row[0].strftime("%Y"),
+                'sessionID': row[1],
+                'tuteeFirstName': row[2],
+                'tuteeLastName': row[3],
+            }
 
-        result.append(session)
+            result.append(s)
+
+    if(session['user_type'] == 'tutee'):
+        # get all sessions associated with the pairing id
+        cur.execute('''SELECT sessions.date, sessions.id, tutors.first_name, tutors.last_name
+                    FROM pairings
+                    JOIN sessions
+                    ON pairings.id = sessions.pairing_id
+                    JOIN tutors
+                    ON pairings.tutor_id = tutors.id
+                    WHERE pairings.id = %s AND sessions.date < CURRENT_DATE 
+                    ORDER BY sessions.date DESC''', (pairing_id,))
+                    
+        
+        sessions = cur.fetchall()
+
+        result = []
+
+        for row in sessions:
+            s = {
+                'date': row[0].strftime("%Y-%m-%d"),
+                'month': row[0].strftime("%B"),
+                'day': row[0].strftime("%d"),
+                'year': row[0].strftime("%Y"),
+                'sessionID': row[1],
+                'tutorFirstName': row[2],
+                'tutorLastName': row[3],
+            }
+
+            result.append(s)
 
     cur.close()
 
