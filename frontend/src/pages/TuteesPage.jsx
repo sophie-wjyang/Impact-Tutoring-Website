@@ -25,13 +25,13 @@ export default function TuteesPage() {
             <h1 className="dashboard-header">Tutees</h1>
 
             <Container className="table-container">
-                <Table className="tutees-table">
+                <Table className="admin-table">
                     <thead>
                         <tr>
-                            <th className="tutees-header">
+                            <th className="admin-table-header">
                                 <b>Tutee name</b>
                             </th>
-                            <th className="tutees-header">
+                            <th className="admin-table-header">
                                 <b>Tutee details</b>
                             </th>
                         </tr>
@@ -39,9 +39,9 @@ export default function TuteesPage() {
                     <tbody>
                         {tutees.map((tutee, index) => (
                             <tr key={index}>
-                                <td className="tutees-text">{tutee["firstName"]} {tutee["lastName"]}</td>
-                                <td className="tutees-text">
-                                    <Link className="tutees-link" to="tutee-information" state={{ firstName: tutee["firstName"], lastName: tutee["lastName"], email: tutee["email"], grade: tutee["grade"], gender: tutee["gender"], location: tutee["location"], subjects: tutee["subjects"], languages: tutee["languages"], availability: tutee["availability"] }}>
+                                <td className="admin-table-text">{tutee["firstName"]} {tutee["lastName"]}</td>
+                                <td className="admin-table-text">
+                                    <Link className="admin-table-link" to="tutee-information" state={{ firstName: tutee["firstName"], lastName: tutee["lastName"], email: tutee["email"], grade: tutee["grade"], gender: tutee["gender"], location: tutee["location"], subjects: tutee["subjects"], languages: tutee["languages"], availability: tutee["availability"] }}>
                                         See tutee profile
                                     </Link>
                                 </td>

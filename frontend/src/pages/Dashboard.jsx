@@ -29,7 +29,7 @@ export function DashboardTutor() {
     const { pathname } = useLocation();
 
     // sets the active key to the first item in the array that is found in the path name
-    const activeKey = ["profile", "upcoming-sessions", "my-tutees", "resources", "volunteer-hours"].find((key) => pathname.includes(key)) || "profile";
+    const activeKey = ["profile", "upcoming-sessions", "my-tutees", "resources", "volunteer-hours-request"].find((key) => pathname.includes(key)) || "profile";
 
     const [flexDirection, setFlexDirection] = useState(window.outerWidth >= 1200);
 
@@ -80,7 +80,7 @@ export function DashboardTutor() {
                                     <FontAwesomeIcon icon={faFileLines} className="sidebar-icon" />
                                     Resources
                                 </Nav.Link>
-                                <Nav.Link eventKey="volunteer-hours" className="sidebar-link">
+                                <Nav.Link eventKey="volunteer-hours-request" className="sidebar-link">
                                     <FontAwesomeIcon icon={faClock} className="sidebar-icon" />
                                     Volunteer hours
                                 </Nav.Link>
@@ -112,7 +112,7 @@ export function DashboardTutee() {
     const { pathname } = useLocation();
 
     // sets the active key to the first item in the array that is found in the path name
-    const activeKey = ["profile", "upcoming-sessions", "my-subjects", "resources", "volunteer-hours"].find((key) => pathname.includes(key)) || "profile";
+    const activeKey = ["profile", "upcoming-sessions", "my-subjects", "resources", "volunteer-hours-request"].find((key) => pathname.includes(key)) || "profile";
 
     const [flexDirection, setFlexDirection] = useState(window.outerWidth >= 1200);
 
@@ -191,7 +191,7 @@ export function DashboardAdmin() {
     const { pathname } = useLocation();
 
     // sets the active key to the first item in the array that is found in the path name
-    const activeKey = ["tutors", "tutees", "pairings", "volunteer-hours-approvals"].find((key) => pathname.includes(key)) || "tutors";
+    const activeKey = ["tutors", "tutees", "pairings", "pending-volunteer-hours-approvals"].find((key) => pathname.includes(key)) || "tutors";
 
     const [flexDirection, setFlexDirection] = useState(window.outerWidth >= 1200);
 
@@ -238,7 +238,7 @@ export function DashboardAdmin() {
                                     <FontAwesomeIcon icon={faUsers} className="sidebar-icon" />
                                     Pairings
                                 </Nav.Link>
-                                <Nav.Link eventKey="volunteer-hours-approvals" className="sidebar-link">
+                                <Nav.Link eventKey="pending-volunteer-hours-approvals" className="sidebar-link">
                                     <FontAwesomeIcon icon={faFileLines} className="sidebar-icon" />
                                     Volunteer hours
                                 </Nav.Link>

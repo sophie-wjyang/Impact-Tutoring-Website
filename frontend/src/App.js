@@ -14,7 +14,7 @@ import { ProfilePageTutor, ProfilePageTutee } from "./pages/ProfilePage";
 import { UpcomingSessionsPageTutor, UpcomingSessionsPageTutee } from "./pages/UpcomingSessionsPage";
 import { MyTuteesPage, MySubjectsPage } from "./pages/MyCommitmentsPage";
 import { ResourcesPageTutor, ResourcesPageTutee} from "./pages/ResourcesPage";
-import VolunteerHoursPage from "./pages/VolunteerHoursPage";
+import VolunteerHoursRequestPage from "./pages/VolunteerHoursRequestPage";
 import Editor from "./pages/EditorPage";
 import TutoringHistory from "./pages/TutoringHistoryPage";
 import LogOutPage from "./pages/LogOutPage";
@@ -24,10 +24,11 @@ import TuteesPage from "./pages/TuteesPage";
 import TutorInformationPage from "./pages/TutorInformationPage";
 import TuteeInformation from "./pages/TuteeInformationPage";
 import PairingsPage from "./pages/PairingsPage";
-// import VolunteerHoursApprovalsPage from "./pages/VolunteerHoursApprovalsPage";
+import PendingVolunteerHoursApprovalsPage from "./pages/PendingVolunteerHoursApprovalsPage";
 
 // bootstrap
 import "bootstrap/dist/css/bootstrap.min.css";
+import VolunteerHoursApprovalPage from "./pages/VolunteerHoursApprovalPage";
 
 export default function App() {
     const { userType } = useUser();
@@ -65,7 +66,7 @@ export default function App() {
                         </Route>
 
                         <Route path="resources" element={<ResourcesPageTutor/>} />
-                        <Route path="volunteer-hours" element={<VolunteerHoursPage />} />
+                        <Route path="volunteer-hours-request" element={<VolunteerHoursRequestPage />} />
                         <Route path="log-out" element={<LogOutPage />} />
                     </Route>)}
 
@@ -91,7 +92,7 @@ export default function App() {
                         </Route>
 
                         <Route path="resources" element={<ResourcesPageTutee/>} />
-                        <Route path="volunteer-hours" element={<VolunteerHoursPage />} />
+                        <Route path="volunteer-hours-request" element={<VolunteerHoursRequestPage />} />
                         <Route path="log-out" element={<LogOutPage />} />
                     </Route>)}
 
@@ -118,7 +119,10 @@ export default function App() {
                             </Route>
                         </Route>
 
-                        {/* <Route path="volunteer-hours-approvals" element={<VolunteerHoursApprovalsPage />} /> */}
+                        <Route path="pending-volunteer-hours-approvals" >
+                            <Route index element={<PendingVolunteerHoursApprovalsPage />}  />
+                            <Route path="volunteer-hours-approval" element={<VolunteerHoursApprovalPage />} />
+                        </Route>
                         <Route path="log-out" element={<LogOutPage />} />
                     </Route>
                 </Routes>

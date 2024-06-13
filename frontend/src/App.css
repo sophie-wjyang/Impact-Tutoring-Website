@@ -1193,40 +1193,32 @@
 
 /********************************* TUTORS/TUTEES **********************************/
 
-.tutors-title, .tutees-title {
-    font-family: "Yeseva One", serif;
-    color: var(--it-dark-grey);
-    font-size: 24px;
-    padding: 30px 10px 10px 10px !important;
-    margin-bottom: 0 !important;
-}
-
-.tutors-table, .tutees-table {
+.admin-table {
     font-family: "Open Sans", sans-serif;
     font-size: 14px;
     margin-bottom: 50px !important;
 }
 
-.tutors-table tbody tr:last-child td, .tutees-table tbody tr:last-child td {
+.admin-table tbody tr:last-child td {
     border-bottom: none;
     padding-bottom: 30px !important;
 }
 
-.tutors-table .tutors-header, .tutees-table .tutees-header {
+.admin-table .admin-table-header {
     color: var(--it-dark-grey);
     padding: 20px 10px !important;
 }
 
-.tutors-table .tutors-text, .tutees-table .tutees-text {
+.admin-table .admin-table-text {
     color: var(--it-light-grey);
     padding: 20px 10px !important;
 }
 
-.tutors-link, .tutees-link{
+.admin-table-link{
     color: var(--it-teal);
 }
 
-.tutors-link:hover, .tutees-link:hover{
+.admin-table-link:hover{
     color: #13989f;
 }
 
@@ -1259,4 +1251,49 @@
 .tutor-information-table .tutor-information-table-text, .tutee-information-table .tutee-information-table-text {
     color: var(--it-light-grey);
     padding: 20px 10px !important;
+}
+
+
+/********************************* APPROVE VOLUNTEER HOURS PAGE **********************************/
+
+.hours-approval-title {
+    font-family: "Yeseva One", serif;
+    font-size: 24px;
+    color: var(--it-dark-grey);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.hours-approval-text {
+    font-family: "Open Sans", sans-serif;
+    font-size: 15px;
+    color: var(--it-light-grey);
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+
+.hours-approval-text > div {
+    margin-bottom: 12px !important;
+}
+
+.hours-approval-text div span {
+    color: var(--it-dark-grey);
+    font-weight: 600;
+}
+
+.dashboard-form-container .download-form-button {
+    background-color: var(--it-teal);
+    border-color: transparent;
+    color: white;
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 20px;
+    margin-top: 15px;
+}
+
+.dashboard-form-container .download-form-button:hover,
+.dashboard-form-container .download-form-button:active {
+    background-color: #13989f !important;
+    border-color: transparent !important;
 }

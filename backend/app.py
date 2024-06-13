@@ -650,7 +650,7 @@ def saveVolunteerHoursData():
 
     cur = conn.cursor()
 
-    cur.execute('''INSERT INTO volunteer_hours_requests (date_submitted, tutee_id, num_hours, status, description)
+    cur.execute('''INSERT INTO volunteer_hours_requests (date_submitted, tutor_id, num_hours, status, description)
                 VALUES (%s, (SELECT id FROM tutors WHERE email = %s), %s, %s, %s)''', (data['dateSubmitted'], session['email'], data['numHours'], data['status'], data['description']))
 
     conn.commit()
@@ -676,8 +676,6 @@ def saveVolunteerHoursForm():
     cur.execute('''SELECT first_name, last_name
                 FROM tutors
                 WHERE email = %s ''', (session['email'],))
-
-    # CHANGE TO TUTEES LATER
 
     result = cur.fetchone()
     
@@ -713,8 +711,6 @@ def getPastVolunteerHoursRequestHistory():
                 FROM tutors 
                 WHERE email = %s''', (session['email'],))
     
-    # CHANGE TO TUTEES LATER
-
     tutee_id = cur.fetchone()
 
     cur.execute('''SELECT date_submitted, num_hours, status
@@ -842,6 +838,81 @@ def getPairings():
         }
 
         result.append(p)
+
+    cur.close()
+
+    return result
+
+
+############################################################################################################
+# get pending volunteer hours requests
+############################################################################################################
+@app.route('/get-pending-volunteer-hours-requests', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def getPendingVolunteerHoursRequests():
+    if 'email' not in session:
+        return jsonify({'message': 'error', 'details': 'Email not found in session'})
+    
+    cur = conn.cursor()
+
+    cur.execute('''SELECT v.id, v.date_submitted, v.num_hours, tutors.first_name, tutors.last_name
+                FROM volunteer_hours_requests AS v
+                JOIN tutors
+                ON v.tutor_id = tutors.id
+                WHERE v.status = %s''', ('Pending',))
+    
+    pending_requests = cur.fetchall()
+
+    result = []
+    for row in pending_requests:
+        date_submitted = row[1].strftime("%Y-%m-%d")
+
+        r = {
+            'requestID': row[0],
+            'dateSubmitted': date_submitted,
+            'numHours': row[2],
+            'tutorFirstName': row[3],
+            'tutorLastName': row[4]
+        }
+
+        result.append(r)
+    
+    # print("VOLUNTEER HOURS REQUEST HISTORY:", result)
+
+    cur.close()
+
+    return result
+
+
+############################################################################################################
+# get request data
+############################################################################################################
+@app.route('/get-hours-request-data', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def getHoursRequestData():
+    if 'email' not in session:
+        return jsonify({'message': 'error', 'details': 'Email not found in session'})
+    
+    request_id = request.args.get('requestID')
+
+    cur = conn.cursor()
+
+    cur.execute('''SELECT v.date_submitted, v.num_hours, tutors.first_name, tutors.last_name, v.description
+                FROM volunteer_hours_requests AS v
+                JOIN tutors
+                ON v.tutor_id = tutors.id
+                WHERE v.id = %s''', (request_id,))
+    
+    r = cur.fetchone()
+    date_submitted = r[0].strftime("%Y-%m-%d")
+
+    result = {
+        'dateSubmitted': date_submitted,
+        'numHours': r[1],
+        'tutorFirstName': r[2],
+        'tutorLastName': r[3],
+        'description': r[4]
+    }
 
     cur.close()
 

@@ -17,7 +17,7 @@ import Dropdown from "../components/form/Dropdown";
 import FileUpload from "../components/form/FileUpload";
 import MultiSelect from "../components/form/MultiSelect";
 
-export default function VolunteerHoursPage() {
+export default function VolunteerHoursRequestPage() {
     const navigate = useNavigate();
 
     const [numHours, setNumHours] = useState("");

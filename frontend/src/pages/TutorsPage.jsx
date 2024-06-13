@@ -25,13 +25,13 @@ export default function TutorsPage() {
             <h1 className="dashboard-header">Tutors</h1>
 
             <Container className="table-container">
-                <Table className="tutors-table">
+                <Table className="admin-table">
                     <thead>
                         <tr>
-                            <th className="tutors-header">
+                            <th className="admin-table-header">
                                 <b>Tutor name</b>
                             </th>
-                            <th className="tutors-header">
+                            <th className="admin-table-header">
                                 <b>Tutor details</b>
                             </th>
                         </tr>
@@ -39,9 +39,9 @@ export default function TutorsPage() {
                     <tbody>
                         {tutors.map((tutor, index) => (
                             <tr key={index}>
-                                <td className="tutors-text">{tutor["firstName"]} {tutor["lastName"]}</td>
-                                <td className="tutors-text">
-                                    <Link className="tutors-link" to="tutor-information" state={{ firstName: tutor["firstName"], lastName: tutor["lastName"], email: tutor["email"], grade: tutor["grade"], gender: tutor["gender"], location: tutor["location"], subjects: tutor["subjects"], languages: tutor["languages"], availability: tutor["availability"], studentCapacity: tutor["studentCapacity"] }}>
+                                <td className="admin-table-text">{tutor["firstName"]} {tutor["lastName"]}</td>
+                                <td className="admin-table-text">
+                                    <Link className="admin-table-link" to="tutor-information" state={{ firstName: tutor["firstName"], lastName: tutor["lastName"], email: tutor["email"], grade: tutor["grade"], gender: tutor["gender"], location: tutor["location"], subjects: tutor["subjects"], languages: tutor["languages"], availability: tutor["availability"], studentCapacity: tutor["studentCapacity"] }}>
                                         See tutor profile
                                     </Link>
                                 </td>

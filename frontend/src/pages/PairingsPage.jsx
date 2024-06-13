@@ -25,16 +25,16 @@ export default function PairingsPage() {
             <h1 className="dashboard-header">Pairings</h1>
 
             <Container className="table-container">
-                <Table className="tutors-table">
+                <Table className="admin-table">
                     <thead>
                         <tr>
-                            <th className="tutors-header">
+                            <th className="admin-table-header">
                                 <b>Tutor</b>
                             </th>
-                            <th className="tutors-header">
+                            <th className="admin-table-header">
                                 <b>Tutee</b>
                             </th>
-                            <th className="tutors-header">
+                            <th className="admin-table-header">
                                 <b>Past sessions</b>
                             </th>
                         </tr>
@@ -42,10 +42,10 @@ export default function PairingsPage() {
                     <tbody>
                         {pairings.map((pairing, index) => (
                             <tr key={index}>
-                                <td className="tutors-text">{pairing["tutorFirstName"]} {pairing["tutorLastName"]}</td>
-                                <td className="tutors-text">{pairing["tuteeFirstName"]} {pairing["tuteeLastName"]}</td>
-                                <td className="tutors-text">
-                                    <Link className="tutors-link" to="tutoring-history" state={{ pairingID: pairing["pairingID"] }}>
+                                <td className="admin-table-text">{pairing["tutorFirstName"]} {pairing["tutorLastName"]}</td>
+                                <td className="admin-table-text">{pairing["tuteeFirstName"]} {pairing["tuteeLastName"]}</td>
+                                <td className="admin-table-text">
+                                    <Link className="admin-table-link" to="tutoring-history" state={{ pairingID: pairing["pairingID"] }}>
                                         See tutoring history
                                     </Link>
                                 </td>
