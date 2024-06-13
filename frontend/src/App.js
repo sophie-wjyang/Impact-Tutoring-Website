@@ -23,7 +23,7 @@ import TutorsPage from "./pages/TutorsPage";
 import TuteesPage from "./pages/TuteesPage";
 import TutorInformationPage from "./pages/TutorInformationPage";
 import TuteeInformation from "./pages/TuteeInformationPage";
-// import PairingsPage from "./pages/PairingsPage";
+import PairingsPage from "./pages/PairingsPage";
 // import VolunteerHoursApprovalsPage from "./pages/VolunteerHoursApprovalsPage";
 
 // bootstrap
@@ -109,8 +109,16 @@ export default function App() {
                             <Route path="tutee-information" element={<TuteeInformation />} />
                         </Route>
                         
-                        {/* <Route path="pairings" element={<PairingsPage />} />
-                        <Route path="volunteer-hours-approvals" element={<VolunteerHoursApprovalsPage />} /> */}
+                        <Route path="pairings" >
+                            <Route index element={<PairingsPage />}  />
+                            <Route path="tutoring-history" >
+                                <Route index element={<TutoringHistory />}  />
+                                <Route path="lesson-plan" element={<Editor title="Lesson Plan" />} />
+                                <Route path="session-notes" element={<Editor title="Session Notes" />} />
+                            </Route>
+                        </Route>
+
+                        {/* <Route path="volunteer-hours-approvals" element={<VolunteerHoursApprovalsPage />} /> */}
                         <Route path="log-out" element={<LogOutPage />} />
                     </Route>
                 </Routes>

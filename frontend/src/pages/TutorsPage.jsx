@@ -8,23 +8,15 @@ import { Container, Table } from "react-bootstrap";
 
 export default function TutorsPage() {
     const location = useLocation();
-    const { pairingID } = location.state || {};
     const [tutors, setTutors] = useState([]);
 
     // get tutors
     useEffect(() => {
-        const data = {
-            pairingID: pairingID
-        }
-
-        axios.get("http://localhost:5000/get-tutors", { 
-            params: data,
-            withCredentials: true 
-        })
-        .then((res) => {
-            // tutors goes from list of dictionaries -> array of objects
-            setTutors(res.data);
-        });
+        axios.get("http://localhost:5000/get-tutors", { withCredentials: true })
+            .then((res) => {
+                // tutors goes from list of dictionaries -> array of objects
+                setTutors(res.data);
+            });
     }, []);
 
     return (

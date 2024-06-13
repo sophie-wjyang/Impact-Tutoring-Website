@@ -62,12 +62,16 @@ def validateLoginFormData():
 
     # admin login
     if data['email'] == os.environ['ADMIN_EMAIL'] and data['password'] == os.environ['ADMIN_PASSWORD']:
+        session['email'] = data['email']
         session['user_type'] = 'admin'
+        print("email: ", session['email'])
+        print("type: ", session['user_type'])
+
         return jsonify({'message': 'success', 'user_type': session['user_type']})
 
+    # tutor or tutee login
     cur = conn.cursor()
 
-    # tutor or tutee login
     cur.execute('''SELECT email, 'tutor' AS user_type
                 FROM tutors
                 WHERE email = %s AND password = %s
@@ -595,6 +599,39 @@ def getTutoringHistory():
 
             result.append(s)
 
+    if(session['user_type'] == 'admin'):
+        # get all sessions associated with the pairing id
+        cur.execute('''SELECT sessions.date, sessions.id, tutors.first_name, tutors.last_name, tutees.first_name, tutees.last_name
+                    FROM pairings
+                    JOIN sessions
+                    ON pairings.id = sessions.pairing_id
+                    JOIN tutors
+                    ON pairings.tutor_id = tutors.id
+                    JOIN tutees
+                    ON pairings.tutee_id = tutees.id
+                    WHERE pairings.id = %s AND sessions.date < CURRENT_DATE 
+                    ORDER BY sessions.date DESC''', (pairing_id,))
+                    
+        
+        sessions = cur.fetchall()
+
+        result = []
+
+        for row in sessions:
+            s = {
+                'date': row[0].strftime("%Y-%m-%d"),
+                'month': row[0].strftime("%B"),
+                'day': row[0].strftime("%d"),
+                'year': row[0].strftime("%Y"),
+                'sessionID': row[1],
+                'tutorFirstName': row[2],
+                'tutorLastName': row[3],
+                'tuteeFirstName': row[4],
+                'tuteeLastName': row[5],
+            }
+
+            result.append(s)
+
     cur.close()
 
     return result
@@ -775,6 +812,41 @@ def getTutees():
     cur.close()
 
     return result
+
+############################################################################################################
+# get pairings
+############################################################################################################
+@app.route('/get-pairings', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def getPairings():
+    cur = conn.cursor()
+
+    cur.execute('''SELECT tutors.first_name, tutors.last_name, tutees.first_name, tutees.last_name, pairings.id
+                FROM pairings
+                JOIN tutors
+                ON pairings.tutor_id = tutors.id
+                JOIN tutees
+                ON pairings.tutee_id = tutees.id''')
+
+    pairings = cur.fetchall()
+
+    result = []
+
+    for pairing in pairings:
+        p = {
+            'tutorFirstName': pairing[0],
+            'tutorLastName': pairing[1],
+            'tuteeFirstName': pairing[2],
+            'tuteeLastName': pairing[3],
+            'pairingID': pairing[4]
+        }
+
+        result.append(p)
+
+    cur.close()
+
+    return result
+
 
 
 ############################################################################################################

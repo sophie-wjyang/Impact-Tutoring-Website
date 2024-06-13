@@ -29,7 +29,7 @@ import { faRedo } from "@fortawesome/free-solid-svg-icons";
 const MenuBar = ({ editor }) => {
     if (!editor) {
         return null;
-    } 
+    }
 
     return (
         <div className="editor-menu-bar">
@@ -116,11 +116,11 @@ const extensions = [
     StarterKit.configure({
         bulletList: {
             keepMarks: true,
-            keepAttributes: false
+            keepAttributes: false,
         },
         orderedList: {
             keepMarks: true,
-            keepAttributes: false
+            keepAttributes: false,
         },
     }),
     Underline,
@@ -130,27 +130,28 @@ export default function Editor(props) {
     const { title } = props;
     const navigate = useNavigate();
     const location = useLocation();
-    const { sessionID, month, day, year, firstName, lastName } = location.state || {};
+    const { sessionID, month, day, year, tutorFirstName = "", tutorLastName = "", tuteeFirstName = "", tuteeLastName = "" } = location.state || {};
     const { userType } = useUser();
 
     // retrieve saved content from database
     const [content, setContent] = useState("");
     const [isContentLoaded, setIsContentLoaded] = useState(false);
-    
+
     useEffect(() => {
         const data = {
             sessionID: sessionID,
-            type: title
-        }
+            type: title,
+        };
 
-        axios.get("http://localhost:5000/get-editor-content", { 
-            params: data,
-            withCredentials: true 
-        })
-        .then((res) => {
-            setContent(res.data[0][0]);
-            setIsContentLoaded(true);
-        });
+        axios
+            .get("http://localhost:5000/get-editor-content", {
+                params: data,
+                withCredentials: true,
+            })
+            .then((res) => {
+                setContent(res.data[0][0]);
+                setIsContentLoaded(true);
+            });
     }, []);
 
     // initialize editor
@@ -174,8 +175,8 @@ export default function Editor(props) {
         const data = {
             sessionID: sessionID,
             type: title,
-            content: content
-        }
+            content: content,
+        };
 
         axios.post("http://localhost:5000/save-editor-content", data, { withCredentials: true });
     }
@@ -192,12 +193,26 @@ export default function Editor(props) {
                 <p className="editor-date">
                     <b>Date:</b> {month} {day}, {year}
                 </p>
-                {userType === "tutor" && (<p className="editor-person">
-                    <b>Tutee:</b> {firstName} {lastName}
-                </p>)}
-                {userType === "tutee" && (<p className="editor-person">
-                    <b>Tutor:</b> {firstName} {lastName}
-                </p>)}
+                {userType === "tutor" && (
+                    <p className="editor-person">
+                        <b>Tutee:</b> {tuteeFirstName} {tuteeLastName}
+                    </p>
+                )}
+                {userType === "tutee" && (
+                    <p className="editor-person">
+                        <b>Tutor:</b> {tutorFirstName} {tutorLastName}
+                    </p>
+                )}
+                {userType === "admin" && (
+                    <div>
+                        <p className="editor-person">
+                            <b>Tutor:</b> {tutorFirstName} {tutorLastName}
+                        </p>
+                        <p className="editor-person">
+                            <b>Tutee:</b> {tuteeFirstName} {tuteeLastName}
+                        </p>
+                    </div>
+                )}
             </div>
 
             {/* editor */}

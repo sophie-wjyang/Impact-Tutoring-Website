@@ -14,7 +14,7 @@ export default function TutoringHistory() {
     const { pairingID } = location.state || {};
     const [pastSessions, setPastSessions] = useState([]);
 
-    // get tutee tutoring history
+    // get tutoring history
     useEffect(() => {
         const data = {
             pairingID: pairingID
@@ -27,6 +27,7 @@ export default function TutoringHistory() {
         .then((res) => {
             // past sessions goes from list of dictionaries -> array of objects
             setPastSessions(res.data);
+            console.log("Past sessions: ", res.data)
         });
     }, []);
 
@@ -55,18 +56,24 @@ export default function TutoringHistory() {
                             <tr key={index}>
                                 <td className="tutoring-history-text">{request["date"]}</td>
                                 <td className="tutoring-history-text">
-                                    {userType === "tutor" && (<Link className="tutoring-history-link" to="lesson-plan" state={{ sessionID: request["sessionID"], month: request["month"], day: request["day"], year: request["year"], firstName: request["tuteeFirstName"], lastName: request["tuteeLastName"]}}>
+                                    {userType === "tutor" && (<Link className="tutoring-history-link" to="lesson-plan" state={{ sessionID: request["sessionID"], month: request["month"], day: request["day"], year: request["year"], tuteeFirstName: request["tuteeFirstName"], tuteeLastName: request["tuteeLastName"]}}>
                                         Lesson plan
                                     </Link>)}
-                                    {userType === "tutee" && (<Link className="tutoring-history-link" to="lesson-plan" state={{ sessionID: request["sessionID"], month: request["month"], day: request["day"], year: request["year"], firstName: request["tutorFirstName"], lastName: request["tutorLastName"]}}>
+                                    {userType === "tutee" && (<Link className="tutoring-history-link" to="lesson-plan" state={{ sessionID: request["sessionID"], month: request["month"], day: request["day"], year: request["year"], tutorFirstName: request["tutorFirstName"], tutorLastName: request["tutorLastName"]}}>
+                                        Lesson plan
+                                    </Link>)}
+                                    {userType === "admin" && (<Link className="tutoring-history-link" to="lesson-plan" state={{ sessionID: request["sessionID"], month: request["month"], day: request["day"], year: request["year"], tutorFirstName: request["tutorFirstName"], tutorLastName: request["tutorLastName"], tuteeFirstName: request["tuteeFirstName"], tuteeLastName: request["tuteeLastName"]}}>
                                         Lesson plan
                                     </Link>)}
                                 </td>
                                 <td className="tutoring-history-text">
-                                    {userType === "tutor" && (<Link className="tutoring-history-link" to="session-notes" state={{ sessionID: request["sessionID"], month: request["month"], day: request["day"], year: request["year"], firstName: request["tuteeFirstName"], lastName: request["tuteeLastName"]}}>
+                                    {userType === "tutor" && (<Link className="tutoring-history-link" to="session-notes" state={{ sessionID: request["sessionID"], month: request["month"], day: request["day"], year: request["year"], tuteeFirstName: request["tuteeFirstName"], tuteeLastName: request["tuteeLastName"]}}>
                                         Session notes
                                     </Link>)}
-                                    {userType === "tutee" && (<Link className="tutoring-history-link" to="session-notes" state={{ sessionID: request["sessionID"], month: request["month"], day: request["day"], year: request["year"], firstName: request["tutorFirstName"], lastName: request["tutorLastName"]}}>
+                                    {userType === "tutee" && (<Link className="tutoring-history-link" to="session-notes" state={{ sessionID: request["sessionID"], month: request["month"], day: request["day"], year: request["year"], tutorFirstName: request["tutorFirstName"], tutorLastName: request["tutorLastName"]}}>
+                                        Session notes
+                                    </Link>)}
+                                    {userType === "admin" && (<Link className="tutoring-history-link" to="session-notes" state={{ sessionID: request["sessionID"], month: request["month"], day: request["day"], year: request["year"], tutorFirstName: request["tutorFirstName"], tutorLastName: request["tutorLastName"], tuteeFirstName: request["tuteeFirstName"], tuteeLastName: request["tuteeLastName"]}}>
                                         Session notes
                                     </Link>)}
                                 </td>
