@@ -15,11 +15,52 @@
     border-bottom: 1px solid #f1f1f1;
 }
 
-.navbar-links .navbar-link {
+#navbar-section .navbar-links .navbar-link {
     font-family: "Open Sans", sans-serif;
     font-size: 14px;
     font-weight: 500;
     color: var(--it-light-grey);
+}
+
+#navbar-section .sign-up-button {
+    background-color: var(--it-teal);
+    border-color: transparent;
+    color: white;
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    width: 100px;
+}
+
+#navbar-section .sign-up-button:hover {
+    background-color: #13989f;
+}
+
+#navbar-section .log-in-button {
+    background-color: transparent;
+    border-color: var(--it-teal);
+    color: var(--it-teal);
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    width: 100px;
+}
+
+#navbar-section .log-in-button:hover {
+    background-color: var(--it-teal);
+    border-color: transparent;
+    color: white;
+}
+
+@media (max-width: 991px){
+    #navbar-section .action-buttons {
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+}
+
+@media (min-width: 992px){
+    #navbar-section .action-buttons {
+        margin-left: 8px;
+    }
 }
 
 /********************************* BANNER **********************************/

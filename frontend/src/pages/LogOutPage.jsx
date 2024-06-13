@@ -14,7 +14,7 @@ export default function LogOut() {
     useEffect(() => {
         axios.get("http://localhost:5000/log-out", { withCredentials: true }).then((res) => {
             if (res.data.message === "success") {
-                navigate("/login");
+                navigate("/log-in");
             } else {
                 console.log("Logout failed");
             }

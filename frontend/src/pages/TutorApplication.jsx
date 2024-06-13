@@ -74,7 +74,7 @@ export default function TutorApplication() {
 
         axios.post("http://localhost:5000/save-tutor-application-report-card", reportCardData, { withCredentials: true });
 
-        navigate("/login");
+        navigate("/log-in");
     }
 
     return (

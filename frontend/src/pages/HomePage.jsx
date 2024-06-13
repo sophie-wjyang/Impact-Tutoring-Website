@@ -21,7 +21,7 @@ export default function LandingPage() {
     return (
         <>
             {/* NAVBAR */}
-            <Navbar expand="md" className="bg-body-tertiary" id="navbar-section" sticky="top">
+            <Navbar expand="lg" className="bg-body-tertiary" id="navbar-section" sticky="top">
                 <Container>
                     {/* logo */}
                     <Navbar.Brand href="#banner-section">
@@ -44,7 +44,22 @@ export default function LandingPage() {
                             {/* <Nav.Link href="#" className="navbar-link">How It Works</Nav.Link> */}
                             <Nav.Link href="#call-to-action-section" className="navbar-link">Get Involved</Nav.Link>
                         </Nav>
+
+                        {/* log in and sign up buttons */}
+                        <div className="d-grid gap-2 d-md-flex justify-content-md-start action-buttons">
+                            <Link to="/sign-up">
+                                <Button size="sm" className="px-4 me-md-2 sign-up-button">
+                                    Sign up
+                                </Button>
+                            </Link>
+                            <Link to="/log-in">
+                                <Button size="sm" className="px-4 log-in-button">
+                                    Log in
+                                </Button>
+                            </Link>
+                        </div>
                     </Navbar.Collapse>
+
                 </Container>
             </Navbar>
 
@@ -79,12 +94,12 @@ export default function LandingPage() {
 
                         {/* buttons */}
                         <div className="d-grid gap-2 d-md-flex justify-content-md-start">
-                            <Link to="/signup">
+                            <Link to="/sign-up">
                                 <Button size="lg" className="px-4 me-md-2 tutor-button">
                                     Become a tutor
                                 </Button>
                             </Link>
-                            <Link to="/signup">
+                            <Link to="/sign-up">
                                 <Button size="lg" className="px-4 tutee-button">
                                     Become a tutee
                                 </Button>
@@ -163,7 +178,7 @@ export default function LandingPage() {
                             Gain valuable leadership and teamwork skills, earn volunteer hours, and give back to your community.
                         </p>
                         
-                        <Link to="/signup">
+                        <Link to="/sign-up">
                             <Button size="lg" className="tutor-button">
                                 Become a tutor
                             </Button>
@@ -178,7 +193,7 @@ export default function LandingPage() {
                             Receive personalized lesson plans, designed just for you, to help with schoolwork, personal learning, and more.
                         </p>
 
-                        <Link to="/signup">
+                        <Link to="/sign-up">
                             <Button size="lg" className="tutee-button">
                                 Become a tutee
                             </Button>

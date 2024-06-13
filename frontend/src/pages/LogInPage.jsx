@@ -31,13 +31,16 @@ export default function LogInPage(resetActiveKey) {
             .then((res) => {
                 if(res.data.message === "success"){
                     setInvalidLogin(false);
+                    setUserType(res.data.user_type);
 
                     if(res.data.user_type === "tutor" || res.data.user_type === "tutee"){
-                        setUserType(res.data.user_type);
+                        navigate("/dashboard");
+                    }
+                    else if(res.data.user_type === "admin"){
                         navigate("/dashboard");
                     }
                     else{
-                        // navigate("/dashboard");
+                        console.log("Invalid user type")
                     }
                 }
                 else{
@@ -53,7 +56,7 @@ export default function LogInPage(resetActiveKey) {
                 <h2 className="form-heading">Log In</h2>
                 <p className="mb-3 form-description">
                     Don't have an account?&nbsp;
-                    <a href="/signup" className="form-link">Sign up.</a>
+                    <a href="/sign-up" className="form-link">Sign up.</a>
                 </p>
 
                 <Form onSubmit={(e) => validateLoginFormData(e)}>

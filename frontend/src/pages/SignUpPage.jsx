@@ -35,7 +35,7 @@ export default function SignUpPage() {
 
         axios.post("http://localhost:5000/save-signup-form-data", data)
             .then(() => {
-                navigate("/login");
+                navigate("/log-in");
             })
     }
 
@@ -45,7 +45,7 @@ export default function SignUpPage() {
                 <h2 className="form-heading">Sign Up</h2>
                 <p className="mb-3 form-description">
                     Already have an account?&nbsp;
-                    <a href="/login" className="form-link">
+                    <a href="/log-in" className="form-link">
                         Log in.
                     </a>
                 </p>
