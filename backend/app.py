@@ -63,9 +63,6 @@ def validateLoginFormData():
     # admin login
     if data['email'] == os.environ['ADMIN_EMAIL'] and data['password'] == os.environ['ADMIN_PASSWORD']:
         session['user_type'] = 'admin'
-        print("email: ", session['email'])
-        print("type: ", session['user_type'])
-
         return jsonify({'message': 'success', 'user_type': session['user_type']})
 
     cur = conn.cursor()
@@ -541,7 +538,6 @@ def getTutoringHistory():
     cur = conn.cursor()
 
     if(session['user_type'] == 'tutor'):
-        print('TUTOR!!!!')
         # get all sessions associated with the pairing id
         cur.execute('''SELECT sessions.date, sessions.id, tutees.first_name, tutees.last_name
                     FROM pairings
@@ -703,6 +699,78 @@ def getPastVolunteerHoursRequestHistory():
         result.append(past_request)
     
     # print("VOLUNTEER HOURS REQUEST HISTORY:", result)
+
+    cur.close()
+
+    return result
+
+
+############################################################################################################
+# get tutors
+############################################################################################################
+@app.route('/get-tutors', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def getTutors():
+    cur = conn.cursor()
+
+    cur.execute('''SELECT first_name, last_name, email, grade, gender, location, subjects, languages, availability, student_capacity
+                FROM tutors
+                ORDER BY first_name''')
+
+    tutors = cur.fetchall()
+
+    result = []
+
+    for tutor in tutors:
+        t = {
+            'firstName': tutor[0],
+            'lastName': tutor[1],
+            'email': tutor[2],
+            'grade': tutor[3],
+            'gender': tutor[4],
+            'location': tutor[5],
+            'subjects': tutor[6],
+            'languages': tutor[7],
+            'availability': tutor[8],
+            'studentCapacity': tutor[9]
+        }
+
+        result.append(t)
+
+    cur.close()
+
+    return result
+
+############################################################################################################
+# get tutees
+############################################################################################################
+@app.route('/get-tutees', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def getTutees():
+    cur = conn.cursor()
+
+    cur.execute('''SELECT first_name, last_name, email, grade, gender, location, subjects, languages, availability
+                FROM tutees
+                ORDER BY first_name''')
+
+    tutees = cur.fetchall()
+
+    result = []
+
+    for tutee in tutees:
+        t = {
+            'firstName': tutee[0],
+            'lastName': tutee[1],
+            'email': tutee[2],
+            'grade': tutee[3],
+            'gender': tutee[4],
+            'location': tutee[5],
+            'subjects': tutee[6],
+            'languages': tutee[7],
+            'availability': tutee[8]
+        }
+
+        result.append(t)
 
     cur.close()
 

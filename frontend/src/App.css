@@ -1191,3 +1191,72 @@
     padding: 20px 10px !important;
 }
 
+/********************************* TUTORS/TUTEES **********************************/
+
+.tutors-title, .tutees-title {
+    font-family: "Yeseva One", serif;
+    color: var(--it-dark-grey);
+    font-size: 24px;
+    padding: 30px 10px 10px 10px !important;
+    margin-bottom: 0 !important;
+}
+
+.tutors-table, .tutees-table {
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    margin-bottom: 50px !important;
+}
+
+.tutors-table tbody tr:last-child td, .tutees-table tbody tr:last-child td {
+    border-bottom: none;
+    padding-bottom: 30px !important;
+}
+
+.tutors-table .tutors-header, .tutees-table .tutees-header {
+    color: var(--it-dark-grey);
+    padding: 20px 10px !important;
+}
+
+.tutors-table .tutors-text, .tutees-table .tutees-text {
+    color: var(--it-light-grey);
+    padding: 20px 10px !important;
+}
+
+.tutors-link, .tutees-link{
+    color: var(--it-teal);
+}
+
+.tutors-link:hover, .tutees-link:hover{
+    color: #13989f;
+}
+
+
+/********************************* TUTOR/TUTEE INFORMATION PAGE **********************************/
+
+.tutor-information-table, .tutee-information-table {
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    margin-bottom: 50px !important;
+}
+
+.tutor-information-table tbody tr:last-child td, .tutee-information-table tbody tr:last-child td {
+    border-bottom: none;
+    padding-bottom: 30px !important;
+}
+
+.tutor-information-table .tutor-information-table-title, .tutee-information-table .tutee-information-table-title {
+    font-family: "Yeseva One", serif;
+    color: var(--it-dark-grey);
+    font-size: 24px;
+    padding: 30px 10px !important;
+}
+
+.tutor-information-table .tutor-information-table-header, .tutee-information-table .tutee-information-table-header {
+    color: var(--it-dark-grey);
+    padding: 20px 10px !important;
+}
+
+.tutor-information-table .tutor-information-table-text, .tutee-information-table .tutee-information-table-text {
+    color: var(--it-light-grey);
+    padding: 20px 10px !important;
+}

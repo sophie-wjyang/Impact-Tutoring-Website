@@ -10,7 +10,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
-import { faChalkboardUser } from "@fortawesome/free-solid-svg-icons";
+import { faChalkboardUser, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { faFileLines } from "@fortawesome/free-regular-svg-icons";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
@@ -112,7 +112,7 @@ export function DashboardTutee() {
     const { pathname } = useLocation();
 
     // sets the active key to the first item in the array that is found in the path name
-    const activeKey = ["profile", "upcoming-sessions", "my-tutees", "my-subjects", "resources", "volunteer-hours"].find((key) => pathname.includes(key)) || "profile";
+    const activeKey = ["profile", "upcoming-sessions", "my-subjects", "resources", "volunteer-hours"].find((key) => pathname.includes(key)) || "profile";
 
     const [flexDirection, setFlexDirection] = useState(window.outerWidth >= 1200);
 
@@ -148,7 +148,7 @@ export function DashboardTutee() {
                         <Navbar.Collapse className="w-100">
                             <Nav className="flex-column sidebar-links w-100" activeKey={activeKey} onSelect={(selectedKey) => handleSelect(selectedKey)}>
                                 <Nav.Link eventKey="profile" className="sidebar-link">
-                                    <FontAwesomeIcon icon={faUser} className="sidebar-icon" />
+                                    <FontAwesomeIcon icon={faUsers} className="sidebar-icon" />
                                     Profile
                                 </Nav.Link>
                                 <Nav.Link eventKey="upcoming-sessions" className="sidebar-link">
@@ -191,7 +191,7 @@ export function DashboardAdmin() {
     const { pathname } = useLocation();
 
     // sets the active key to the first item in the array that is found in the path name
-    const activeKey = ["profile", "upcoming-sessions", "my-tutees", "my-subjects", "resources", "volunteer-hours"].find((key) => pathname.includes(key)) || "profile";
+    const activeKey = ["tutors", "tutees", "pairings", "volunteer-hours-approvals"].find((key) => pathname.includes(key)) || "tutors";
 
     const [flexDirection, setFlexDirection] = useState(window.outerWidth >= 1200);
 
@@ -226,21 +226,21 @@ export function DashboardAdmin() {
 
                         <Navbar.Collapse className="w-100">
                             <Nav className="flex-column sidebar-links w-100" activeKey={activeKey} onSelect={(selectedKey) => handleSelect(selectedKey)}>
-                                <Nav.Link eventKey="profile" className="sidebar-link">
+                                <Nav.Link eventKey="tutors" className="sidebar-link">
                                     <FontAwesomeIcon icon={faUser} className="sidebar-icon" />
+                                    Tutors
+                                </Nav.Link>
+                                <Nav.Link eventKey="tutees" className="sidebar-link">
+                                    <FontAwesomeIcon icon={faUser} className="sidebar-icon" />
+                                    Tutees
+                                </Nav.Link>
+                                <Nav.Link eventKey="pairings" className="sidebar-link">
+                                    <FontAwesomeIcon icon={faUsers} className="sidebar-icon" />
                                     Pairings
                                 </Nav.Link>
-                                <Nav.Link eventKey="upcoming-sessions" className="sidebar-link">
-                                    <FontAwesomeIcon icon={faCalendarDays} className="sidebar-icon" />
-                                    Volunteer hour requests
-                                </Nav.Link>
-                                <Nav.Link eventKey="my-subjects" className="sidebar-link">
-                                    <FontAwesomeIcon icon={faChalkboardUser} className="sidebar-icon" />
-                                    My subjects
-                                </Nav.Link>
-                                <Nav.Link eventKey="resources" className="sidebar-link">
+                                <Nav.Link eventKey="volunteer-hours-approvals" className="sidebar-link">
                                     <FontAwesomeIcon icon={faFileLines} className="sidebar-icon" />
-                                    Resources
+                                    Volunteer hours
                                 </Nav.Link>
                                 <Nav.Link eventKey="log-out" className="sidebar-link">
                                     <FontAwesomeIcon icon={faArrowRightFromBracket} className="sidebar-icon" />

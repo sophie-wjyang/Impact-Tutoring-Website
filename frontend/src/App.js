@@ -7,16 +7,24 @@ import { useUser } from "./UserContext";
 import HomePage from "./pages/HomePage";
 import SignUpPage from "./pages/SignUpPage";
 import LogInPage from "./pages/LogInPage";
-import { DashboardTutor, DashboardTutee } from "./pages/Dashboard";
 import TutorApplication from "./pages/TutorApplication";
+
+import { DashboardTutor, DashboardTutee, DashboardAdmin } from "./pages/Dashboard";
 import { ProfilePageTutor, ProfilePageTutee } from "./pages/ProfilePage";
 import { UpcomingSessionsPageTutor, UpcomingSessionsPageTutee } from "./pages/UpcomingSessionsPage";
 import { MyTuteesPage, MySubjectsPage } from "./pages/MyCommitmentsPage";
 import { ResourcesPageTutor, ResourcesPageTutee} from "./pages/ResourcesPage";
 import VolunteerHoursPage from "./pages/VolunteerHoursPage";
-import Editor from "./components/Editor";
-import TutoringHistory from "./components/TutoringHistory";
+import Editor from "./pages/EditorPage";
+import TutoringHistory from "./pages/TutoringHistoryPage";
 import LogOutPage from "./pages/LogOutPage";
+
+import TutorsPage from "./pages/TutorsPage";
+import TuteesPage from "./pages/TuteesPage";
+import TutorInformationPage from "./pages/TutorInformationPage";
+import TuteeInformation from "./pages/TuteeInformationPage";
+// import PairingsPage from "./pages/PairingsPage";
+// import VolunteerHoursApprovalsPage from "./pages/VolunteerHoursApprovalsPage";
 
 // bootstrap
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -31,17 +39,17 @@ export default function App() {
                 <Routes>
                     {/* top level routes */}
                     <Route index element={<HomePage />} />
-                    <Route path="signup" element={<SignUpPage />} />
-                    <Route path="login" element={<LogInPage />} />
+                    <Route path="sign-up" element={<SignUpPage />} />
+                    <Route path="log-in" element={<LogInPage />} />
                     <Route path="tutor-application" element={<TutorApplication />} />
 
                     {/* tutor dashboard routes */}
-                    {userType == "tutor" && (<Route path="dashboard" element={<DashboardTutor />}>
+                    {userType === "tutor" && (<Route path="dashboard" element={<DashboardTutor />}>
                         <Route index element={<Navigate to="profile" />} />
+
                         <Route path="profile" element={<ProfilePageTutor />} />
 
-                        {/* upcoming sessions routes */}
-                       <Route path="upcoming-sessions">
+                        <Route path="upcoming-sessions">
                             <Route index element={<UpcomingSessionsPageTutor />} />
                             <Route path="lesson-plan" element={<Editor title="Lesson Plan" />} />
                             <Route path="session-notes" element={<Editor title="Session Notes" />} />
@@ -55,17 +63,18 @@ export default function App() {
                                 <Route path="session-notes" element={<Editor title="Session Notes" />} />
                             </Route>
                         </Route>
+
                         <Route path="resources" element={<ResourcesPageTutor/>} />
                         <Route path="volunteer-hours" element={<VolunteerHoursPage />} />
                         <Route path="log-out" element={<LogOutPage />} />
                     </Route>)}
 
                     {/* tutee dashboard routes */}
-                    {userType == "tutee" && (<Route path="dashboard" element={<DashboardTutee />}>
+                    {userType === "tutee" && (<Route path="dashboard" element={<DashboardTutee />}>
                         <Route index element={<Navigate to="profile" />} />
+
                         <Route path="profile" element={<ProfilePageTutee />} />
 
-                        {/* upcoming sessions routes */}
                        <Route path="upcoming-sessions">
                             <Route index element={<UpcomingSessionsPageTutee />} />
                             <Route path="lesson-plan" element={<Editor title="Lesson Plan" />} />
@@ -80,10 +89,30 @@ export default function App() {
                                 <Route path="session-notes" element={<Editor title="Session Notes" />} />
                             </Route>
                         </Route>
+
                         <Route path="resources" element={<ResourcesPageTutee/>} />
                         <Route path="volunteer-hours" element={<VolunteerHoursPage />} />
                         <Route path="log-out" element={<LogOutPage />} />
                     </Route>)}
+
+                    {/* admin dashboard routes */}
+                    <Route path="dashboard" element={<DashboardAdmin />}>
+                        <Route index element={<Navigate to="tutors" />} />
+
+                        <Route path="tutors" >
+                            <Route index element={<TutorsPage />}  />
+                            <Route path="tutor-information" element={<TutorInformationPage />} />
+                        </Route>
+
+                        <Route path="tutees" >
+                            <Route index element={<TuteesPage />}  />
+                            <Route path="tutee-information" element={<TuteeInformation />} />
+                        </Route>
+                        
+                        {/* <Route path="pairings" element={<PairingsPage />} />
+                        <Route path="volunteer-hours-approvals" element={<VolunteerHoursApprovalsPage />} /> */}
+                        <Route path="log-out" element={<LogOutPage />} />
+                    </Route>
                 </Routes>
             </BrowserRouter>
         </div>
