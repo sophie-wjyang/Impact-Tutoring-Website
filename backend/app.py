@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, session
+from flask import Flask, request, jsonify, session, send_file
 from flask_session import Session
 from flask_cors import CORS, cross_origin
 import os 
@@ -145,10 +145,10 @@ def saveTutorApplicationResume():
 
     file = request.files['resume']
     first_name, last_name = result
-    file_name = f"{first_name}-{last_name}-Resume.pdf"
+    object_name = f"{first_name}-{last_name}-Resume.pdf"
     
     # save file to S3
-    s3.upload_fileobj(file, os.environ['TUTOR_APPLICATION_BUCKET_NAME'], file_name)
+    s3.upload_fileobj(file, os.environ['TUTOR_APPLICATION_BUCKET_NAME'], object_name)
 
     print("FILE UPLOADED TO S3")
 
@@ -181,10 +181,10 @@ def saveTutorApplicationReportCard():
     # get the file and the name of the tutor
     file = request.files['report-card']
     first_name, last_name = result
-    file_name = f"{first_name}-{last_name}-Report-Card.pdf"
+    object_name = f"{first_name}-{last_name}-Report-Card.pdf"
     
     # save file to S3
-    s3.upload_fileobj(file, os.environ['TUTOR_APPLICATION_BUCKET_NAME'], file_name)
+    s3.upload_fileobj(file, os.environ['TUTOR_APPLICATION_BUCKET_NAME'], object_name)
 
     print("FILE UPLOADED TO S3")
 
@@ -662,9 +662,9 @@ def saveVolunteerHoursData():
 ############################################################################################################
 # save volunteer hours request form
 ############################################################################################################
-@app.route('/save-volunteer-hours-form', methods=['POST'])
+@app.route('/save-volunteer-hours-request-form', methods=['POST'])
 @cross_origin(supports_credentials=True)
-def saveVolunteerHoursForm():
+def saveVolunteerHoursRequestForm():
     # get the name of the tutor that's currently logged in
     if 'email' not in session:
         print("EMAIL NOT FOUND IN SESSION")
@@ -686,10 +686,10 @@ def saveVolunteerHoursForm():
     file = request.files['volunteer-hours-form']
     first_name, last_name = result
     current_date = date.today()
-    file_name = f"{first_name}-{last_name}-{current_date}-Volunteer-Hours-Request.pdf"
+    object_name = f"{first_name}-{last_name}-{current_date}-Volunteer-Hours-Request.pdf"
     
     # save file to S3
-    s3.upload_fileobj(file, os.environ['VOLUNTEER_HOURS_BUCKET_NAME'], file_name)
+    s3.upload_fileobj(file, os.environ['VOLUNTEER_HOURS_REQUESTS_BUCKET_NAME'], object_name)
 
     print("FILE UPLOADED TO S3")
 
@@ -885,7 +885,7 @@ def getPendingVolunteerHoursRequests():
 
 
 ############################################################################################################
-# get request data
+# get data for a given volunteer hours request
 ############################################################################################################
 @app.route('/get-hours-request-data', methods=['GET'])
 @cross_origin(supports_credentials=True)
@@ -918,6 +918,84 @@ def getHoursRequestData():
 
     return result
 
+
+############################################################################################################
+# get custom volunteer hours form, if exists
+############################################################################################################
+@app.route('/get-volunteer-hours-form', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def getVolunteerHoursForm():
+    if 'email' not in session:
+        return jsonify({'message': 'error', 'details': 'Email not found in session'})
+    
+    request_id = request.args.get('requestID')
+
+    cur = conn.cursor()
+
+    cur.execute('''SELECT tutors.first_name, tutors.last_name, v.date_submitted
+                FROM volunteer_hours_requests AS v
+                JOIN tutors
+                ON v.tutor_id = tutors.id
+                WHERE v.id = %s''', (request_id,))
+    
+    r = cur.fetchone()
+    cur.close()
+
+    # get the file name it was saved as
+    object_name = f"{r[0]}-{r[1]}-{r[2]}-Volunteer-Hours-Request.pdf"
+    local_file_path = f"{object_name}"
+    default_file_path = f"../frontend/src/assets/default-volunteer-hours-form.pdf"
+
+    # see if if the file exists in S3
+    try:
+        s3.head_object(Bucket=os.environ['VOLUNTEER_HOURS_REQUESTS_BUCKET_NAME'], Key=object_name)
+        file_exists = True
+    except s3.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == '404':
+            file_exists = False
+        else:
+            return jsonify({'message': 'error', 'details': 'Error fetching file from S3'}), 500
+
+    if file_exists:
+        with open(object_name, "wb") as f:
+            s3.download_fileobj(os.environ['VOLUNTEER_HOURS_REQUESTS_BUCKET_NAME'], object_name, f)
+
+        # download the file to a temporary path
+        # return a response object that represents the file download
+        return send_file(local_file_path, as_attachment=True, download_name=object_name)
+    else:
+        return send_file(default_file_path, as_attachment=True, download_name=object_name)
+
+
+############################################################################################################
+# save volunteer hours approval form
+############################################################################################################
+@app.route('/save-volunteer-hours-approval-form', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def saveVolunteerHoursApprovalForm():
+    request_id = request.form['requestID']
+
+    cur = conn.cursor()
+
+    cur.execute('''SELECT tutors.first_name, tutors.last_name, v.date_submitted
+                FROM tutors
+                JOIN volunteer_hours_requests AS v
+                ON v.tutor_id = tutors.id
+                WHERE v.id = %s ''', (request_id,))
+    
+    result = cur.fetchone()
+    cur.close()
+
+    file = request.files['volunteer-hours-form']
+    first_name, last_name, date = result
+    object_name = f"{first_name}-{last_name}-{date}-Volunteer-Hours-Approval.pdf"
+    
+    # save file to S3
+    s3.upload_fileobj(file, os.environ['VOLUNTEER_HOURS_APPROVALS_BUCKET_NAME'], object_name)
+
+    print("FILE UPLOADED TO S3")
+
+    return jsonify({'message': 'success'})
 
 
 ############################################################################################################

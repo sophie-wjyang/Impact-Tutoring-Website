@@ -1260,16 +1260,14 @@
     font-family: "Yeseva One", serif;
     font-size: 24px;
     color: var(--it-dark-grey);
-    margin-top: 10px;
     margin-bottom: 10px;
 }
 
 .hours-approval-text {
     font-family: "Open Sans", sans-serif;
-    font-size: 15px;
+    font-size: 14px;
     color: var(--it-light-grey);
     margin-top: 15px;
-    margin-bottom: 30px;
 }
 
 .hours-approval-text > div {
@@ -1282,6 +1280,23 @@
 }
 
 .dashboard-form-container .download-form-button {
+    background-color: transparent !important;
+    border-color: var(--it-teal) !important;
+    color: var(--it-teal) !important;
+    font-family: "Open Sans", sans-serif !important;
+    font-size: 14px !important;
+    margin-top: 10px;
+    width: 100px;
+}
+
+.dashboard-form-container .download-form-button:hover,
+.dashboard-form-container .download-form-button:active {
+    background-color: var(--it-teal) !important;
+    color: white !important;
+    border-color: transparent !important;
+}
+
+.dashboard-form-container .submit-button {
     background-color: var(--it-teal);
     border-color: transparent;
     color: white;
@@ -1292,8 +1307,8 @@
     margin-top: 15px;
 }
 
-.dashboard-form-container .download-form-button:hover,
-.dashboard-form-container .download-form-button:active {
+.dashboard-form-container .submit-button:hover,
+.dashboard-form-container .submit-button:active {
     background-color: #13989f !important;
     border-color: transparent !important;
 }

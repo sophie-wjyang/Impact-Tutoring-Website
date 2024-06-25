@@ -48,7 +48,7 @@ export default function VolunteerHoursRequestPage() {
         const volunteerHoursFormData = new FormData();
         volunteerHoursFormData.append("volunteer-hours-form", volunteerHoursForm);
 
-        axios.post("http://localhost:5000/save-volunteer-hours-form", volunteerHoursFormData, { withCredentials: true });
+        axios.post("http://localhost:5000/save-volunteer-hours-request-form", volunteerHoursFormData, { withCredentials: true });
     }
 
     return (
@@ -72,7 +72,7 @@ export default function VolunteerHoursRequestPage() {
                     <TextArea
                         controlId="description"
                         label="Description"
-                        description="Regarding the hours you’re requesting, please include the name of the tutee, the session dates, and any other relevant information."
+                        description="Regarding the hours you're requesting, please include the name of the tutee, the session dates, and any other relevant information."
                         placeholder="Description"
                         value={description}
                         rows={5}
@@ -81,9 +81,9 @@ export default function VolunteerHoursRequestPage() {
 
                     {/* Volunteer hours form */}
                     <FileUpload
-                        controlId="volunteerHoursForm"
+                        controlId="pendingVolunteerHoursForm"
                         label="Volunteer hours form"
-                        description="If you have a specific volunteer file you’d like us to sign off on, please upload it here, with all the basic information filled in (your name, number of hours, description, etc.). Otherwise, a default letter will be provided to you."
+                        description="If you have a specific volunteer file you'd like us to sign off on, please upload it here, with all the basic information filled in (your name, number of hours, description, etc.). Otherwise, a default letter will be provided to you."
                         onChange={(e) => {
                             setVolunteerHoursForm(e.target.files[0]);
                         }}

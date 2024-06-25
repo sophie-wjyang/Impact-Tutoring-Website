@@ -92,7 +92,6 @@ export default function App() {
                         </Route>
 
                         <Route path="resources" element={<ResourcesPageTutee/>} />
-                        <Route path="volunteer-hours-request" element={<VolunteerHoursRequestPage />} />
                         <Route path="log-out" element={<LogOutPage />} />
                     </Route>)}
 

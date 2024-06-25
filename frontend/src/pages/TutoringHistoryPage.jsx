@@ -27,7 +27,6 @@ export default function TutoringHistory() {
         .then((res) => {
             // past sessions goes from list of dictionaries -> array of objects
             setPastSessions(res.data);
-            console.log("Past sessions: ", res.data)
         });
     }, []);
 
