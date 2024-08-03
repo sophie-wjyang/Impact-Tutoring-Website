@@ -7,6 +7,9 @@ import boto3
 from datetime import date, datetime, timedelta
 import jwt
 from flask_mail import Mail, Message
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 app.config["SESSION_TYPE"] = "filesystem"
