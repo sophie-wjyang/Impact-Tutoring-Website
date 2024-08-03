@@ -20,7 +20,7 @@ export default function LogInPage(resetActiveKey) {
 
     // check if their login credentials exist in our database
     function validateLoginFormData(event) {
-        event.preventDefault(); // prevents default page reload
+        event.preventDefault(); // prevents default page reload so that the error message shows up
 
         const data = {
             email: email,
@@ -30,17 +30,10 @@ export default function LogInPage(resetActiveKey) {
         axios.post("http://localhost:5000/validate-login-form-data", data, { withCredentials: true }).then((res) => {
             if (res.data.message === "success") {
                 setInvalidLogin(false);
-                setUserType(res.data.user_type);
-
-                if (res.data.user_type === "tutor" || res.data.user_type === "tutee") {
-                    navigate("/dashboard");
-                } else if (res.data.user_type === "admin") {
-                    navigate("/dashboard");
-                } else {
-                    console.log("Invalid user type");
-                }
+                // set user context
+                setUserType(res.data.user_type); 
+                navigate("/dashboard");
             } else {
-                console.log("Invalid login credentials");
                 setInvalidLogin(true);
             }
         });
@@ -66,7 +59,7 @@ export default function LogInPage(resetActiveKey) {
                         Forgot your password?
                     </a>
 
-                    {invalidLogin && <p className="invalid-login-message">We couldn't find an account matching the email and password you entered. Please try again.</p>}
+                    {invalidLogin && <p className="invalid-login-message">We couldn't find an account matching the email and password you entered. Please verify your credentials are correct, or sign up for an account.</p>}
 
                     <Button variant="primary" size="lg" type="submit" className="w-100 form-submit-button">
                         Log In

@@ -112,9 +112,6 @@ def validateLoginFormData():
     ):
         session["email"] = data["email"]
         session["user_type"] = "admin"
-        print("email: ", session["email"])
-        print("type: ", session["user_type"])
-
         return {"message": "success", "user_type": session["user_type"]}
 
     # tutor or tutee login
@@ -137,12 +134,8 @@ def validateLoginFormData():
     cur.close()
 
     if result:
-        # set the current session information
         session["email"] = data["email"]
         session["user_type"] = result[1]
-        print("email: ", session["email"])
-        print("type: ", session["user_type"])
-
         return {"message": "success", "user_type": session["user_type"]}
     else:
         return {

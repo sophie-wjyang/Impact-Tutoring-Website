@@ -23,8 +23,6 @@ export default function SignUpPage() {
 
     // save sign up form data to database
     function saveSignUpFormData(event){
-        event.preventDefault(); // prevents default page reload
-
         const data = {
             firstName: firstName,
             lastName: lastName,
