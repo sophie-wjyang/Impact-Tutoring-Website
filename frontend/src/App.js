@@ -7,7 +7,7 @@ import { useUser } from "./hooks/useUser";
 import HomePage from "./pages/HomePage";
 import SignUpPage from "./pages/SignUpPage";
 import LogInPage from "./pages/LogInPage";
-import { VerifySignupPage, ReverifySignupPage } from "./pages/VerifySignupPage";
+import VerifySignupPage from "./pages/VerifySignupPage";
 import TutorApplication from "./pages/TutorApplication";
 import TuteeSignupInformation from "./pages/TuteeSignupInformation";
 import { ApplicationApplied, ApplicationRejected } from "./pages/ApplicationStatusPage";
@@ -44,8 +44,8 @@ export default function App() {
                     <Route index element={<HomePage />} />
                     <Route path="sign-up" element={<SignUpPage />} />
                     <Route path="log-in" element={<LogInPage />} />
-                    <Route path="verify-signup" element={<VerifySignupPage />} />
-                    <Route path="reverify-signup" element={<ReverifySignupPage />} />
+                    <Route path="verify-signup" element={<VerifySignupPage status="verify"/>} />
+                    <Route path="reverify-signup" element={<ReverifySignupPage status="reverify"/>} />
                     <Route path="tutor-application" element={<TutorApplication />} />
                     <Route path="tutee-signup-information" element={<TuteeSignupInformation />} />
                     <Route path="application-applied" element={<ApplicationApplied />} />
