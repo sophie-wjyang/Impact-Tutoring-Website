@@ -5,7 +5,7 @@ CREATE TABLE tutors (
     id SERIAL PRIMARY KEY,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
-    email TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     grade INTEGER NOT NULL,
     gender GENDER NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE tutees (
     id SERIAL PRIMARY KEY,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
-    email TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     grade INTEGER NOT NULL,
     gender GENDER NOT NULL,
@@ -42,6 +42,8 @@ CREATE TABLE pairings (
     tutee_id INTEGER REFERENCES tutees(id),
     subjects TEXT[],
     meeting_days TEXT[]
+
+    UNIQUE(tutor_id, tutee_id)
 );
 
 CREATE TABLE sessions (
@@ -69,7 +71,7 @@ CREATE TABLE confirmation_codes (
     user_id INTEGER NOT NULL,
     email TEXT NOT NULL,
     code TEXT NOT NULL,
-    created_at DATE NOT NULL,
-    expires_at DATE NOT NULL,
-    verified_at DATE
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP + INTERVAL '3 hours',
+    verified_at TIMESTAMP
 )

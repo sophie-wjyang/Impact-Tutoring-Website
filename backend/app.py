@@ -13,6 +13,8 @@ import jwt
 
 from dotenv import load_dotenv
 
+from utils import send_confirmation_email
+
 load_dotenv()
 
 app = Flask(__name__)
@@ -49,14 +51,21 @@ def index():
 # save sign up form data to database
 ############################################################################################################
 @app.route("/save-signup-form-data", methods=["POST"])
-def saveSignUpFormData():
+def save_signup_form_data():
     data = request.json
+
+    if data["email"] == os.environ["ADMIN_EMAIL"]:
+        return {"message": "email already exists"}, 400
+
     cur = conn.cursor()
 
     # check if the email already exists
-    cur.execute("""SELECT email FROM tutees WHERE email = %s""", (data["email"],))
+    cur.execute(
+        """SELECT email FROM tutees WHERE email = %s UNION SELECT email FROM tutors WHERE email = %s""",
+        (data["email"],),
+    )
 
-    if cur.fetchone():
+    if cur.fetchall().count() > 0:
         return {"message": "email already exists"}, 400
 
     # hash the password using sha256
@@ -75,10 +84,15 @@ def saveSignUpFormData():
         ),
     )
 
+    result = cur.fetchone()
+
+    print(result)
+
+    if result:
+        send_confirmation_email(cur, result[0], data["email"])
+
     conn.commit()
     cur.close()
-
-    # send password confirmation email
 
     return {"message": "signed up successfully"}
 
