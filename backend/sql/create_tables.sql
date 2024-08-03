@@ -1,32 +1,39 @@
+CREATE TYPE GENDER AS ENUM ('male', 'female', 'nonbinary', 'unspecified');
+CREATE TYPE STATUS AS ENUM ('unverified', 'verified', 'applied', 'accepted', 'rejected');
+
 CREATE TABLE tutors (
     id SERIAL PRIMARY KEY,
-    first_name VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    grade INTEGER,
-    gender VARCHAR(255),
-    location VARCHAR(255),
-    subjects TEXT[],
-    languages TEXT[],
-    availability TEXT[],
-    student_capacity INTEGER,
-    previous_experience TEXT
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    password TEXT NOT NULL,
+    grade INTEGER NOT NULL,
+    gender GENDER NOT NULL,
+    location TEXT NOT NULL,
+    subjects TEXT[] NOT NULL,
+    languages TEXT[] NOT NULL,
+    availability TEXT[] NOT NULL,
+    student_capacity INTEGER NOT NULL,
+    previous_experience TEXT,
+    status STATUS NOT NULL,
+    signup_date DATE NOT NULL
 );
 
 CREATE TABLE tutees (
     id SERIAL PRIMARY KEY,
-    first_name VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    grade INTEGER,
-    gender VARCHAR(255),
-    location VARCHAR(255),
-    subjects TEXT[],
-    languages TEXT[],
-    availability TEXT[],
-    additional_information TEXT
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    password TEXT NOT NULL,
+    grade INTEGER NOT NULL,
+    gender GENDER NOT NULL,
+    location TEXT NOT NULL,
+    subjects TEXT[] NOT NULL,
+    languages TEXT[] NOT NULL,
+    availability TEXT[] NOT NULL,
+    additional_information TEXT,
+    status STATUS NOT NULL,
+    signup_date DATE NOT NULL
 );
 
 CREATE TABLE pairings (
@@ -39,7 +46,7 @@ CREATE TABLE pairings (
 
 CREATE TABLE sessions (
     id SERIAL PRIMARY KEY,
-    pairing_id INTEGER REFERENCES pairings(id),
+    pairing_id INTEGER REFERENCES pairings(id) NOT NULL,
     date DATE,
     start_time TIME,
     end_time TIME,
@@ -50,10 +57,10 @@ CREATE TABLE sessions (
 
 CREATE TABLE volunteer_hours_requests (
     id SERIAL PRIMARY KEY,
-    date_submitted DATE,
-    tutor_id INTEGER REFERENCES tutors(id),
-    num_hours INTEGER,
-    status VARCHAR(255),
-    description TEXT
+    date_submitted DATE NOT NULL,
+    tutor_id INTEGER REFERENCES tutors(id) NOT NULL,
+    num_hours INTEGER NOT NULL,
+    status TEXT NOT NULL,
+    description TEXT NOT NULL
 );
 
