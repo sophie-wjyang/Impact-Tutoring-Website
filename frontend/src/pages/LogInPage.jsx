@@ -32,7 +32,10 @@ export default function LogInPage(resetActiveKey) {
                 setInvalidLogin(false);
                 // set user context
                 setUserType(res.data.user_type); 
-                navigate("/dashboard");
+
+                if(res.data.status === "verified"){
+                    navigate("/dashboard");
+                }
             } else {
                 setInvalidLogin(true);
             }
