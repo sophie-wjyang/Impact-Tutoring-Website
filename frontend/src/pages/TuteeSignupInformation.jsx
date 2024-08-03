@@ -13,10 +13,9 @@ import Container from "react-bootstrap/Container";
 import TextBox from "../components/form/TextBox";
 import TextArea from "../components/form/TextArea";
 import Dropdown from "../components/form/Dropdown";
-import FileUpload from "../components/form/FileUpload";
 import MultiSelect from "../components/form/MultiSelect";
 
-export default function TutorApplication() {
+export default function TuteeSignupInformation() {
     const navigate = useNavigate();
 
     const [grade, setGrade] = useState("");
@@ -25,10 +24,7 @@ export default function TutorApplication() {
     const [subjects, setSubjects] = useState([]);
     const [languages, setLanguages] = useState([]);
     const [availability, setAvailability] = useState([]);
-    const [studentCapacity, setStudentCapacity] = useState("");
-    const [reportCard, setReportCard] = useState(null);
-    const [resume, setResume] = useState(null);
-    const [previousExperience, setPreviousExperience] = useState("");
+    const [additionalInformation, setAdditionalInformation] = useState("");
 
     // google maps location autocomplete
     useEffect(() => {
@@ -45,7 +41,7 @@ export default function TutorApplication() {
         });
     }, [window.google]);
 
-    function saveTutorApplicationData(event) {
+    function saveTuteeSignupData(event) {
         // save data to database
         event.preventDefault();
 
@@ -56,37 +52,24 @@ export default function TutorApplication() {
             subjects: subjects,
             languages: languages,
             availability: availability,
-            studentCapacity: studentCapacity,
-            previousExperience: previousExperience,
+            additionalInformation: additionalInformation,
         };
 
-        axios.post("http://localhost:5000/save-tutor-application-data", data, { withCredentials: true });
-
-        // save resume data to S3
-        const resumeData = new FormData();
-        resumeData.append("resume", resume);
-
-        axios.post("http://localhost:5000/save-tutor-application-resume", resumeData, { withCredentials: true });
-
-        // save report card data to S3
-        const reportCardData = new FormData();
-        reportCardData.append("report-card", reportCard);
-
-        axios.post("http://localhost:5000/save-tutor-application-report-card", reportCardData, { withCredentials: true });
+        axios.post("http://localhost:5000/save-tutee-signup-data", data, { withCredentials: true });
     }
 
     return (
         <div className="d-flex justify-content-center align-items-center">
             <Container id="form-container">
-                <h2 className="form-heading">Apply to be a tutor</h2>
+                <h2 className="form-heading">Please fill out your information</h2>
                 <p className="mb-4 form-description">
-                    Thank you for making an account with us! Please fill out the following fields to apply to be a tutor with Impact Tutoring. If you have any questions, please contact us at
+                    Thank you for making an account with us! Please fill out the following fields to become a tutee with Impact Tutoring. If you have any questions, please contact us at
                     impacttutoringca@gmail.com.
                 </p>
 
                 <Form
                     onSubmit={(e) => {
-                        saveTutorApplicationData(e);
+                        saveTuteeSignupData(e);
                     }}
                 >
                     {/* grade */}
@@ -138,7 +121,7 @@ export default function TutorApplication() {
                             const selectedOptions = Array.from(e.target.selectedOptions, (option) => option.value);
                             setSubjects(selectedOptions);
                         }}
-                        description="Please check all the subjects you would be comfortable tutoring."
+                        description="Please check all the subjects you would like to be tutored in."
                     />
 
                     {/* languages */}
@@ -152,7 +135,7 @@ export default function TutorApplication() {
                             const selectedOptions = Array.from(e.target.selectedOptions, (option) => option.value);
                             setLanguages(selectedOptions);
                         }}
-                        description="Please check all the languages you would be comfortable tutoring in."
+                        description="Please check all the languages you would be comfortable being tutored in."
                     />
 
                     {/* availability */}
@@ -165,53 +148,22 @@ export default function TutorApplication() {
                             const selectedOptions = Array.from(e.target.selectedOptions, (option) => option.value);
                             setAvailability(selectedOptions);
                         }}
-                        description="Please check all the days you would be available to tutor."
+                        description="Please check all the days you would be available to receive tutoring."
                     />
 
-                    {/* student capacity */}
-                    <Dropdown
-                        controlId="formStudentCapacity"
-                        label="Student capacity"
-                        placeholder="Student capacity"
-                        value={studentCapacity}
-                        options={["1", "2", "3"]}
-                        onChange={(e) => setStudentCapacity(e.target.value)}
-                        description="Please select the maximum number of students you would be comfortable tutoring."
-                    />
-
-                    {/* report card */}
-                    <FileUpload
-                        controlId="formReportCard"
-                        label="Report card"
-                        description="Please upload a copy of your most recent report card."
-                        onChange={(e) => {
-                            setReportCard(e.target.files[0]);
-                        }}
-                    />
-
-                    {/* resume */}
-                    <FileUpload
-                        controlId="formResume"
-                        label="Resume"
-                        description=""
-                        onChange={(e) => {
-                            setResume(e.target.files[0]);
-                        }}
-                    />
-
-                    {/* previous experience */}
+                    {/* additional information */}
                     <TextArea
-                        controlId="previousExperience"
-                        label="Previous experience"
-                        description="If you have any previous experience with tutoring, or have any additional information you would like to share with us, please do so here."
+                        controlId="additionalInformation"
+                        label="Additional information"
+                        description="If there's any additional information you would like to share with us, please do so here."
                         placeholder="Additional information"
-                        value={previousExperience}
+                        value={additionalInformation}
                         rows={5}
-                        onChange={(e) => setPreviousExperience(e.target.value)}
+                        onChange={(e) => setAdditionalInformation(e.target.value)}
                     />
 
                     <Button variant="primary" size="lg" type="submit" className="w-100 form-submit-button">
-                        Submit application
+                        Submit form
                     </Button>
                 </Form>
             </Container>

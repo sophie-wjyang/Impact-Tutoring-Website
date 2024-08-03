@@ -23,6 +23,8 @@ export default function SignUpPage() {
 
     // save sign up form data to database
     function saveSignUpFormData(event){
+        event.preventDefault();
+
         const data = {
             firstName: firstName,
             lastName: lastName,
@@ -35,7 +37,7 @@ export default function SignUpPage() {
             email: email
         }
 
-        axios.post("http://localhost:5000/save-signup-form-data", data)
+        axios.post("http://localhost:5000/save-signup-form-data", data, { withCredentials: true })
             .then(() => {
                 navigate("/confirm-signup");
             })

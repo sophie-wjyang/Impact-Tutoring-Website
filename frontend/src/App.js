@@ -9,6 +9,8 @@ import SignUpPage from "./pages/SignUpPage";
 import LogInPage from "./pages/LogInPage";
 import { VerifySignupPage, ReverifySignupPage } from "./pages/VerifySignupPage";
 import TutorApplication from "./pages/TutorApplication";
+import TuteeSignupInformation from "./pages/TuteeSignupInformation";
+import { ApplicationApplied, ApplicationRejected } from "./pages/ApplicationStatusPage";
 
 import { DashboardTutor, DashboardTutee, DashboardAdmin } from "./pages/Dashboard";
 import { ProfilePageTutor, ProfilePageTutee } from "./pages/ProfilePage";
@@ -45,6 +47,9 @@ export default function App() {
                     <Route path="verify-signup" element={<VerifySignupPage />} />
                     <Route path="reverify-signup" element={<ReverifySignupPage />} />
                     <Route path="tutor-application" element={<TutorApplication />} />
+                    <Route path="tutee-signup-information" element={<TuteeSignupInformation />} />
+                    <Route path="application-applied" element={<ApplicationApplied />} />
+                    <Route path="application-rejected" element={<ApplicationRejected />} />
 
                     {/* tutor dashboard routes */}
                     {userType === "tutor" && (
