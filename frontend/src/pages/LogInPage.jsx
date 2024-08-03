@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useUser } from "../other/UserContext";
+import { useUser } from "../hooks/useUser";
 
 // bootstrap
 import Button from "react-bootstrap/Button";

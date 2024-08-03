@@ -1,10 +1,10 @@
 import React, { createContext, useState, useContext } from "react";
 
-const UserContext = createContext(null);
+const UserContext = createContext({});
 
 // provider component
 export const UserProvider = ({ children }) => {
-    const [userType, setUserType] = useState(null);
+    const [userType, setUserType] = useState();
 
     return <UserContext.Provider value={{ userType, setUserType }}>{children}</UserContext.Provider>;
 };

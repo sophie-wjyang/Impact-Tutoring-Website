@@ -1,17 +1,10 @@
 import React from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useUser } from "../other/UserContext";
 
 // assets
 import EmailConfirmationGraphic from "../assets/images/volunteer-portal/email-confirmation-graphic.svg";
 
 // bootstrap
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
-import TextBox from "../components/form/TextBox";
 import Image from "react-bootstrap/Image";
 
 export function ConfirmSignupPage() {

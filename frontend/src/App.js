@@ -1,7 +1,7 @@
 import "./App.css";
 import React from "react";
 import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
-import { useUser } from "./other/UserContext";
+import { useUser } from "./hooks/useUser";
 
 // pages
 import HomePage from "./pages/HomePage";
@@ -32,7 +32,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import VolunteerHoursApprovalPage from "./pages/VolunteerHoursApprovalPage";
 
 export default function App() {
-    // const { userType } = useUser();
+    const { userType } = useUser();
 
     return (
         <div>

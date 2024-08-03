@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import { UserProvider } from "./UserContext";
+import { UserProvider } from "./hooks/useUser";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

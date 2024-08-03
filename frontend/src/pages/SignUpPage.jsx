@@ -42,7 +42,7 @@ export default function SignUpPage() {
                 return axios.post("http://localhost:5000/send-signup-verification-email", emailData)
             })
             .then(() => {
-                navigate("/log-in");
+                navigate("/confirm-signup");
             })
     }
 

@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useUser } from "../other/UserContext";
+import { useUser } from "../hooks/useUser";
 
 // bootstrap
 import { Container, Row, Col, Table } from "react-bootstrap";
