@@ -33,7 +33,14 @@ export default function SignUpPage() {
             password: password
         }
 
+        const emailData = {
+            email: email
+        }
+
         axios.post("http://localhost:5000/save-signup-form-data", data)
+            .then(() => {
+                return axios.post("http://localhost:5000/send-signup-verification-email", emailData)
+            })
             .then(() => {
                 navigate("/log-in");
             })

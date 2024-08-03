@@ -1,15 +1,19 @@
-from flask import Flask, request, jsonify, session, send_file
+from flask import Flask, request, jsonify, session, send_file, current_app
 from flask_session import Session
 from flask_cors import CORS, cross_origin
 import os 
 import psycopg2
 import boto3
-from datetime import date
+from datetime import date, datetime, timedelta
+import jwt
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 CORS(app)
+mail = Mail()
+mail.init_app(app)
 
 # connect to database   
 # os is used to access environment variables, so that the database username and password are not visible in the source code
@@ -38,17 +42,64 @@ def saveSignUpFormData():
 
     # tutor signup
     if data['accountType'] == 'Tutor':
-        cur.execute('''INSERT INTO tutors (first_name, last_name, email, password)
-                    VALUES (%s, %s, %s, %s)''', (data['firstName'], data['lastName'], data['email'], data['password']))
+        cur.execute('''INSERT INTO tutors (first_name, last_name, email, password, signup_date)
+                    VALUES (%s, %s, %s, %s, %s)''', (data['firstName'], data['lastName'], data['email'], data['password'], date.today()))
     
     # tutee signup
     elif data['accountType'] == 'Tutee':
-        cur.execute('''INSERT INTO tutees (first_name, last_name, email, password)
-                    VALUES (%s, %s, %s, %s)''', (data['firstName'], data['lastName'], data['email'], data['password']))
+        cur.execute('''INSERT INTO tutees (first_name, last_name, email, password, signup_date)
+                    VALUES (%s, %s, %s, %s)''', (data['firstName'], data['lastName'], data['email'], data['password'], date.today()))
 
     conn.commit()
     cur.close()
     
+    return jsonify({'message': 'success'})
+
+
+############################################################################################################
+# send signup verification email
+############################################################################################################
+@app.route('/generate-signup-token', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def generateSignupToken(email):
+    # user's email and a 24 hour expiration time
+    payload = {
+        'email': email,
+        'expires': datetime.utcnow() + timedelta(hours=24)
+    }
+
+    return jwt.encode(payload, current_app.config['SECRET_KEY'], algorithm='HS256')
+
+@app.route('/confirm-signup-token', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def confirmSignupToken(token):
+    data = request.json
+    token = data['token']
+
+    payload = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
+    email = payload['email']
+
+    if payload['expires'] < datetime.utcnow().timestamp():
+        return jsonify({'message': 'error', 'details': 'Token has expired'})
+    
+    return jsonify({'message': 'success', 'email': email})
+
+@app.route('/send-signup-confirmation-email', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def sendSignupConfirmationEmail():
+    data = request.json
+    email = data['email']
+
+    token = generateSignupToken(email)
+
+    # create a confirmation link
+    confirm_url = url_for('confirm_email', token=token, _external=True)
+
+    html = render_template('ConfirmSignupEmail.html', confirm_url=confirm_url)
+    subject = "Confirm Your Account For Impact Tutoring"
+    msg = Message(subject, recipients=[email], html=html)
+    mail.send(msg)
+
     return jsonify({'message': 'success'})
 
 
@@ -711,11 +762,11 @@ def getPastVolunteerHoursRequestHistory():
                 FROM tutors 
                 WHERE email = %s''', (session['email'],))
     
-    tutee_id = cur.fetchone()
+    tutor_id = cur.fetchone()
 
     cur.execute('''SELECT date_submitted, num_hours, status
                 FROM volunteer_hours_requests
-                WHERE tutee_id = %s''', (tutee_id,))
+                WHERE tutor_id = %s''', (tutor_id,))
     
     past_requests = cur.fetchall()
 
@@ -731,8 +782,6 @@ def getPastVolunteerHoursRequestHistory():
 
         result.append(past_request)
     
-    # print("VOLUNTEER HOURS REQUEST HISTORY:", result)
-
     cur.close()
 
     return result

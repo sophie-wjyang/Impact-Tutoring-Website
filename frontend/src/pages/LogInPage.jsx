@@ -2,15 +2,15 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useUser } from "../UserContext";
+import { useUser } from "../other/UserContext";
 
 // bootstrap
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Container from 'react-bootstrap/Container';
-import TextBox from '../components/form/TextBox';
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Container from "react-bootstrap/Container";
+import TextBox from "../components/form/TextBox";
 
-export default function LogInPage(resetActiveKey) {    
+export default function LogInPage(resetActiveKey) {
     const navigate = useNavigate();
     const { setUserType } = useUser();
 
@@ -19,52 +19,52 @@ export default function LogInPage(resetActiveKey) {
     const [invalidLogin, setInvalidLogin] = useState(false);
 
     // check if their login credentials exist in our database
-    function validateLoginFormData(event){
+    function validateLoginFormData(event) {
         event.preventDefault(); // prevents default page reload
 
         const data = {
             email: email,
-            password: password
-        }
+            password: password,
+        };
 
-        axios.post("http://localhost:5000/validate-login-form-data", data, { withCredentials: true })
-            .then((res) => {
-                if(res.data.message === "success"){
-                    setInvalidLogin(false);
-                    setUserType(res.data.user_type);
+        axios.post("http://localhost:5000/validate-login-form-data", data, { withCredentials: true }).then((res) => {
+            if (res.data.message === "success") {
+                setInvalidLogin(false);
+                setUserType(res.data.user_type);
 
-                    if(res.data.user_type === "tutor" || res.data.user_type === "tutee"){
-                        navigate("/dashboard");
-                    }
-                    else if(res.data.user_type === "admin"){
-                        navigate("/dashboard");
-                    }
-                    else{
-                        console.log("Invalid user type")
-                    }
+                if (res.data.user_type === "tutor" || res.data.user_type === "tutee") {
+                    navigate("/dashboard");
+                } else if (res.data.user_type === "admin") {
+                    navigate("/dashboard");
+                } else {
+                    console.log("Invalid user type");
                 }
-                else{
-                    console.log("Invalid login credentials")
-                    setInvalidLogin(true);
-                }
-            })
+            } else {
+                console.log("Invalid login credentials");
+                setInvalidLogin(true);
+            }
+        });
     }
 
     return (
-        <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+        <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
             <Container id="form-container">
                 <h2 className="form-heading">Log In</h2>
                 <p className="mb-3 form-description">
                     Don't have an account?&nbsp;
-                    <a href="/sign-up" className="form-link">Sign up.</a>
+                    <a href="/sign-up" className="form-link">
+                        Sign up.
+                    </a>
                 </p>
 
                 <Form onSubmit={(e) => validateLoginFormData(e)}>
                     {/* email and password */}
-                    <TextBox controlId={"formEmail"} label={"Email address"} placeholder={"Enter email"} value={email} onChange={(e) => setEmail(e.target.value)}/>
-                    <TextBox controlId={"formPassword"} label={"Password"} placeholder={"Enter password"} style={{ marginBottom: 0 }} value={password} onChange={(e) => setPassword(e.target.value)}/>
+                    <TextBox controlId={"formEmail"} label={"Email address"} placeholder={"Enter email"} value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <TextBox controlId={"formPassword"} label={"Password"} placeholder={"Enter password"} style={{ marginBottom: 0 }} value={password} onChange={(e) => setPassword(e.target.value)} />
 
-                    <a href="" className="d-flex justify-content-end form-link">Forgot your password?</a>
+                    <a href="" className="d-flex justify-content-end form-link">
+                        Forgot your password?
+                    </a>
 
                     {invalidLogin && <p className="invalid-login-message">We couldn't find an account matching the email and password you entered. Please try again.</p>}
 
@@ -76,5 +76,3 @@ export default function LogInPage(resetActiveKey) {
         </div>
     );
 }
-
-

@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useUser } from "../UserContext";
+import { useUser } from "../other/UserContext";
 import axios from "axios";
 
 // styling

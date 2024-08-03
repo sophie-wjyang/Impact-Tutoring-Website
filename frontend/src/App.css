@@ -430,6 +430,20 @@
     color: var(--it-dark-grey);
 }
 
+#form-container .message-heading {
+    margin-top: 25px;
+    font-family: "Yeseva One", serif;
+    font-size: 26px;
+    color: var(--it-dark-grey);
+}
+
+#form-container .message-description {
+    font-family: "Open Sans", sans-serif;
+    font-size: 16px;
+    color: var(--it-light-grey);
+    font-weight: 300;
+}
+
 /********************************* DASHBOARD SIDEBAR **********************************/
 
 .dashboard-container{
