@@ -64,3 +64,12 @@ CREATE TABLE volunteer_hours_requests (
     description TEXT NOT NULL
 );
 
+CREATE TABLE confirmation_codes (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    email TEXT NOT NULL,
+    code TEXT NOT NULL,
+    created_at DATE NOT NULL,
+    expires_at DATE NOT NULL,
+    verified_at DATE
+)
