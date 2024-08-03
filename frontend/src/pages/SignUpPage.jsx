@@ -39,9 +39,6 @@ export default function SignUpPage() {
 
         axios.post("http://localhost:5000/save-signup-form-data", data)
             .then(() => {
-                return axios.post("http://localhost:5000/send-signup-verification-email", emailData)
-            })
-            .then(() => {
                 navigate("/confirm-signup");
             })
     }
