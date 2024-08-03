@@ -7,7 +7,7 @@ import EmailConfirmationGraphic from "../assets/images/volunteer-portal/email-co
 import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image";
 
-export function ConfirmSignupPage() {
+export function VerifySignupPage() {
     return (
         <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
             <Container id="form-container" className="d-flex flex-column justify-content-center align-items-center">
@@ -19,7 +19,7 @@ export function ConfirmSignupPage() {
     );
 }
 
-export function ReconfirmSignupPage() {
+export function ReverifySignupPage() {
     return (
         <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
             <Container id="form-container" className="d-flex flex-column justify-content-center align-items-center">

@@ -7,7 +7,7 @@ import { useUser } from "./hooks/useUser";
 import HomePage from "./pages/HomePage";
 import SignUpPage from "./pages/SignUpPage";
 import LogInPage from "./pages/LogInPage";
-import { ConfirmSignupPage, ReconfirmSignupPage } from "./pages/ConfirmSignupPage";
+import { VerifySignupPage, ReverifySignupPage } from "./pages/VerifySignupPage";
 import TutorApplication from "./pages/TutorApplication";
 
 import { DashboardTutor, DashboardTutee, DashboardAdmin } from "./pages/Dashboard";
@@ -19,7 +19,6 @@ import VolunteerHoursRequestPage from "./pages/VolunteerHoursRequestPage";
 import Editor from "./pages/EditorPage";
 import TutoringHistory from "./pages/TutoringHistoryPage";
 import LogOutPage from "./pages/LogOutPage";
-
 import TutorsPage from "./pages/TutorsPage";
 import TuteesPage from "./pages/TuteesPage";
 import TutorInformationPage from "./pages/TutorInformationPage";
@@ -43,8 +42,8 @@ export default function App() {
                     <Route index element={<HomePage />} />
                     <Route path="sign-up" element={<SignUpPage />} />
                     <Route path="log-in" element={<LogInPage />} />
-                    <Route path="confirm-signup" element={<ConfirmSignupPage />} />
-                    <Route path="reconfirm-signup" element={<ReconfirmSignupPage />} />
+                    <Route path="verify-signup" element={<VerifySignupPage />} />
+                    <Route path="reverify-signup" element={<ReverifySignupPage />} />
                     <Route path="tutor-application" element={<TutorApplication />} />
 
                     {/* tutor dashboard routes */}
