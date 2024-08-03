@@ -1,22 +1,27 @@
-from flask import Flask, request, jsonify, session, send_file, current_app
+import os
+import hashlib
+from datetime import date
+
+from flask import Flask, request, session, send_file
 from flask_session import Session
 from flask_cors import CORS, cross_origin
-import os
+from flask_mail import Mail
+
 import psycopg2
 import boto3
-from datetime import date, datetime, timedelta
 import jwt
-from flask_mail import Mail, Message
+
 from dotenv import load_dotenv
 
 load_dotenv()
 
 app = Flask(__name__)
-app.config["SESSION_TYPE"] = "filesystem"
+app.config.from_prefixed_env()
+
 Session(app)
 CORS(app)
-mail = Mail()
-mail.init_app(app)
+
+mail = Mail(app)
 
 # connect to database
 # os is used to access environment variables, so that the database username and password are not visible in the source code
@@ -48,90 +53,40 @@ def saveSignUpFormData():
     data = request.json
     cur = conn.cursor()
 
-    # tutor signup
-    if data["accountType"] == "Tutor":
-        cur.execute(
-            """INSERT INTO tutors (first_name, last_name, email, password, signup_date)
-                    VALUES (%s, %s, %s, %s, %s)""",
-            (
-                data["firstName"],
-                data["lastName"],
-                data["email"],
-                data["password"],
-                date.today(),
-            ),
-        )
+    # check if the email already exists
+    cur.execute("""SELECT email FROM tutees WHERE email = %s""", (data["email"],))
 
-    # tutee signup
-    elif data["accountType"] == "Tutee":
-        cur.execute(
-            """INSERT INTO tutees (first_name, last_name, email, password, signup_date)
-                    VALUES (%s, %s, %s, %s)""",
-            (
-                data["firstName"],
-                data["lastName"],
-                data["email"],
-                data["password"],
-                date.today(),
-            ),
-        )
+    if cur.fetchone():
+        return {"message": "email already exists"}, 400
+
+    # hash the password using sha256
+    password_hash = hashlib.sha256(data["password"].encode()).hexdigest()
+
+    cur.execute(
+        """INSERT INTO %s (first_name, last_name, email, password, signup_date)
+                VALUES (%s, %s, %s, %s, %s)""",
+        (
+            "tutees" if data["user_type"] == "tutee" else "tutors",
+            data["first_name"],
+            data["last_name"],
+            data["email"],
+            password_hash,
+            date.today(),
+        ),
+    )
 
     conn.commit()
     cur.close()
 
-    return jsonify({"message": "success"})
+    # send password confirmation email
 
-
-############################################################################################################
-# send signup verification email
-############################################################################################################
-@app.route("/generate-signup-token", methods=["POST"])
-@cross_origin(supports_credentials=True)
-def generateSignupToken(email):
-    # user's email and a 24 hour expiration time
-    payload = {"email": email, "expires": datetime.utcnow() + timedelta(hours=24)}
-
-    return jwt.encode(payload, current_app.config["SECRET_KEY"], algorithm="HS256")
-
-
-@app.route("/confirm-signup-token", methods=["POST"])
-@cross_origin(supports_credentials=True)
-def confirmSignupToken(token):
-    data = request.json
-    token = data["token"]
-
-    payload = jwt.decode(token, current_app.config["SECRET_KEY"], algorithms=["HS256"])
-    email = payload["email"]
-
-    if payload["expires"] < datetime.utcnow().timestamp():
-        return jsonify({"message": "error", "details": "Token has expired"})
-
-    return jsonify({"message": "success", "email": email})
-
-
-@app.route("/send-signup-confirmation-email", methods=["POST"])
-@cross_origin(supports_credentials=True)
-def sendSignupConfirmationEmail():
-    data = request.json
-    email = data["email"]
-
-    token = generateSignupToken(email)
-
-    # create a confirmation link
-    confirm_url = url_for("confirm_email", token=token, _external=True)
-
-    html = render_template("ConfirmSignupEmail.html", confirm_url=confirm_url)
-    subject = "Confirm Your Account For Impact Tutoring"
-    msg = Message(subject, recipients=[email], html=html)
-    mail.send(msg)
-
-    return jsonify({"message": "success"})
+    return {"message": "signed up successfully"}
 
 
 ############################################################################################################
 # validate that email exists in database for login
 ############################################################################################################
-@app.route("/validate-login-form-data", methods=["GET", "POST"])
+@app.route("/validate-login-form-data", methods=["POST"])
 @cross_origin(supports_credentials=True)
 def validateLoginFormData():
     data = request.json
@@ -143,7 +98,7 @@ def validateLoginFormData():
     ):
         session["email"] = data["email"]
         session["user_type"] = "admin"
-        return jsonify({"message": "success", "user_type": session["user_type"]})
+        return {"message": "success", "user_type": session["user_type"]}
 
     # tutor or tutee login
     cur = conn.cursor()
@@ -167,11 +122,12 @@ def validateLoginFormData():
     if result:
         session["email"] = data["email"]
         session["user_type"] = result[1]
-        return jsonify({"message": "success", "user_type": session["user_type"]})
+        return {"message": "success", "user_type": session["user_type"]}
     else:
-        return jsonify(
-            {"message": "error", "details": "Did not find matching email and password"}
-        )
+        return {
+            "message": "error",
+            "details": "Did not find matching email and password",
+        }
 
 
 ############################################################################################################
@@ -181,7 +137,7 @@ def validateLoginFormData():
 @cross_origin(supports_credentials=True)
 def saveTutorApplicationData():
     if "email" not in session:
-        return jsonify({"message": "error", "details": "Email not found in session"})
+        return {"message": "error", "details": "Email not found in session"}
 
     data = request.json
 
@@ -207,7 +163,7 @@ def saveTutorApplicationData():
     conn.commit()
     cur.close()
 
-    return jsonify({"message": "success"})
+    return {"message": "success"}
 
 
 ############################################################################################################
@@ -219,7 +175,7 @@ def saveTutorApplicationResume():
     # get the name of the tutor that's currently logged in
     if "email" not in session:
         print("EMAIL NOT FOUND IN SESSION")
-        return jsonify({"message": "error", "details": "Email not found in session"})
+        return {"message": "error", "details": "Email not found in session"}
 
     print("GET SESSION EMAIL:", session["email"])
     cur = conn.cursor()
@@ -245,7 +201,7 @@ def saveTutorApplicationResume():
 
     print("FILE UPLOADED TO S3")
 
-    return jsonify({"message": "success"})
+    return {"message": "success"}
 
 
 ############################################################################################################
@@ -257,7 +213,7 @@ def saveTutorApplicationReportCard():
     # get the name of the tutor that's currently logged in
     if "email" not in session:
         print("EMAIL NOT FOUND IN SESSION")
-        return jsonify({"message": "error", "details": "Email not found in session"})
+        return {"message": "error", "details": "Email not found in session"}
 
     print("GET SESSION EMAIL:", session["email"])
     cur = conn.cursor()
@@ -284,7 +240,7 @@ def saveTutorApplicationReportCard():
 
     print("FILE UPLOADED TO S3")
 
-    return jsonify({"message": "success"})
+    return {"message": "success"}
 
 
 ############################################################################################################
@@ -294,7 +250,7 @@ def saveTutorApplicationReportCard():
 @cross_origin(supports_credentials=True)
 def getProfileInfo():
     if "email" not in session:
-        return jsonify({"message": "error", "details": "Email not found in session"})
+        return {"message": "error", "details": "Email not found in session"}
 
     cur = conn.cursor()
 
@@ -357,7 +313,7 @@ def getProfileInfo():
 @cross_origin(supports_credentials=True)
 def getUpcomingSessions():
     if "email" not in session:
-        return jsonify({"message": "error", "details": "Email not found in session"})
+        return {"message": "error", "details": "Email not found in session"}
 
     cur = conn.cursor()
 
@@ -577,7 +533,7 @@ def saveEditorContent():
     conn.commit()
     cur.close()
 
-    return jsonify({"message": "success"})
+    return {"message": "success"}
 
 
 ############################################################################################################
@@ -587,7 +543,7 @@ def saveEditorContent():
 @cross_origin(supports_credentials=True)
 def getCommitments():
     if "email" not in session:
-        return jsonify({"message": "error", "details": "Email not found in session"})
+        return {"message": "error", "details": "Email not found in session"}
 
     cur = conn.cursor()
 
@@ -700,7 +656,7 @@ def getCommitments():
 @cross_origin(supports_credentials=True)
 def getTutoringHistory():
     if "email" not in session:
-        return jsonify({"message": "error", "details": "Email not found in session"})
+        return {"message": "error", "details": "Email not found in session"}
 
     pairing_id = request.args.get("pairingID")
 
@@ -815,7 +771,7 @@ def getTutoringHistory():
 @cross_origin(supports_credentials=True)
 def saveVolunteerHoursData():
     if "email" not in session:
-        return jsonify({"message": "error", "details": "Email not found in session"})
+        return {"message": "error", "details": "Email not found in session"}
 
     data = request.json
 
@@ -836,7 +792,7 @@ def saveVolunteerHoursData():
     conn.commit()
     cur.close()
 
-    return jsonify({"message": "success"})
+    return {"message": "success"}
 
 
 ############################################################################################################
@@ -848,7 +804,7 @@ def saveVolunteerHoursRequestForm():
     # get the name of the tutor that's currently logged in
     if "email" not in session:
         print("EMAIL NOT FOUND IN SESSION")
-        return jsonify({"message": "error", "details": "Email not found in session"})
+        return {"message": "error", "details": "Email not found in session"}
 
     print("GET SESSION EMAIL:", session["email"])
     cur = conn.cursor()
@@ -878,7 +834,7 @@ def saveVolunteerHoursRequestForm():
 
     print("FILE UPLOADED TO S3")
 
-    return jsonify({"message": "success"})
+    return {"message": "success"}
 
 
 ############################################################################################################
@@ -888,7 +844,7 @@ def saveVolunteerHoursRequestForm():
 @cross_origin(supports_credentials=True)
 def getPastVolunteerHoursRequestHistory():
     if "email" not in session:
-        return jsonify({"message": "error", "details": "Email not found in session"})
+        return {"message": "error", "details": "Email not found in session"}
 
     cur = conn.cursor()
 
@@ -1048,7 +1004,7 @@ def getPairings():
 @cross_origin(supports_credentials=True)
 def getPendingVolunteerHoursRequests():
     if "email" not in session:
-        return jsonify({"message": "error", "details": "Email not found in session"})
+        return {"message": "error", "details": "Email not found in session"}
 
     cur = conn.cursor()
 
@@ -1091,7 +1047,7 @@ def getPendingVolunteerHoursRequests():
 @cross_origin(supports_credentials=True)
 def getHoursRequestData():
     if "email" not in session:
-        return jsonify({"message": "error", "details": "Email not found in session"})
+        return {"message": "error", "details": "Email not found in session"}
 
     request_id = request.args.get("requestID")
 
@@ -1129,7 +1085,7 @@ def getHoursRequestData():
 @cross_origin(supports_credentials=True)
 def getVolunteerHoursForm():
     if "email" not in session:
-        return jsonify({"message": "error", "details": "Email not found in session"})
+        return {"message": "error", "details": "Email not found in session"}
 
     request_id = request.args.get("requestID")
 
@@ -1163,7 +1119,7 @@ def getVolunteerHoursForm():
             file_exists = False
         else:
             return (
-                jsonify({"message": "error", "details": "Error fetching file from S3"}),
+                {"message": "error", "details": "Error fetching file from S3"},
                 500,
             )
 
@@ -1215,7 +1171,7 @@ def saveVolunteerHoursApprovalForm():
 
     print("FILE UPLOADED TO S3")
 
-    return jsonify({"message": "success"})
+    return {"message": "success"}
 
 
 ############################################################################################################
@@ -1226,16 +1182,13 @@ def saveVolunteerHoursApprovalForm():
 def logOut():
     if "email" not in session:
         print("EMAIL NOT FOUND IN SESSION")
-        return jsonify({"message": "error", "details": "Email not found in session"})
+        return {"message": "error", "details": "Email not found in session"}
 
     session.pop("email")
     print("LOGGED OUT")
-    return jsonify({"message": "success"})
+    return {"message": "success"}
 
 
 if __name__ == "__main__":
-    app.secret_key = "secret_key"
-    app.run(debug=True)
-
-# close the database connection
-# conn.close()
+    is_debug = os.environ["ENVIRONMENT"] == "development"
+    app.run(debug=is_debug, port=os.environ["PORT"])
