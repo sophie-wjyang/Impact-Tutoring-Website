@@ -119,11 +119,11 @@ def validateLoginFormData():
     cur = conn.cursor()
 
     cur.execute(
-        """SELECT email, 'tutor' AS user_type
+        """SELECT email, 'tutor', status
                 FROM tutors
                 WHERE email = %s AND password = %s
                 UNION
-                SELECT email, 'tutee' AS user_type
+                SELECT email, 'tutee', status
                 FROM tutees
                 WHERE email = %s AND password = %s""",
         (data["email"], data["password"], data["email"], data["password"]),
@@ -137,7 +137,7 @@ def validateLoginFormData():
     if result:
         session["email"] = data["email"]
         session["user_type"] = result[1]
-        return {"message": "success", "user_type": session["user_type"]}
+        return {"message": "success", "user_type": session["user_type"], "status": result[2]}
     else:
         return {
             "message": "error",
