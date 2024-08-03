@@ -13,7 +13,7 @@ import jwt
 
 from dotenv import load_dotenv
 
-from utils import send_confirmation_email
+from utils import create_confirmation_email
 
 load_dotenv()
 
@@ -89,7 +89,8 @@ def save_signup_form_data():
     print(result)
 
     if result:
-        send_confirmation_email(cur, result[0], data["email"])
+        msg = create_confirmation_email(cur, result[0], data["email"])
+        mail.send(msg)
 
     conn.commit()
     cur.close()
