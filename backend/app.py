@@ -22,7 +22,7 @@ app.config.from_prefixed_env()
 Session(app)
 CORS(app)
 
-mailer = Mailer()
+# mailer = Mailer()
 
 # connect to database
 # os is used to access environment variables, so that the database username and password are not visible in the source code
@@ -85,23 +85,23 @@ def save_signup_form_data():
         ),
     )
 
-    cur.execute(
-        "SELECT id FROM %s WHERE email = %%s"
-        % ("tutees" if data["user_type"] == "tutee" else "tutors"),
-        (data["email"],),
-    )
+    # cur.execute(
+    #     "SELECT id FROM %s WHERE email = %%s"
+    #     % ("tutees" if data["user_type"] == "tutee" else "tutors"),
+    #     (data["email"],),
+    # )
 
-    result = cur.fetchone()
+    # result = cur.fetchone()
 
-    if result:
-        code = create_email_confirmation_code(cur, result[0], data["email"])
-        mailer.send_email(
-            "Please click the following link to confirm your email: {}/confirm_email?code={}".format(
-                os.environ["CLIENT_URL"], code
-            ),
-            "Impact Tutoring: Confirm your email",
-            data["email"],
-        )
+    # if result:
+    #     code = create_email_confirmation_code(cur, result[0], data["email"])
+    #     mailer.send_email(
+    #         "Please click the following link to confirm your email: {}/confirm_email?code={}".format(
+    #             os.environ["CLIENT_URL"], code
+    #         ),
+    #         "Impact Tutoring: Confirm your email",
+    #         data["email"],
+    #     )
 
     conn.commit()
     cur.close()
