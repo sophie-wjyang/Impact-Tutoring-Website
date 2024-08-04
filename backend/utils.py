@@ -23,7 +23,7 @@ def create_confirmation_email(
 
     return Message(
         subject="Impact Tutoring: Confirm your email",
-        sender=("Impact Tutoring", "impacttutoringca@gmail.com"),
+        sender=("Impact Tutoring", "alexjy@yahoo.com"),
         recipients=[email],
         body=f"Please click the following link to confirm your email: {os.environ["CLIENT_URL"]}/confirm_email?code={code}",
     )

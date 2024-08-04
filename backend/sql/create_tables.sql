@@ -7,16 +7,16 @@ CREATE TABLE tutors (
     last_name TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
-    grade INTEGER NOT NULL,
-    gender GENDER NOT NULL,
-    location TEXT NOT NULL,
-    subjects TEXT[] NOT NULL,
-    languages TEXT[] NOT NULL,
-    availability TEXT[] NOT NULL,
-    student_capacity INTEGER NOT NULL,
+    grade INTEGER,
+    gender GENDER,
+    location TEXT,
+    subjects TEXT[],
+    languages TEXT[],
+    availability TEXT[],
+    student_capacity INTEGER,
     previous_experience TEXT,
-    status STATUS NOT NULL,
-    signup_date DATE NOT NULL
+    status STATUS DEFAULT 'unverified',
+    signup_date DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE tutees (
@@ -25,15 +25,15 @@ CREATE TABLE tutees (
     last_name TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
-    grade INTEGER NOT NULL,
-    gender GENDER NOT NULL,
-    location TEXT NOT NULL,
-    subjects TEXT[] NOT NULL,
-    languages TEXT[] NOT NULL,
-    availability TEXT[] NOT NULL,
+    grade INTEGER,
+    gender GENDER,
+    location TEXT,
+    subjects TEXT[],
+    languages TEXT[],
+    availability TEXT[],
     additional_information TEXT,
-    status STATUS NOT NULL,
-    signup_date DATE NOT NULL
+    status STATUS DEFAULT 'unverified',
+    signup_date DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE pairings (
@@ -59,11 +59,11 @@ CREATE TABLE sessions (
 
 CREATE TABLE volunteer_hours_requests (
     id SERIAL PRIMARY KEY,
-    date_submitted DATE NOT NULL,
     tutor_id INTEGER REFERENCES tutors(id) NOT NULL,
     num_hours INTEGER NOT NULL,
     status TEXT NOT NULL,
     description TEXT NOT NULL
+    created_at DATE NOT NULL DEFAULT CURRENT_DATE,
 );
 
 CREATE TABLE confirmation_codes (

@@ -5,15 +5,14 @@ from datetime import date
 from flask import Flask, request, session, send_file
 from flask_session import Session
 from flask_cors import CORS, cross_origin
-from flask_mail import Mail
 
 import psycopg2
 import boto3
-import jwt
 
 from dotenv import load_dotenv
 
-from utils import create_confirmation_email
+from gmail import Mailer
+from utils import create_confirmation_email, create_email_confirmation_code
 
 load_dotenv()
 
@@ -23,7 +22,7 @@ app.config.from_prefixed_env()
 Session(app)
 CORS(app)
 
-mail = Mail(app)
+mailer = Mailer()
 
 # connect to database
 # os is used to access environment variables, so that the database username and password are not visible in the source code
@@ -62,20 +61,22 @@ def save_signup_form_data():
     # check if the email already exists
     cur.execute(
         """SELECT email FROM tutees WHERE email = %s UNION SELECT email FROM tutors WHERE email = %s""",
-        (data["email"],),
+        (data["email"], data["email"]),
     )
 
-    if cur.fetchall().count() > 0:
+    if len(cur.fetchall()) > 0:
         return {"message": "email already exists"}, 400
 
     # hash the password using sha256
     password_hash = hashlib.sha256(data["password"].encode()).hexdigest()
 
     cur.execute(
-        """INSERT INTO %s (first_name, last_name, email, password, signup_date)
-                VALUES (%s, %s, %s, %s, %s)""",
         (
-            "tutees" if data["user_type"] == "tutee" else "tutors",
+            """INSERT INTO %s (first_name, last_name, email, password, signup_date)
+                VALUES (%%s, %%s, %%s, %%s, %%s)"""
+            % ("tutees" if data["user_type"] == "tutee" else "tutors")
+        ),
+        (
             data["first_name"],
             data["last_name"],
             data["email"],
@@ -84,18 +85,62 @@ def save_signup_form_data():
         ),
     )
 
+    cur.execute(
+        "SELECT id FROM %s WHERE email = %%s"
+        % ("tutees" if data["user_type"] == "tutee" else "tutors"),
+        (data["email"],),
+    )
+
     result = cur.fetchone()
 
-    print(result)
-
     if result:
-        msg = create_confirmation_email(cur, result[0], data["email"])
-        mail.send(msg)
+        code = create_email_confirmation_code(cur, result[0], data["email"])
+        mailer.send_email(
+            "Please click the following link to confirm your email: {}/confirm_email?code={}".format(
+                os.environ["CLIENT_URL"], code
+            ),
+            "Impact Tutoring: Confirm your email",
+            data["email"],
+        )
 
     conn.commit()
     cur.close()
 
     return {"message": "signed up successfully"}
+
+
+@app.route("/validate-signup-token", methods=["POST"])
+def validate_signup_token():
+    data = request.json
+
+    cur = conn.cursor()
+
+    cur.execute(
+        """SELECT user_id, expires_at FROM confirmation_codes WHERE code = %s""",
+        (data["code"],),
+    )
+
+    result = cur.fetchone()
+
+    if result and result[1]:
+        cur.execute(
+            """UPDATE %s SET status = 'verified' WHERE id = %%s"""
+            % ("tutees" if data["user_type"] == "tutee" else "tutors"),
+            (result[0],),
+        )
+
+        # update confirmation_codes set verified_at = current_timestamp where code = data["code"]
+        cur.execute(
+            """UPDATE confirmation_codes SET verified_at = CURRENT_TIMESTAMP WHERE code = %s""",
+            (data["code"],),
+        )
+
+        conn.commit()
+        cur.close()
+
+        return {"message": "success"}
+
+    return {"message": "error"}
 
 
 ############################################################################################################
@@ -137,7 +182,11 @@ def validateLoginFormData():
     if result:
         session["email"] = data["email"]
         session["user_type"] = result[1]
-        return {"message": "success", "user_type": session["user_type"], "status": result[2]}
+        return {
+            "message": "success",
+            "user_type": session["user_type"],
+            "status": result[2],
+        }
     else:
         return {
             "message": "error",
