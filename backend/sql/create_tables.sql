@@ -1,5 +1,6 @@
 CREATE TYPE GENDER AS ENUM ('male', 'female', 'nonbinary', 'unspecified');
 CREATE TYPE STATUS AS ENUM ('unverified', 'verified', 'applied', 'accepted', 'rejected');
+CREATE TYPE USER_TYPE AS ENUM('tutor', 'tutee');
 
 CREATE TABLE tutors (
     id SERIAL PRIMARY KEY,
@@ -69,6 +70,7 @@ CREATE TABLE volunteer_hours_requests (
 CREATE TABLE confirmation_codes (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
+    user_type USER_TYPE NOT NULL,
     email TEXT NOT NULL,
     code TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

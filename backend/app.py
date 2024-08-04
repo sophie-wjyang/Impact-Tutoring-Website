@@ -1,8 +1,8 @@
 import os
 import hashlib
-from datetime import date
+from datetime import date, datetime
 
-from flask import Flask, request, session, send_file
+from flask import Flask, redirect, request, session, send_file
 from flask_session import Session
 from flask_cors import CORS, cross_origin
 
@@ -12,7 +12,7 @@ import boto3
 from dotenv import load_dotenv
 
 from gmail import Mailer
-from utils import create_confirmation_email, create_email_confirmation_code
+from utils import create_email_confirmation_code
 
 load_dotenv()
 
@@ -55,93 +55,102 @@ def save_signup_form_data():
 
     # check if they are signing up using the admin email
     if data["email"] == os.environ["ADMIN_EMAIL"]:
-        return {"message": "email already exists"}, 400
+        return {"message": "Email already exists"}, 400
 
     cur = conn.cursor()
 
-    # check if the email already exists
-    cur.execute(
-        """SELECT email FROM tutees WHERE email = %s UNION SELECT email FROM tutors WHERE email = %s""",
-        (data["email"], data["email"]),
-    )
+    try:
 
-    if len(cur.fetchall()) > 0:
-        return {"message": "email already exists"}, 400
-
-    # hash the password using sha256
-    password_hash = hashlib.sha256(data["password"].encode()).hexdigest()
-
-    cur.execute(
-        (
-            """INSERT INTO %s (first_name, last_name, email, password, signup_date)
-                VALUES (%%s, %%s, %%s, %%s, %%s)"""
-            % ("tutees" if data["user_type"] == "tutee" else "tutors")
-        ),
-        (
-            data["first_name"],
-            data["last_name"],
-            data["email"],
-            password_hash,
-            date.today(),
-        ),
-    )
-
-    cur.execute(
-        "SELECT id FROM %s WHERE email = %%s"
-        % ("tutees" if data["user_type"] == "tutee" else "tutors"),
-        (data["email"],),
-    )
-
-    result = cur.fetchone()
-
-    if result:
-        code = create_email_confirmation_code(cur, result[0], data["email"])
-        mailer.send_email(
-            "Please click the following link to confirm your email: {}/confirm_email?code={}".format(
-                os.environ["CLIENT_URL"], code
-            ),
-            "Impact Tutoring: Confirm your email",
-            data["email"],
+        # check if the email already exists
+        cur.execute(
+            """SELECT email FROM tutees WHERE email = %s UNION SELECT email FROM tutors WHERE email = %s""",
+            (data["email"], data["email"]),
         )
 
-    conn.commit()
-    cur.close()
+        if len(cur.fetchall()) > 0:
+            return {"message": "Email already exists"}, 400
 
-    return {"message": "signed up successfully"}
+        # hash the password using sha256
+        password_hash = hashlib.sha256(data["password"].encode()).hexdigest()
+
+        cur.execute(
+            (
+                """INSERT INTO %s (first_name, last_name, email, password, signup_date)
+                    VALUES (%%s, %%s, %%s, %%s, %%s)"""
+                % ("tutees" if data["user_type"] == "tutee" else "tutors")
+            ),
+            (
+                data["first_name"],
+                data["last_name"],
+                data["email"],
+                password_hash,
+                date.today(),
+            ),
+        )
+
+        cur.execute(
+            "SELECT id FROM %s WHERE email = %%s"
+            % ("tutees" if data["user_type"] == "tutee" else "tutors"),
+            (data["email"],),
+        )
+
+        result = cur.fetchone()
+
+        if result:
+            code = create_email_confirmation_code(cur, user_id=result[0], user_type=data["user_type"], email=data["email"])
+            mailer.send_email(
+                "Please click the following link to confirm your email: {}/confirm_email?code={}".format(
+                    os.environ["CLIENT_URL"], code
+                ),
+                "Impact Tutoring: Confirm your email",
+                data["email"],
+            )
+
+        conn.commit()
+        cur.close()
+
+        return {"message": "Signed up successfully"}
+    
+    except Exception as e:
+        conn.rollback()
+        cur.close()
+        return {"message": "Error signing up"}, 400
 
 
-@app.route("/validate-signup-token", methods=["POST"])
+@app.route("/validate-signup-token", methods=["GET"])
 def validate_signup_token():
-    data = request.json
+    code = request.args.get("code")
+
+    if code is None:
+        return {"message": "No code provided"}, 400
 
     cur = conn.cursor()
 
     cur.execute(
-        """SELECT user_id, expires_at FROM confirmation_codes WHERE code = %s""",
-        (data["code"],),
+        """SELECT user_id, user_type, expires_at FROM confirmation_codes WHERE code = %s""",
+        (code,),
     )
 
     result = cur.fetchone()
 
-    if result and result[1]:
+    if result and result[2] >= datetime.now():
         cur.execute(
             """UPDATE %s SET status = 'verified' WHERE id = %%s"""
-            % ("tutees" if data["user_type"] == "tutee" else "tutors"),
+            % ("tutees" if result[1] == "tutee" else "tutors"),
             (result[0],),
         )
 
-        # update confirmation_codes set verified_at = current_timestamp where code = data["code"]
         cur.execute(
             """UPDATE confirmation_codes SET verified_at = CURRENT_TIMESTAMP WHERE code = %s""",
-            (data["code"],),
+            (code,),
         )
 
         conn.commit()
         cur.close()
 
-        return {"message": "success"}
+        return redirect(location=f"{os.environ["CLIENT_URL"]}/log-in", code=302)
 
-    return {"message": "error"}
+    return {"message": "Unable to verify confirmation code"}, 400
 
 
 ############################################################################################################
