@@ -7,9 +7,7 @@ import ApplicationStatusGraphic from "../assets/images/signup-process/applicatio
 import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image";
 
-export default function ApplicationStatus(props) {
-    const status = props;
-
+export default function ApplicationStatus({status}) {
     return (
         <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
             <Container id="form-container" className="d-flex flex-column justify-content-center align-items-center">
