@@ -30,10 +30,27 @@ export default function LogInPage(resetActiveKey) {
         axios.post("http://localhost:5000/validate-login-form-data", data, { withCredentials: true }).then((res) => {
             if (res.data.message === "success") {
                 setInvalidLogin(false);
-                // set user context
                 setUserType(res.data.user_type); 
 
-                if(res.data.status === "verified"){
+                if(res.data.status === "unverified"){
+                    // resend verification email
+                    navigate("/reverify-signup");
+                }
+                else if(res.data.status === "verified"){
+                    if(res.data.user_type === "tutor"){
+                        navigate("/tutor-application");
+                    }
+                    if(res.data.user_type === "tutee"){
+                        navigate("/tutee-signup-information");
+                    }
+                }
+                else if(res.data.status === "applied"){
+                    navigate("/application-applied");
+                }
+                else if(res.data.status === "rejected"){
+                    navigate("/application-rejected");
+                }
+                else{
                     navigate("/dashboard");
                 }
             } else {
