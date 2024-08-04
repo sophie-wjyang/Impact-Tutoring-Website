@@ -41,7 +41,7 @@ CREATE TABLE pairings (
     tutor_id INTEGER REFERENCES tutors(id),
     tutee_id INTEGER REFERENCES tutees(id),
     subjects TEXT[],
-    meeting_days TEXT[]
+    meeting_days TEXT[],
 
     UNIQUE(tutor_id, tutee_id)
 );
@@ -62,8 +62,8 @@ CREATE TABLE volunteer_hours_requests (
     tutor_id INTEGER REFERENCES tutors(id) NOT NULL,
     num_hours INTEGER NOT NULL,
     status TEXT NOT NULL,
-    description TEXT NOT NULL
-    created_at DATE NOT NULL DEFAULT CURRENT_DATE,
+    description TEXT NOT NULL,
+    created_at DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE confirmation_codes (
@@ -74,4 +74,4 @@ CREATE TABLE confirmation_codes (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     expires_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP + INTERVAL '3 hours',
     verified_at TIMESTAMP
-)
+);
