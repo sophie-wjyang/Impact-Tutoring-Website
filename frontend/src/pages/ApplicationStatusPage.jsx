@@ -7,7 +7,7 @@ import ApplicationStatusGraphic from "../assets/images/signup-process/applicatio
 import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image";
 
-export function ApplicationStatus(props) {
+export default function ApplicationStatus(props) {
     const status = props;
 
     return (

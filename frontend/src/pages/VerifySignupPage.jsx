@@ -7,7 +7,7 @@ import EmailConfirmationGraphic from "../assets/images/signup-process/email-conf
 import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image";
 
-export function VerifySignupPage(props) {
+export default function VerifySignupPage(props) {
     const status = props;
 
     return (

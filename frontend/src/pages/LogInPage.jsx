@@ -72,8 +72,8 @@ export default function LogInPage(resetActiveKey) {
 
                 <Form onSubmit={(e) => validateLoginFormData(e)}>
                     {/* email and password */}
-                    <TextBox controlId={"formEmail"} label={"Email address"} placeholder={"Enter email"} value={email} onChange={(e) => setEmail(e.target.value)} />
-                    <TextBox controlId={"formPassword"} label={"Password"} placeholder={"Enter password"} style={{ marginBottom: 0 }} value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <TextBox controlId={"formEmail"} label={"Email address"} placeholder={"Enter email"} value={email} onChange={(e) => setEmail(e.target.value)} required={true} />
+                    <TextBox controlId={"formPassword"} label={"Password"} placeholder={"Enter password"} style={{ marginBottom: 0 }} value={password} onChange={(e) => setPassword(e.target.value)} required={true} />
 
                     <a href="" className="d-flex justify-content-end form-link">
                         Forgot your password?
