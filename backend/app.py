@@ -22,7 +22,7 @@ app.config.from_prefixed_env()
 Session(app)
 CORS(app)
 
-# mailer = Mailer()
+mailer = Mailer()
 
 # connect to database
 # os is used to access environment variables, so that the database username and password are not visible in the source code
@@ -53,6 +53,7 @@ def index():
 def save_signup_form_data():
     data = request.json
 
+    # check if they are signing up using the admin email
     if data["email"] == os.environ["ADMIN_EMAIL"]:
         return {"message": "email already exists"}, 400
 
@@ -85,23 +86,23 @@ def save_signup_form_data():
         ),
     )
 
-    # cur.execute(
-    #     "SELECT id FROM %s WHERE email = %%s"
-    #     % ("tutees" if data["user_type"] == "tutee" else "tutors"),
-    #     (data["email"],),
-    # )
+    cur.execute(
+        "SELECT id FROM %s WHERE email = %%s"
+        % ("tutees" if data["user_type"] == "tutee" else "tutors"),
+        (data["email"],),
+    )
 
-    # result = cur.fetchone()
+    result = cur.fetchone()
 
-    # if result:
-    #     code = create_email_confirmation_code(cur, result[0], data["email"])
-    #     mailer.send_email(
-    #         "Please click the following link to confirm your email: {}/confirm_email?code={}".format(
-    #             os.environ["CLIENT_URL"], code
-    #         ),
-    #         "Impact Tutoring: Confirm your email",
-    #         data["email"],
-    #     )
+    if result:
+        code = create_email_confirmation_code(cur, result[0], data["email"])
+        mailer.send_email(
+            "Please click the following link to confirm your email: {}/confirm_email?code={}".format(
+                os.environ["CLIENT_URL"], code
+            ),
+            "Impact Tutoring: Confirm your email",
+            data["email"],
+        )
 
     conn.commit()
     cur.close()
@@ -151,6 +152,10 @@ def validate_signup_token():
 def validateLoginFormData():
     data = request.json
 
+    hashed_password = hashlib.sha256(data["password"].encode()).hexdigest()
+
+    print(hashed_password)
+
     # admin login
     if (
         data["email"] == os.environ["ADMIN_EMAIL"]
@@ -158,7 +163,7 @@ def validateLoginFormData():
     ):
         session["email"] = data["email"]
         session["user_type"] = "admin"
-        return {"message": "success", "user_type": session["user_type"]}
+        return {"user_type": session["user_type"]}, 200
 
     # tutor or tutee login
     cur = conn.cursor()
@@ -171,7 +176,7 @@ def validateLoginFormData():
                 SELECT email, 'tutee', status
                 FROM tutees
                 WHERE email = %s AND password = %s""",
-        (data["email"], data["password"], data["email"], data["password"]),
+        (data["email"], hashed_password, data["email"], hashed_password),
     )
 
     result = cur.fetchone()
@@ -180,18 +185,17 @@ def validateLoginFormData():
     cur.close()
 
     if result:
+        print("found account")
         session["email"] = data["email"]
         session["user_type"] = result[1]
         return {
-            "message": "success",
             "user_type": session["user_type"],
-            "status": result[2],
-        }
+            "user_status": result[2],
+        }, 200
     else:
         return {
-            "message": "error",
-            "details": "Did not find matching email and password",
-        }
+            "message": "Did not find a matching email and password",
+        }, 400
 
 
 ############################################################################################################

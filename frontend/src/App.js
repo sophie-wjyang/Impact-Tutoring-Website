@@ -1,17 +1,19 @@
 import "./App.css";
 import React from "react";
-import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useUser } from "./hooks/useUser";
 
-// pages
+// public routes
 import HomePage from "./pages/HomePage";
 import SignUpPage from "./pages/SignUpPage";
 import LogInPage from "./pages/LogInPage";
+import LogOutPage from "./pages/LogOutPage";
 import VerifySignupPage from "./pages/VerifySignupPage";
 import TutorApplication from "./pages/TutorApplication";
 import TuteeSignupInformation from "./pages/TuteeSignupInformation";
 import ApplicationStatus from "./pages/ApplicationStatusPage";
 
+// protected routes
 import { DashboardTutor, DashboardTutee, DashboardAdmin } from "./pages/Dashboard";
 import { ProfilePageTutor, ProfilePageTutee } from "./pages/ProfilePage";
 import { UpcomingSessionsPageTutor, UpcomingSessionsPageTutee } from "./pages/UpcomingSessionsPage";
@@ -20,17 +22,16 @@ import { ResourcesPageTutor, ResourcesPageTutee } from "./pages/ResourcesPage";
 import VolunteerHoursRequestPage from "./pages/VolunteerHoursRequestPage";
 import Editor from "./pages/EditorPage";
 import TutoringHistory from "./pages/TutoringHistoryPage";
-import LogOutPage from "./pages/LogOutPage";
 import TutorsPage from "./pages/TutorsPage";
 import TuteesPage from "./pages/TuteesPage";
 import TutorInformationPage from "./pages/TutorInformationPage";
 import TuteeInformation from "./pages/TuteeInformationPage";
 import PairingsPage from "./pages/PairingsPage";
 import PendingVolunteerHoursApprovalsPage from "./pages/PendingVolunteerHoursApprovalsPage";
+import VolunteerHoursApprovalPage from "./pages/VolunteerHoursApprovalPage";
 
 // bootstrap
 import "bootstrap/dist/css/bootstrap.min.css";
-import VolunteerHoursApprovalPage from "./pages/VolunteerHoursApprovalPage";
 
 export default function App() {
     const { userType } = useUser();

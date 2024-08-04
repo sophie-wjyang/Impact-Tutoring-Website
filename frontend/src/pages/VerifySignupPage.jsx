@@ -7,9 +7,7 @@ import EmailConfirmationGraphic from "../assets/images/signup-process/email-conf
 import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image";
 
-export default function VerifySignupPage(props) {
-    const status = props;
-
+export default function VerifySignupPage({status}) {
     return (
         <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
             <Container id="form-container" className="d-flex flex-column justify-content-center align-items-center">

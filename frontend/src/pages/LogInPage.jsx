@@ -28,15 +28,15 @@ export default function LogInPage(resetActiveKey) {
         };
 
         axios.post("http://localhost:5000/validate-login-form-data", data, { withCredentials: true }).then((res) => {
-            if (res.data.message === "success") {
+            if (res.status === 200) {
                 setInvalidLogin(false);
                 setUserType(res.data.user_type); 
 
-                if(res.data.status === "unverified"){
+                if(res.data.user_status === "unverified"){
                     // resend verification email
                     navigate("/reverify-signup");
                 }
-                else if(res.data.status === "verified"){
+                else if(res.data.user_status === "verified"){
                     if(res.data.user_type === "tutor"){
                         navigate("/tutor-application");
                     }
@@ -44,10 +44,10 @@ export default function LogInPage(resetActiveKey) {
                         navigate("/tutee-signup-information");
                     }
                 }
-                else if(res.data.status === "applied"){
+                else if(res.data.user_status === "applied"){
                     navigate("/application-applied");
                 }
-                else if(res.data.status === "rejected"){
+                else if(res.data.user_status === "rejected"){
                     navigate("/application-rejected");
                 }
                 else{
