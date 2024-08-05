@@ -1,10 +1,16 @@
-// react hooks
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-
-// routing
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+
+// pages
+import Footer from "../components/Footer";
+
+// assets
+import Logo from "../assets/logos/logo-full.png";
+
+// bootstrap
+import { Container, Row, Col, Nav, Navbar } from "react-bootstrap";
 
 // fontawesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,15 +20,6 @@ import { faChalkboardUser, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { faFileLines } from "@fortawesome/free-regular-svg-icons";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-
-// assets
-import Logo from "../assets/logos/logo-full.png";
-
-// pages
-import Footer from "../components/Footer";
-
-// bootstrap
-import { Container, Row, Col, Nav, Navbar } from "react-bootstrap";
 
 export function DashboardTutor() {
     const navigate = useNavigate();

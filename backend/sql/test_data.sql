@@ -1,6 +1,7 @@
 INSERT INTO tutors (first_name, last_name, email, password, grade, gender, location, subjects, languages, availability, student_capacity, status, signup_date)
 VALUES
-    ('Minerva', 'McGonagall', 'minerva.mcgonagall@example.com', 'minerva123', 12, 'female', 'London', ARRAY['Transfiguration'], ARRAY['English'], ARRAY['Monday', 'Wednesday'], 5, 'verified', '2021-01-01'),
+    -- pw: minerva123, severus456, filius789
+    ('Minerva', 'McGonagall', 'minerva.mcgonagall@example.com', 'fe8145c2d38c3100c5503a15e43f053e26efe859567dcb1e6b9fa5d65dc50a8e', 12, 'female', 'London', ARRAY['Transfiguration'], ARRAY['English'], ARRAY['Monday', 'Wednesday'], 5, 'verified', '2021-01-01'),
     ('Severus', 'Snape', 'severus.snape@example.com', 'severus456', 12, 'male', 'Manchester', ARRAY['Potions', 'Defense Against the Dark Arts'], ARRAY['English'], ARRAY['Tuesday', 'Thursday'], 3, 'verified', '2021-01-02'),
     ('Filius', 'Flitwick', 'filius.flitwick@example.com', 'filius789', 11, 'male', 'Cheshire', ARRAY['Charms', 'Arithmancy'], ARRAY['English'], ARRAY['Wednesday', 'Friday'], 2, 'verified', '2021-01-03');
 

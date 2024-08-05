@@ -1,16 +1,20 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import client from "../axios";
+import { useUser } from "../hooks/useUser";
 
 export default function LogOut() {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
+    const { setUser } = useUser();
 
-  useEffect(() => {
-    client
-      .get("log-out")
-      .then(() => navigate("/log-in"))
-      .catch(() => navigate("/log-in"));
-  }, [navigate]);
+    function logout() {
+        setUser(null);
+        navigate("/log-in");
+    }
 
-  return null;
+    useEffect(() => {
+        client.get("log-out").then(logout).catch(logout);
+    }, [navigate]);
+
+    return null;
 }
