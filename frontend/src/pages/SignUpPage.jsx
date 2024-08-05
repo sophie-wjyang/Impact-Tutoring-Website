@@ -27,6 +27,7 @@ export default function SignUpPage() {
   // save sign up form data to database
   function saveSignUpFormData(e) {
     e.preventDefault();
+    setError("");
 
     const body = {
       first_name: firstName,
@@ -144,7 +145,7 @@ export default function SignUpPage() {
             required
           />
 
-          {error && <p className="text-danger">{error}</p>}
+          {error && <p className="invalid-login-message">{error}</p>}
 
           <Button
             variant="primary"

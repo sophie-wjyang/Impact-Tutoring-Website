@@ -1,15 +1,36 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
+import client from "../axios";
 
-const UserContext = createContext({});
+const UserContext = createContext({
+  user: null,
+  setUser: () => {},
+  isLoading: true,
+});
 
 // provider component
 export const UserProvider = ({ children }) => {
-    const [userType, setUserType] = useState();
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-    return <UserContext.Provider value={{ userType, setUserType }}>{children}</UserContext.Provider>;
+  useEffect(() => {
+    client
+      .get("get-user")
+      .then(({ data }) => {
+        setUser(data);
+      })
+      .catch();
+
+    setIsLoading(false);
+  }, []);
+
+  return (
+    <UserContext.Provider value={{ user, setUser, isLoading }}>
+      {children}
+    </UserContext.Provider>
+  );
 };
 
 // custom hook to use the UserContext
 export const useUser = () => {
-    return useContext(UserContext);
+  return useContext(UserContext);
 };

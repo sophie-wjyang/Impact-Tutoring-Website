@@ -40,7 +40,7 @@ import VolunteerHoursApprovalPage from "./pages/VolunteerHoursApprovalPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function App() {
-  const { userType } = useUser();
+  const { user } = useUser();
 
   return (
     <div>
@@ -65,8 +65,10 @@ export default function App() {
             element={<ApplicationStatus status="rejected" />}
           />
 
+          <Route path="log-out" element={<LogOutPage />} />
+
           {/* tutor dashboard routes */}
-          {userType === "tutor" && (
+          {user?.type === "tutor" && (
             <Route path="dashboard" element={<DashboardTutor />}>
               <Route index element={<Navigate to="profile" />} />
 
@@ -104,12 +106,11 @@ export default function App() {
                 path="volunteer-hours-request"
                 element={<VolunteerHoursRequestPage />}
               />
-              <Route path="log-out" element={<LogOutPage />} />
             </Route>
           )}
 
           {/* tutee dashboard routes */}
-          {userType === "tutee" && (
+          {user?.type === "tutee" && (
             <Route path="dashboard" element={<DashboardTutee />}>
               <Route index element={<Navigate to="profile" />} />
 
@@ -143,12 +144,11 @@ export default function App() {
               </Route>
 
               <Route path="resources" element={<ResourcesPageTutee />} />
-              <Route path="log-out" element={<LogOutPage />} />
             </Route>
           )}
 
           {/* admin dashboard routes */}
-          {userType === "admin" && (
+          {user?.type === "admin" && (
             <Route path="dashboard" element={<DashboardAdmin />}>
               <Route index element={<Navigate to="tutors" />} />
 
@@ -190,7 +190,6 @@ export default function App() {
                   element={<VolunteerHoursApprovalPage />}
                 />
               </Route>
-              <Route path="log-out" element={<LogOutPage />} />
             </Route>
           )}
         </Routes>

@@ -2,6 +2,7 @@ import os
 import hashlib
 from datetime import date, datetime
 
+from cachelib import FileSystemCache
 from flask import Flask, redirect, request, session, send_file
 from flask_session import Session
 from flask_cors import CORS, cross_origin
@@ -12,12 +13,13 @@ import boto3
 from dotenv import load_dotenv
 
 from gmail import Mailer
-from utils import create_email_confirmation_code
+from utils import create_email_confirmation_code, is_session_valid
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config.from_prefixed_env()
+app.config["SESSION_CACHELIB"] = FileSystemCache(cache_dir="flask_session")
 
 Session(app)
 CORS(app)
@@ -46,6 +48,41 @@ def index():
     return "index!"
 
 
+@app.route("/get-user")
+def getUser():
+    if is_session_valid(session):
+        user_type = session.get("user_type")
+
+        cur = conn.cursor()
+
+        try:
+            cur.execute(
+                """SELECT first_name, last_name, email, status FROM %s WHERE id = %%s AND email = %%s"""
+                % f"{user_type}s",
+                (session.get("id"), session.get("email")),
+            )
+
+            result = cur.fetchone()
+
+            cur.close()
+
+            if result:
+                return {
+                    "type": user_type,
+                    "firstName": result[0],
+                    "lastName": result[1],
+                    "email": result[2],
+                    "status": result[3],
+                }
+
+            return {"message": "User not found"}, 400
+
+        except:
+            return {"message": "Error getting user from session"}, 500
+
+    return {"message": "No session found"}
+
+
 ############################################################################################################
 # save sign up form data to database
 ############################################################################################################
@@ -53,8 +90,27 @@ def index():
 def save_signup_form_data():
     data = request.json
 
+    # validate data
+    if (
+        data["email"] is None
+        or data["first_name"] is None
+        or data["last_name"] is None
+        or data["password"] is None
+        or data["user_type"] is None
+    ):
+        return {"message": "Missing data"}, 400
+
+    # format data
+    email = data["email"].lower()
+    first_name = data["first_name"].capitalize()
+    last_name = data["last_name"].capitalize()
+    password = hashlib.sha256(
+        data["password"].encode()
+    ).hexdigest()  # hash the password using sha256
+    user_type = data["user_type"].lower()
+
     # check if they are signing up using the admin email
-    if data["email"] == os.environ["ADMIN_EMAIL"]:
+    if email == os.environ["ADMIN_EMAIL"]:
         return {"message": "Email already exists"}, 400
 
     cur = conn.cursor()
@@ -64,57 +120,57 @@ def save_signup_form_data():
         # check if the email already exists
         cur.execute(
             """SELECT email FROM tutees WHERE email = %s UNION SELECT email FROM tutors WHERE email = %s""",
-            (data["email"], data["email"]),
+            (email, email),
         )
 
         if len(cur.fetchall()) > 0:
             return {"message": "Email already exists"}, 400
 
-        # hash the password using sha256
-        password_hash = hashlib.sha256(data["password"].encode()).hexdigest()
-
         cur.execute(
             (
                 """INSERT INTO %s (first_name, last_name, email, password, signup_date)
                     VALUES (%%s, %%s, %%s, %%s, %%s)"""
-                % ("tutees" if data["user_type"] == "tutee" else "tutors")
+                % ("tutees" if user_type == "tutee" else "tutors")
             ),
             (
-                data["first_name"],
-                data["last_name"],
-                data["email"],
-                password_hash,
+                first_name,
+                last_name,
+                email,
+                password,
                 date.today(),
             ),
         )
 
         cur.execute(
             "SELECT id FROM %s WHERE email = %%s"
-            % ("tutees" if data["user_type"] == "tutee" else "tutors"),
-            (data["email"],),
+            % ("tutees" if user_type == "tutee" else "tutors"),
+            (email,),
         )
 
         result = cur.fetchone()
 
         if result:
-            code = create_email_confirmation_code(cur, user_id=result[0], user_type=data["user_type"], email=data["email"])
+            code = create_email_confirmation_code(
+                cur, user_id=result[0], user_type=user_type, email=email
+            )
             mailer.send_email(
                 "Please click the following link to confirm your email: {}/confirm_email?code={}".format(
-                    os.environ["CLIENT_URL"], code
+                    os.environ["SERVER_URL"], code
                 ),
                 "Impact Tutoring: Confirm your email",
-                data["email"],
+                email,
             )
 
         conn.commit()
         cur.close()
 
         return {"message": "Signed up successfully"}
-    
-    except Exception as e:
+
+    except:
         conn.rollback()
         cur.close()
-        return {"message": "Error signing up"}, 400
+
+        return {"message": "Error signing up"}, 500
 
 
 @app.route("/validate-signup-token", methods=["GET"])
@@ -126,92 +182,129 @@ def validate_signup_token():
 
     cur = conn.cursor()
 
-    cur.execute(
-        """SELECT user_id, user_type, expires_at FROM confirmation_codes WHERE code = %s""",
-        (code,),
-    )
-
-    result = cur.fetchone()
-
-    if result and result[2] >= datetime.now():
+    try:
         cur.execute(
-            """UPDATE %s SET status = 'verified' WHERE id = %%s"""
-            % ("tutees" if result[1] == "tutee" else "tutors"),
-            (result[0],),
-        )
-
-        cur.execute(
-            """UPDATE confirmation_codes SET verified_at = CURRENT_TIMESTAMP WHERE code = %s""",
+            """SELECT user_id, user_type, expires_at FROM confirmation_codes WHERE code = %s""",
             (code,),
         )
 
-        conn.commit()
+        result = cur.fetchone()
+
+        if result and result[2] >= datetime.now():
+            cur.execute(
+                """UPDATE %s SET status = 'verified' WHERE id = %%s"""
+                % ("tutees" if result[1] == "tutee" else "tutors"),
+                (result[0],),
+            )
+
+            cur.execute(
+                """UPDATE confirmation_codes SET verified_at = CURRENT_TIMESTAMP WHERE code = %s""",
+                (code,),
+            )
+
+            conn.commit()
+            cur.close()
+
+            return redirect(
+                location="{}/log-in".format(os.environ["CLIENT_URL"]), code=302
+            )
+        else:
+            return {"message": "Invalid confirmation code"}, 400
+
+    except:
+        conn.rollback()
         cur.close()
 
-        return redirect(location=f"{os.environ["CLIENT_URL"]}/log-in", code=302)
-
-    return {"message": "Unable to verify confirmation code"}, 400
+        return {"message": "Error verifying confirmation code"}, 500
 
 
 ############################################################################################################
 # validate that email exists in database for login
 ############################################################################################################
 @app.route("/validate-login-form-data", methods=["POST"])
-@cross_origin(supports_credentials=True)
-def validateLoginFormData():
+def validate_login_form_data():
+    if is_session_valid(session):
+        return {"message": "Already logged in"}, 400
+
     data = request.json
 
-    hashed_password = hashlib.sha256(data["password"].encode()).hexdigest()
+    # validate data
+    if data["email"] is None or data["password"] is None:
+        return {"message": "Missing data"}, 400
 
-    print(hashed_password)
+    # format data
+    email = data["email"].lower()
+    password = hashlib.sha256(
+        data["password"].encode()
+    ).hexdigest()  # hash the password using sha256
 
     # admin login
     if (
-        data["email"] == os.environ["ADMIN_EMAIL"]
+        email == os.environ["ADMIN_EMAIL"]
         and data["password"] == os.environ["ADMIN_PASSWORD"]
     ):
-        session["email"] = data["email"]
+        session["id"] = 0
+        session["email"] = email
         session["user_type"] = "admin"
-        return {"user_type": session["user_type"]}, 200
+        return {
+            "type": "admin",
+            "firstName": "Impact Tutoring",
+            "lastName": "",
+            "email": email,
+            "status": "accepted",
+        }
 
     # tutor or tutee login
     cur = conn.cursor()
 
-    cur.execute(
-        """SELECT email, 'tutor', status
+    try:
+        cur.execute(
+            """SELECT 'tutor', id, first_name, last_name, status
                 FROM tutors
                 WHERE email = %s AND password = %s
                 UNION
-                SELECT email, 'tutee', status
+                SELECT 'tutee', id, first_name, last_name, status
                 FROM tutees
                 WHERE email = %s AND password = %s""",
-        (data["email"], hashed_password, data["email"], hashed_password),
-    )
+            (email, password, email, password),
+        )
 
-    result = cur.fetchone()
+        result = cur.fetchone()
 
-    conn.commit()
-    cur.close()
+        cur.close()
 
-    if result:
-        print("found account")
-        session["email"] = data["email"]
-        session["user_type"] = result[1]
-        return {
-            "user_type": session["user_type"],
-            "user_status": result[2],
-        }, 200
-    else:
-        return {
-            "message": "Did not find a matching email and password",
-        }, 400
+        if result is not None:
+            user_type = result[0]
+            user_id = result[1]
+            first_name = result[2]
+            last_name = result[3]
+            status = result[4]
+
+            if status != "unverified":
+                session["id"] = user_id
+                session["email"] = email
+                session["user_type"] = user_type
+
+                return {
+                    "type": user_type,
+                    "firstName": first_name,
+                    "lastName": last_name,
+                    "email": email,
+                    "status": status,
+                }
+
+            return {"message": "Email not verified"}, 400
+        else:
+            return {"message": "Did not find a matching email and password"}, 400
+
+    except:
+        return {"message": "Error logging in"}, 500
 
 
 ############################################################################################################
 # save data from tutor application form
 ############################################################################################################
 @app.route("/save-tutor-application-data", methods=["POST"])
-@cross_origin(supports_credentials=True)
 def saveTutorApplicationData():
     if "email" not in session:
         return {"message": "error", "details": "Email not found in session"}
@@ -247,7 +340,6 @@ def saveTutorApplicationData():
 # save tutor application resume
 ############################################################################################################
 @app.route("/save-tutor-application-resume", methods=["POST"])
-@cross_origin(supports_credentials=True)
 def saveTutorApplicationResume():
     # get the name of the tutor that's currently logged in
     if "email" not in session:
@@ -285,7 +377,6 @@ def saveTutorApplicationResume():
 # save tutor application report card
 ############################################################################################################
 @app.route("/save-tutor-application-report-card", methods=["POST"])
-@cross_origin(supports_credentials=True)
 def saveTutorApplicationReportCard():
     # get the name of the tutor that's currently logged in
     if "email" not in session:
@@ -324,70 +415,64 @@ def saveTutorApplicationReportCard():
 # get profile information
 ############################################################################################################
 @app.route("/get-profile-info", methods=["GET"])
-@cross_origin(supports_credentials=True)
-def getProfileInfo():
-    if "email" not in session:
-        return {"message": "error", "details": "Email not found in session"}
+def get_profile_info():
+    if is_session_valid(session):
+        user_type = session.get("user_type")
 
-    cur = conn.cursor()
-
-    # tutor profile information
-    if session["user_type"] == "tutor":
-        cur.execute(
-            """SELECT first_name, last_name, email, grade, gender, location, subjects, languages, availability, student_capacity
-                    FROM tutors
-                    WHERE email = %s""",
-            (session["email"],),
+        fields = (
+            "first_name, last_name, email, grade, gender, location, subjects, languages, availability, student_capacity, previous_experience, signup_date"
+            if user_type == "tutor"
+            else "first_name, last_name, email, grade, gender, location, subjects, languages, availability, additional_information, signup_date"
         )
 
-        profile = cur.fetchone()
+        cur = conn.cursor()
 
-        result = {
-            "firstName": profile[0],
-            "lastName": profile[1],
-            "email": profile[2],
-            "grade": profile[3],
-            "gender": profile[4],
-            "location": profile[5],
-            "subjects": profile[6],
-            "languages": profile[7],
-            "availability": profile[8],
-            "studentCapacity": profile[9],
-        }
+        try:
+            cur.execute(
+                """SELECT %s FROM %s WHERE id = %%s AND email = %%s"""
+                % (fields, f"{user_type}s"),
+                (session.get("id"), session.get("email")),
+            )
 
-    # tutee profile information
-    if session["user_type"] == "tutee":
-        cur.execute(
-            """SELECT first_name, last_name, email, grade, gender, location, subjects, languages, availability
-                    FROM tutees
-                    WHERE email = %s""",
-            (session["email"],),
-        )
+            result = cur.fetchone()
 
-        profile = cur.fetchone()
+            cur.close()
 
-        result = {
-            "firstName": profile[0],
-            "lastName": profile[1],
-            "email": profile[2],
-            "grade": profile[3],
-            "gender": profile[4],
-            "location": profile[5],
-            "subjects": profile[6],
-            "languages": profile[7],
-            "availability": profile[8],
-        }
+            if result:
+                return {
+                    "firstName": result[0],
+                    "lastName": result[1],
+                    "email": result[2],
+                    "grade": result[3],
+                    "gender": result[4],
+                    "location": result[5],
+                    "subjects": result[6],
+                    "languages": result[7],
+                    "availability": result[8],
+                } | (
+                    {
+                        "studentCapacity": result[9],
+                        "previousExperience": result[10],
+                        "signupDate": result[11],
+                    }
+                    if user_type == "tutor"
+                    else {"additionalInformation": result[9], "signupDate": result[10]}
+                )
 
-    cur.close()
+            return {"message": "Error getting user from session"}, 400
 
-    return result
+        except Exception as e:
+            print(e)
+            cur.close()
+            return {"message": "Error getting user profile"}, 500
+
+    return {"message": "No session found"}, 400
 
 
 ############################################################################################################
 # get upcoming sessions
 ############################################################################################################
 @app.route("/get-upcoming-sessions", methods=["GET"])
-@cross_origin(supports_credentials=True)
 def getUpcomingSessions():
     if "email" not in session:
         return {"message": "error", "details": "Email not found in session"}
@@ -543,7 +628,6 @@ def getUpcomingSessions():
 # get lesson plan/session notes
 ############################################################################################################
 @app.route("/get-editor-content", methods=["GET"])
-@cross_origin(supports_credentials=True)
 def getEditorContent():
     session_id = request.args.get("sessionID")
     type = request.args.get("type")
@@ -580,7 +664,6 @@ def getEditorContent():
 # save lesson plan/session notes
 ############################################################################################################
 @app.route("/save-editor-content", methods=["POST"])
-@cross_origin(supports_credentials=True)
 def saveEditorContent():
     data = request.json
     cur = conn.cursor()
@@ -617,7 +700,6 @@ def saveEditorContent():
 # get all of the tutor's tutees or all of the tutee's subjects
 ############################################################################################################
 @app.route("/get-commitments", methods=["GET"])
-@cross_origin(supports_credentials=True)
 def getCommitments():
     if "email" not in session:
         return {"message": "error", "details": "Email not found in session"}
@@ -730,7 +812,6 @@ def getCommitments():
 # get tutoring history
 ############################################################################################################
 @app.route("/get-tutoring-history", methods=["GET"])
-@cross_origin(supports_credentials=True)
 def getTutoringHistory():
     if "email" not in session:
         return {"message": "error", "details": "Email not found in session"}
@@ -845,7 +926,6 @@ def getTutoringHistory():
 # save volunteer hours data
 ############################################################################################################
 @app.route("/save-volunteer-hours-data", methods=["POST"])
-@cross_origin(supports_credentials=True)
 def saveVolunteerHoursData():
     if "email" not in session:
         return {"message": "error", "details": "Email not found in session"}
@@ -876,7 +956,6 @@ def saveVolunteerHoursData():
 # save volunteer hours request form
 ############################################################################################################
 @app.route("/save-volunteer-hours-request-form", methods=["POST"])
-@cross_origin(supports_credentials=True)
 def saveVolunteerHoursRequestForm():
     # get the name of the tutor that's currently logged in
     if "email" not in session:
@@ -918,7 +997,6 @@ def saveVolunteerHoursRequestForm():
 # get past volunteer requests
 ############################################################################################################
 @app.route("/get-past-volunteer-hours-request-history", methods=["GET"])
-@cross_origin(supports_credentials=True)
 def getPastVolunteerHoursRequestHistory():
     if "email" not in session:
         return {"message": "error", "details": "Email not found in session"}
@@ -964,7 +1042,6 @@ def getPastVolunteerHoursRequestHistory():
 # get tutors
 ############################################################################################################
 @app.route("/get-tutors", methods=["GET"])
-@cross_origin(supports_credentials=True)
 def getTutors():
     cur = conn.cursor()
 
@@ -1003,7 +1080,6 @@ def getTutors():
 # get tutees
 ############################################################################################################
 @app.route("/get-tutees", methods=["GET"])
-@cross_origin(supports_credentials=True)
 def getTutees():
     cur = conn.cursor()
 
@@ -1041,7 +1117,6 @@ def getTutees():
 # get pairings
 ############################################################################################################
 @app.route("/get-pairings", methods=["GET"])
-@cross_origin(supports_credentials=True)
 def getPairings():
     cur = conn.cursor()
 
@@ -1078,7 +1153,6 @@ def getPairings():
 # get pending volunteer hours requests
 ############################################################################################################
 @app.route("/get-pending-volunteer-hours-requests", methods=["GET"])
-@cross_origin(supports_credentials=True)
 def getPendingVolunteerHoursRequests():
     if "email" not in session:
         return {"message": "error", "details": "Email not found in session"}
@@ -1121,7 +1195,6 @@ def getPendingVolunteerHoursRequests():
 # get data for a given volunteer hours request
 ############################################################################################################
 @app.route("/get-hours-request-data", methods=["GET"])
-@cross_origin(supports_credentials=True)
 def getHoursRequestData():
     if "email" not in session:
         return {"message": "error", "details": "Email not found in session"}
@@ -1159,7 +1232,6 @@ def getHoursRequestData():
 # get custom volunteer hours form, if exists
 ############################################################################################################
 @app.route("/get-volunteer-hours-form", methods=["GET"])
-@cross_origin(supports_credentials=True)
 def getVolunteerHoursForm():
     if "email" not in session:
         return {"message": "error", "details": "Email not found in session"}
@@ -1219,7 +1291,6 @@ def getVolunteerHoursForm():
 # save volunteer hours approval form
 ############################################################################################################
 @app.route("/save-volunteer-hours-approval-form", methods=["POST"])
-@cross_origin(supports_credentials=True)
 def saveVolunteerHoursApprovalForm():
     request_id = request.form["requestID"]
 
@@ -1255,17 +1326,13 @@ def saveVolunteerHoursApprovalForm():
 # log out
 ############################################################################################################
 @app.route("/log-out", methods=["GET", "POST"])
-@cross_origin(supports_credentials=True)
 def logOut():
-    if "email" not in session:
-        print("EMAIL NOT FOUND IN SESSION")
-        return {"message": "error", "details": "Email not found in session"}
+    if not is_session_valid(session):
+        return {"message": "Not logged in"}, 400
 
-    session.pop("email")
-    print("LOGGED OUT")
-    return {"message": "success"}
+    session.clear()
+    return {"message": "Logged out"}
 
 
 if __name__ == "__main__":
-    is_debug = os.environ["ENVIRONMENT"] == "development"
-    app.run(debug=is_debug, port=os.environ["PORT"])
+    app.run(debug=(os.environ["ENVIRONMENT"] == "development"), port=os.environ["PORT"])
