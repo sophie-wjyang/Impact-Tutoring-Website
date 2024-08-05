@@ -5,7 +5,7 @@ from datetime import date, datetime
 from cachelib import FileSystemCache
 from flask import Flask, redirect, request, session, send_file
 from flask_session import Session
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 
 import psycopg2
 import boto3
