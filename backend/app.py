@@ -28,8 +28,8 @@ mailer = Mailer()
 
 # connect to database
 conn = psycopg2.connect(
-    host="localhost",
-    database="impact_tutoring",
+    host=os.environ["DB_HOST"],
+    database=os.environ["DB_NAME"],
     user=os.environ["DB_USERNAME"],
     password=os.environ["DB_PASSWORD"],
 )
@@ -44,7 +44,7 @@ s3 = boto3.client(
 
 @app.route("/")
 def index():
-    return "index!"
+    return "uwu :3" # change this later uwu
 
 
 ############################################################################################################
@@ -1330,4 +1330,7 @@ def logOut():
 
 
 if __name__ == "__main__":
-    app.run(debug=(os.environ["ENVIRONMENT"] == "development"), port=os.environ["PORT"])
+    app.run(
+        debug=(os.environ["ENVIRONMENT"] == "development"),
+        port=os.environ["PORT"],
+    )

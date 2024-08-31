@@ -20,6 +20,9 @@ google-auth-httplib2 = "^0.2.0"
 google-auth-oauthlib = "^1.2.1"
 
 
+[tool.poetry.group.production.dependencies]
+gunicorn = "^23.0.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
