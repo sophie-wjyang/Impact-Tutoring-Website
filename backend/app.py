@@ -311,7 +311,9 @@ def validate_login_form_data():
 
             return {"message": "Email not verified"}, 400
         else:
-            return {"message": "Did not find a matching email and password"}, 400
+            return {
+                "message": "We couldn't find an account matching the email and password you entered. Please verify your credentials are correct, or sign up ssfor an account."
+            }, 400
 
     except:
         return {"message": "Error logging in"}, 500
@@ -1330,4 +1332,8 @@ def logOut():
 
 
 if __name__ == "__main__":
-    app.run(debug=(os.environ["ENVIRONMENT"] == "development"), port=os.environ["PORT"])
+    app.run(
+        debug=(os.environ["ENVIRONMENT"] == "development"),
+        port=os.environ["PORT"],
+        ssl_context=(os.environ["SSL_CERTIFICATE"], os.environ["SSL_KEY"]),
+    )
