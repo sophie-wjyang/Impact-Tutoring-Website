@@ -16,7 +16,7 @@ export default function TutoringHistory() {
   // get tutoring history
   useEffect(() => {
     const data = {
-      pairingID: pairingID,
+      pairing_id: pairingID,
     };
 
     client

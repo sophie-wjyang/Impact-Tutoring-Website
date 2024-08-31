@@ -67,16 +67,16 @@ export default function App() {
 
                                 <Route path="upcoming-sessions">
                                     <Route index element={<UpcomingSessionsPageTutor />} />
-                                    <Route path="lesson-plan" element={<Editor title="Lesson Plan" />} />
-                                    <Route path="session-notes" element={<Editor title="Session Notes" />} />
+                                    <Route path="lesson-plan" element={<Editor title="Lesson Plan" contentType="lesson_plan" />} />
+                                    <Route path="session-notes" element={<Editor title="Session Notes" contentType="session_notes"  />} />
                                 </Route>
 
                                 <Route path="my-tutees">
                                     <Route index element={<MyTuteesPage />} />
                                     <Route path="tutoring-history">
                                         <Route index element={<TutoringHistory />} />
-                                        <Route path="lesson-plan" element={<Editor title="Lesson Plan" />} />
-                                        <Route path="session-notes" element={<Editor title="Session Notes" />} />
+                                        <Route path="lesson-plan" element={<Editor title="Lesson Plan" contentType="lesson_plan"  />} />
+                                        <Route path="session-notes" element={<Editor title="Session Notes" contentType="session_notes"  />} />
                                     </Route>
                                 </Route>
 
@@ -96,16 +96,16 @@ export default function App() {
 
                                 <Route path="upcoming-sessions">
                                     <Route index element={<UpcomingSessionsPageTutee />} />
-                                    <Route path="lesson-plan" element={<Editor title="Lesson Plan" />} />
-                                    <Route path="session-notes" element={<Editor title="Session Notes" />} />
+                                    <Route path="lesson-plan" element={<Editor title="Lesson Plan" contentType="lesson_plan" />} />
+                                    <Route path="session-notes" element={<Editor title="Session Notes" contentType="session_notes" />} />
                                 </Route>
 
                                 <Route path="my-subjects">
                                     <Route index element={<MySubjectsPage />} />
                                     <Route path="tutoring-history">
                                         <Route index element={<TutoringHistory />} />
-                                        <Route path="lesson-plan" element={<Editor title="Lesson Plan" />} />
-                                        <Route path="session-notes" element={<Editor title="Session Notes" />} />
+                                        <Route path="lesson-plan" element={<Editor title="Lesson Plan" contentType="lesson_plan" />} />
+                                        <Route path="session-notes" element={<Editor title="Session Notes" contentType="session_notes" />} />
                                     </Route>
                                 </Route>
 
@@ -132,8 +132,8 @@ export default function App() {
                                     <Route index element={<PairingsPage />} />
                                     <Route path="tutoring-history">
                                         <Route index element={<TutoringHistory />} />
-                                        <Route path="lesson-plan" element={<Editor title="Lesson Plan" />} />
-                                        <Route path="session-notes" element={<Editor title="Session Notes" />} />
+                                        <Route path="lesson-plan" element={<Editor title="Lesson Plan" contentType="lesson_plan" />} />
+                                        <Route path="session-notes" element={<Editor title="Session Notes" contentType="session_notes" />} />
                                     </Route>
                                 </Route>
 
@@ -144,6 +144,9 @@ export default function App() {
                             </Route>
                         )}
                     </Route>
+
+                    {/* Redirect to home if no path matched */}
+                    <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
             </BrowserRouter>
         </div>

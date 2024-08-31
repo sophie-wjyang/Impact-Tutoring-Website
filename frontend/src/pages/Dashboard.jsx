@@ -81,7 +81,7 @@ export function DashboardTutor() {
                                     <FontAwesomeIcon icon={faClock} className="sidebar-icon" />
                                     Volunteer hours
                                 </Nav.Link>
-                                <Nav.Link eventKey="log-out" className="sidebar-link">
+                                <Nav.Link eventKey="/log-out" className="sidebar-link">
                                     <FontAwesomeIcon icon={faArrowRightFromBracket} className="sidebar-icon" />
                                     Log out
                                 </Nav.Link>
@@ -160,7 +160,7 @@ export function DashboardTutee() {
                                     <FontAwesomeIcon icon={faFileLines} className="sidebar-icon" />
                                     Resources
                                 </Nav.Link>
-                                <Nav.Link eventKey="log-out" className="sidebar-link">
+                                <Nav.Link eventKey="/log-out" className="sidebar-link">
                                     <FontAwesomeIcon icon={faArrowRightFromBracket} className="sidebar-icon" />
                                     Log out
                                 </Nav.Link>
@@ -239,7 +239,7 @@ export function DashboardAdmin() {
                                     <FontAwesomeIcon icon={faFileLines} className="sidebar-icon" />
                                     Volunteer hours
                                 </Nav.Link>
-                                <Nav.Link eventKey="log-out" className="sidebar-link">
+                                <Nav.Link eventKey="/log-out" className="sidebar-link">
                                     <FontAwesomeIcon icon={faArrowRightFromBracket} className="sidebar-icon" />
                                     Log out
                                 </Nav.Link>

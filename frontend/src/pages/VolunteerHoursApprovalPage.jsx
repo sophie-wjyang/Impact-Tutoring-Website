@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 // bootstrap
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
 
 // components
 import FileUpload from "../components/form/FileUpload";
@@ -19,7 +20,7 @@ export default function VolunteerHoursApprovalPage() {
 
   useEffect(() => {
     const data = {
-      requestID: requestID,
+      request_id: requestID,
     };
 
     client
@@ -33,7 +34,7 @@ export default function VolunteerHoursApprovalPage() {
 
   function downloadForm() {
     const data = {
-      requestID: requestID,
+      request_id: requestID,
     };
 
     // this will be a custom form if the tutor submitted a custom volunteer hours form to S3
@@ -69,7 +70,7 @@ export default function VolunteerHoursApprovalPage() {
     // save volunteer hours form data to S3
     const volunteerHoursFormData = new FormData();
     volunteerHoursFormData.append("volunteer-hours-form", volunteerHoursForm);
-    volunteerHoursFormData.append("requestID", requestID);
+    volunteerHoursFormData.append("request_id", requestID);
 
     client.post("save-volunteer-hours-approval-form", volunteerHoursFormData);
   }
@@ -83,54 +84,56 @@ export default function VolunteerHoursApprovalPage() {
       <Container className="dashboard-form-container">
         <h2 className="hours-approval-title">Request</h2>
 
-        <div className="hours-approval-text">
-          <div>
-            <span>Requested by:</span> {requestData["tutorFirstName"]}{" "}
-            {requestData["tutorLastName"]}
-          </div>
+        <Form onSubmit={submitApproval}>
+            <div className="hours-approval-text">
+            <div>
+                <span>Requested by:</span> {requestData["tutorFirstName"]}{" "}
+                {requestData["tutorLastName"]}
+            </div>
 
-          <div>
-            <span>Number of hours:</span> {requestData["numHours"]}
-          </div>
+            <div>
+                <span>Number of hours:</span> {requestData["numHours"]}
+            </div>
 
-          <div>
-            <span>Description:</span>
-            <div>{requestData["description"]}</div>
-          </div>
+            <div>
+                <span>Description:</span>
+                <div>{requestData["description"]}</div>
+            </div>
 
-          <div>
-            <span>Download blank form:</span>
+            <div>
+                <span>Download blank form:</span>
+                <Button
+                variant="primary"
+                size="lg"
+                type="submit"
+                className="w-100 download-form-button"
+                onClick={downloadForm}
+                >
+                Download volunteer hours form
+                </Button>
+            </div>
+
+            <div>
+                <FileUpload
+                controlId="approvedVolunteerHoursForm"
+                label="Upload approved form:"
+                onChange={(e) => {
+                    setVolunteerHoursForm(e.target.files[0]);
+                }}
+                required
+                />
+            </div>
+
             <Button
-              variant="primary"
-              size="lg"
-              type="submit"
-              className="w-100 download-form-button"
-              onClick={downloadForm}
+                variant="primary"
+                size="lg"
+                type="submit"
+                className="w-100 submit-button"
             >
-              Download volunteer hours form
+                Submit approval
             </Button>
-          </div>
-
-          <div>
-            <FileUpload
-              controlId="approvedVolunteerHoursForm"
-              label="Upload approved form:"
-              onChange={(e) => {
-                setVolunteerHoursForm(e.target.files[0]);
-              }}
-            />
-          </div>
-
-          <Button
-            variant="primary"
-            size="lg"
-            type="submit"
-            className="w-100 submit-button"
-            onClick={submitApproval}
-          >
-            Submit approval
-          </Button>
-        </div>
+            </div>
+        </Form>
       </Container>
     </Container>
   );
