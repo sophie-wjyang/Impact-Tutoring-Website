@@ -1,6 +1,5 @@
 import "./App.css";
 import React from "react";
-import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useUser } from "./hooks/useUser";
 import { AuthenticatedRoutes, UnauthenticatedRoutes } from "./CustomRoutes";
@@ -36,7 +35,11 @@ import LogOutPage from "./pages/LogOutPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function App() {
-    const { user } = useUser();
+    const { isLoading, user } = useUser();
+
+    if (isLoading) {
+        return null;
+    }
 
     return (
         <div>
@@ -57,8 +60,6 @@ export default function App() {
                         {/* tutor dashboard routes */}
                         {user?.type === "tutor" && (
                             <Route path="dashboard" element={<DashboardTutor />}>
-                                <Route index element={<Navigate to="profile" />} />
-
                                 <Route path="tutor-application" element={<TutorApplication />} />
                                 <Route path="application-applied" element={<ApplicationStatus status="applied" />} />
                                 <Route path="application-rejected" element={<ApplicationStatus status="rejected" />} />
@@ -68,20 +69,22 @@ export default function App() {
                                 <Route path="upcoming-sessions">
                                     <Route index element={<UpcomingSessionsPageTutor />} />
                                     <Route path="lesson-plan" element={<Editor title="Lesson Plan" contentType="lesson_plan" />} />
-                                    <Route path="session-notes" element={<Editor title="Session Notes" contentType="session_notes"  />} />
+                                    <Route path="session-notes" element={<Editor title="Session Notes" contentType="session_notes" />} />
                                 </Route>
 
                                 <Route path="my-tutees">
                                     <Route index element={<MyTuteesPage />} />
                                     <Route path="tutoring-history">
                                         <Route index element={<TutoringHistory />} />
-                                        <Route path="lesson-plan" element={<Editor title="Lesson Plan" contentType="lesson_plan"  />} />
-                                        <Route path="session-notes" element={<Editor title="Session Notes" contentType="session_notes"  />} />
+                                        <Route path="lesson-plan" element={<Editor title="Lesson Plan" contentType="lesson_plan" />} />
+                                        <Route path="session-notes" element={<Editor title="Session Notes" contentType="session_notes" />} />
                                     </Route>
                                 </Route>
 
                                 <Route path="resources" element={<ResourcesPageTutor />} />
                                 <Route path="volunteer-hours-request" element={<VolunteerHoursRequestPage />} />
+
+                                <Route index element={<Navigate to="profile" />} />
                             </Route>
                         )}
 
@@ -116,8 +119,6 @@ export default function App() {
                         {/* admin dashboard routes */}
                         {user?.type === "admin" && (
                             <Route path="dashboard" element={<DashboardAdmin />}>
-                                <Route index element={<Navigate to="tutors" />} />
-
                                 <Route path="tutors">
                                     <Route index element={<TutorsPage />} />
                                     <Route path="tutor-information" element={<TutorInformationPage />} />
@@ -141,6 +142,8 @@ export default function App() {
                                     <Route index element={<PendingVolunteerHoursApprovalsPage />} />
                                     <Route path="volunteer-hours-approval" element={<VolunteerHoursApprovalPage />} />
                                 </Route>
+
+                                <Route index element={<Navigate to="tutors" />} />
                             </Route>
                         )}
                     </Route>
