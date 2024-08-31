@@ -999,10 +999,7 @@ def get_tutors():
 
         cur.close()
 
-        if result:
-            return result
-
-        return {"message": "Tutors not found"}, 400
+        return result
 
     except:
         cur.close()
@@ -1050,10 +1047,7 @@ def get_tutees():
 
         cur.close()
 
-        if result:
-            return result
-
-        return {"message": "Tutors not found"}, 400
+        return result
 
     except:
         return {"message": "Error fetching tutees"}, 500
@@ -1099,8 +1093,7 @@ def get_pairings():
 
         cur.close()
 
-        if result:
-            return result
+        return result
 
         return {"message": "Pairings not found"}, 400
 
