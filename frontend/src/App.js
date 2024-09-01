@@ -58,7 +58,7 @@ export default function App() {
                     {/* protected routes (you can only access these if you're logged in) */}
                     <Route element={<AuthenticatedRoutes />}>
                         {/* tutor dashboard routes */}
-                        {user?.type === "tutor" && (
+                        {user?.user_type === "tutor" && (
                             <Route path="dashboard" element={<DashboardTutor />}>
                                 <Route path="tutor-application" element={<TutorApplication />} />
                                 <Route path="application-applied" element={<ApplicationStatus status="applied" />} />
@@ -89,7 +89,7 @@ export default function App() {
                         )}
 
                         {/* tutee dashboard routes */}
-                        {user?.type === "tutee" && (
+                        {user?.user_type === "tutee" && (
                             <Route path="dashboard" element={<DashboardTutee />}>
                                 <Route index element={<Navigate to="profile" />} />
 
@@ -117,7 +117,7 @@ export default function App() {
                         )}
 
                         {/* admin dashboard routes */}
-                        {user?.type === "admin" && (
+                        {user?.user_type === "admin" && (
                             <Route path="dashboard" element={<DashboardAdmin />}>
                                 <Route path="tutors">
                                     <Route index element={<TutorsPage />} />

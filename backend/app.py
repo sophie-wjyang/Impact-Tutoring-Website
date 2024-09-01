@@ -60,7 +60,7 @@ def getUser():
 
     if user_type == "admin":
         return {
-            "type": "admin",
+            "user_type": "admin",
             "firstName": "Impact",
             "lastName": "Tutoring",
             "email": session.get("email"),
@@ -82,7 +82,7 @@ def getUser():
 
         if result:
             return {
-                "type": user_type,
+                "user_type": user_type,
                 "firstName": result[0],
                 "lastName": result[1],
                 "email": result[2],
@@ -263,7 +263,7 @@ def validate_login_form_data():
         session["email"] = email
         session["user_type"] = "admin"
         return {
-            "type": "admin",
+            "user_type": "admin",
             "firstName": "Impact Tutoring",
             "lastName": "",
             "email": email,
@@ -302,7 +302,7 @@ def validate_login_form_data():
                 session["user_type"] = user_type
 
                 return {
-                    "type": user_type,
+                    "user_type": user_type,
                     "firstName": first_name,
                     "lastName": last_name,
                     "email": email,
@@ -369,9 +369,11 @@ def save_tutor_application_data():
 
         return {"message": "Updated tutor data"}
 
-    except:
+    except Exception as e:
         conn.rollback()
         cur.close()
+
+        print(e)
 
         return {"message": "Error updating tutor data"}, 500
 

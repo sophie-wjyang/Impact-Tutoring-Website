@@ -197,17 +197,17 @@ export default function Editor(props) {
                 <p className="editor-date">
                     <b>Date:</b> {month} {day}, {year}
                 </p>
-                {user?.type === "tutor" && (
+                {user?.user_type === "tutor" && (
                     <p className="editor-person">
                         <b>Tutee:</b> {tuteeFirstName} {tuteeLastName}
                     </p>
                 )}
-                {user?.type === "tutee" && (
+                {user?.user_type === "tutee" && (
                     <p className="editor-person">
                         <b>Tutor:</b> {tutorFirstName} {tutorLastName}
                     </p>
                 )}
-                {user?.type === "admin" && (
+                {user?.user_type === "admin" && (
                     <div>
                         <p className="editor-person">
                             <b>Tutor:</b> {tutorFirstName} {tutorLastName}

@@ -54,7 +54,7 @@ export default function TutoringHistory() {
               <tr key={index}>
                 <td className="tutoring-history-text">{request["date"]}</td>
                 <td className="tutoring-history-text">
-                  {user?.type === "tutor" && (
+                  {user?.user_type === "tutor" && (
                     <Link
                       className="tutoring-history-link"
                       to="lesson-plan"
@@ -70,7 +70,7 @@ export default function TutoringHistory() {
                       Lesson plan
                     </Link>
                   )}
-                  {user?.type === "tutee" && (
+                  {user?.user_type === "tutee" && (
                     <Link
                       className="tutoring-history-link"
                       to="lesson-plan"
@@ -86,7 +86,7 @@ export default function TutoringHistory() {
                       Lesson plan
                     </Link>
                   )}
-                  {user?.type === "admin" && (
+                  {user?.user_type === "admin" && (
                     <Link
                       className="tutoring-history-link"
                       to="lesson-plan"
@@ -106,7 +106,7 @@ export default function TutoringHistory() {
                   )}
                 </td>
                 <td className="tutoring-history-text">
-                  {user?.type === "tutor" && (
+                  {user?.user_type === "tutor" && (
                     <Link
                       className="tutoring-history-link"
                       to="session-notes"
@@ -122,7 +122,7 @@ export default function TutoringHistory() {
                       Session notes
                     </Link>
                   )}
-                  {user?.type === "tutee" && (
+                  {user?.user_type === "tutee" && (
                     <Link
                       className="tutoring-history-link"
                       to="session-notes"
@@ -138,7 +138,7 @@ export default function TutoringHistory() {
                       Session notes
                     </Link>
                   )}
-                  {user?.type === "admin" && (
+                  {user?.user_type === "admin" && (
                     <Link
                       className="tutoring-history-link"
                       to="session-notes"
