@@ -59,96 +59,99 @@ export default function App() {
                     <Route element={<AuthenticatedRoutes />}>
                         {/* tutor dashboard routes */}
                         {user?.user_type === "tutor" && (
-                            <Route path="dashboard" element={<DashboardTutor />}>
+                            <>
                                 <Route path="tutor-application" element={<TutorApplication />} />
                                 <Route path="application-applied" element={<ApplicationStatus status="applied" />} />
                                 <Route path="application-rejected" element={<ApplicationStatus status="rejected" />} />
 
-                                <Route path="profile" element={<ProfilePageTutor />} />
+                                <Route path="dashboard" element={<DashboardTutor />}>
+                                    <Route index element={<Navigate to="profile" />} />
+                                    <Route path="profile" element={<ProfilePageTutor />} />
 
-                                <Route path="upcoming-sessions">
-                                    <Route index element={<UpcomingSessionsPageTutor />} />
-                                    <Route path="lesson-plan" element={<Editor title="Lesson Plan" contentType="lesson_plan" />} />
-                                    <Route path="session-notes" element={<Editor title="Session Notes" contentType="session_notes" />} />
-                                </Route>
-
-                                <Route path="my-tutees">
-                                    <Route index element={<MyTuteesPage />} />
-                                    <Route path="tutoring-history">
-                                        <Route index element={<TutoringHistory />} />
+                                    <Route path="upcoming-sessions">
+                                        <Route index element={<UpcomingSessionsPageTutor />} />
                                         <Route path="lesson-plan" element={<Editor title="Lesson Plan" contentType="lesson_plan" />} />
                                         <Route path="session-notes" element={<Editor title="Session Notes" contentType="session_notes" />} />
                                     </Route>
+
+                                    <Route path="my-tutees">
+                                        <Route index element={<MyTuteesPage />} />
+                                        <Route path="tutoring-history">
+                                            <Route index element={<TutoringHistory />} />
+                                            <Route path="lesson-plan" element={<Editor title="Lesson Plan" contentType="lesson_plan" />} />
+                                            <Route path="session-notes" element={<Editor title="Session Notes" contentType="session_notes" />} />
+                                        </Route>
+                                    </Route>
+
+                                    <Route path="resources" element={<ResourcesPageTutor />} />
+                                    <Route path="volunteer-hours-request" element={<VolunteerHoursRequestPage />} />
                                 </Route>
-
-                                <Route path="resources" element={<ResourcesPageTutor />} />
-                                <Route path="volunteer-hours-request" element={<VolunteerHoursRequestPage />} />
-
-                                <Route index element={<Navigate to="profile" />} />
-                            </Route>
+                            </>
                         )}
 
                         {/* tutee dashboard routes */}
                         {user?.user_type === "tutee" && (
-                            <Route path="dashboard" element={<DashboardTutee />}>
-                                <Route index element={<Navigate to="profile" />} />
-
+                            <>
                                 <Route path="tutee-signup-information" element={<TuteeSignupInformation />} />
 
-                                <Route path="profile" element={<ProfilePageTutee />} />
+                                <Route path="dashboard" element={<DashboardTutee />}>
+                                    <Route index element={<Navigate to="profile" />} />
+                                    <Route path="profile" element={<ProfilePageTutee />} />
 
-                                <Route path="upcoming-sessions">
-                                    <Route index element={<UpcomingSessionsPageTutee />} />
-                                    <Route path="lesson-plan" element={<Editor title="Lesson Plan" contentType="lesson_plan" />} />
-                                    <Route path="session-notes" element={<Editor title="Session Notes" contentType="session_notes" />} />
-                                </Route>
-
-                                <Route path="my-subjects">
-                                    <Route index element={<MySubjectsPage />} />
-                                    <Route path="tutoring-history">
-                                        <Route index element={<TutoringHistory />} />
+                                    <Route path="upcoming-sessions">
+                                        <Route index element={<UpcomingSessionsPageTutee />} />
                                         <Route path="lesson-plan" element={<Editor title="Lesson Plan" contentType="lesson_plan" />} />
                                         <Route path="session-notes" element={<Editor title="Session Notes" contentType="session_notes" />} />
                                     </Route>
-                                </Route>
 
-                                <Route path="resources" element={<ResourcesPageTutee />} />
-                            </Route>
+                                    <Route path="my-subjects">
+                                        <Route index element={<MySubjectsPage />} />
+                                        <Route path="tutoring-history">
+                                            <Route index element={<TutoringHistory />} />
+                                            <Route path="lesson-plan" element={<Editor title="Lesson Plan" contentType="lesson_plan" />} />
+                                            <Route path="session-notes" element={<Editor title="Session Notes" contentType="session_notes" />} />
+                                        </Route>
+                                    </Route>
+
+                                    <Route path="resources" element={<ResourcesPageTutee />} />
+                                </Route>
+                            </>
                         )}
 
                         {/* admin dashboard routes */}
                         {user?.user_type === "admin" && (
-                            <Route path="dashboard" element={<DashboardAdmin />}>
-                                <Route path="tutors">
-                                    <Route index element={<TutorsPage />} />
-                                    <Route path="tutor-information" element={<TutorInformationPage />} />
-                                </Route>
+                            <>
+                                <Route path="dashboard" element={<DashboardAdmin />}>
+                                    <Route index element={<Navigate to="tutors" />} />
+                                    <Route path="tutors">
+                                        <Route index element={<TutorsPage />} />
+                                        <Route path="tutor-information" element={<TutorInformationPage />} />
+                                    </Route>
 
-                                <Route path="tutees">
-                                    <Route index element={<TuteesPage />} />
-                                    <Route path="tutee-information" element={<TuteeInformation />} />
-                                </Route>
+                                    <Route path="tutees">
+                                        <Route index element={<TuteesPage />} />
+                                        <Route path="tutee-information" element={<TuteeInformation />} />
+                                    </Route>
 
-                                <Route path="pairings">
-                                    <Route index element={<PairingsPage />} />
-                                    <Route path="tutoring-history">
-                                        <Route index element={<TutoringHistory />} />
-                                        <Route path="lesson-plan" element={<Editor title="Lesson Plan" contentType="lesson_plan" />} />
-                                        <Route path="session-notes" element={<Editor title="Session Notes" contentType="session_notes" />} />
+                                    <Route path="pairings">
+                                        <Route index element={<PairingsPage />} />
+                                        <Route path="tutoring-history">
+                                            <Route index element={<TutoringHistory />} />
+                                            <Route path="lesson-plan" element={<Editor title="Lesson Plan" contentType="lesson_plan" />} />
+                                            <Route path="session-notes" element={<Editor title="Session Notes" contentType="session_notes" />} />
+                                        </Route>
+                                    </Route>
+
+                                    <Route path="pending-volunteer-hours-approvals">
+                                        <Route index element={<PendingVolunteerHoursApprovalsPage />} />
+                                        <Route path="volunteer-hours-approval" element={<VolunteerHoursApprovalPage />} />
                                     </Route>
                                 </Route>
-
-                                <Route path="pending-volunteer-hours-approvals">
-                                    <Route index element={<PendingVolunteerHoursApprovalsPage />} />
-                                    <Route path="volunteer-hours-approval" element={<VolunteerHoursApprovalPage />} />
-                                </Route>
-
-                                <Route index element={<Navigate to="tutors" />} />
-                            </Route>
+                            </>
                         )}
                     </Route>
 
-                    {/* Redirect to home if no path matched */}
+                    {/* Navigate to home if no path matched */}
                     <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
             </BrowserRouter>

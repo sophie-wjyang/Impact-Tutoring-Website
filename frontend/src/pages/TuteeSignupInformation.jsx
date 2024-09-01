@@ -77,11 +77,11 @@ export default function TuteeSignupInformation() {
             placeholder="Grade"
             value={grade}
             options={[
-              "Grade 9",
-              "Grade 10",
-              "Grade 11",
-              "Grade 12",
-              "University/College",
+              {value: "Grade 9"},
+              {value: "Grade 10"},
+              {value: "Grade 11"},
+              {value: "Grade 12"},
+              {value: "University/College"},
             ]}
             onChange={(e) => setGrade(e.target.value)}
             description=""
@@ -93,7 +93,7 @@ export default function TuteeSignupInformation() {
             label="Gender"
             placeholder="Gender"
             value={gender}
-            options={["Male", "Female", "Non-binary", "Prefer not to say"]}
+            options={[{label: "Male", value: "male"}, {label: "Female", value: "female"}, {label: "Non-binary", value: "nonbinary"}, {label: "Prefer not to say", value: "unspecified"}]}
             onChange={(e) => setGender(e.target.value)}
             description=""
           />

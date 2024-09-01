@@ -33,16 +33,16 @@ export default function LogInPage() {
             .then(({ data }) => {
                 setUser(data);
 
-                if (data.user_status === "verified") {
+                if (data.status === "verified") {
                     if (data.user_type === "tutor") {
                         navigate("/tutor-application");
                     }
                     if (data.user_type === "tutee") {
                         navigate("/tutee-signup-information");
                     }
-                } else if (data.user_status === "applied") {
+                } else if (data.status === "applied") {
                     navigate("/application-applied");
-                } else if (data.user_status === "rejected") {
+                } else if (data.status === "rejected") {
                     navigate("/application-rejected");
                 } else {
                     navigate("/dashboard");
@@ -81,16 +81,16 @@ export default function LogInPage() {
                     {/* <a href="" className="d-flex justify-content-end form-link">
                         Forgot your password?
                     </a> */}
-                    {/* 
-          {invalidLogin && (
-            <p className="invalid-login-message">
-              We couldn't find an account matching the email and password you
-              entered. Please verify your credentials are correct, or sign up
-              for an account.
-            </p>
-          )} */}
+                    
+                    {/* {invalidLogin && (
+                        <p className="invalid-login-message">
+                        We couldn't find an account matching the email and password you
+                        entered. Please verify your credentials are correct, or sign up
+                        for an account.
+                        </p>
+                    )} */}
 
-                    {error && <p className="invalid-login-message">{error}</p>}
+                    {error  && <p className="invalid-login-message">{error}</p>}
 
                     <Button variant="primary" size="lg" type="submit" className="w-100 form-submit-button">
                         Log In

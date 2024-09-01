@@ -19,8 +19,8 @@ export default function Dropdown(props) {
                     {placeholder}
                 </option>
                 {options.map((option, index) => (
-                    <option key={index} className="dropdown-option">
-                        {option}
+                    <option key={index} value={option.value} className="dropdown-option">
+                        {option.label ?? option.value}
                     </option>
                 ))}
             </Form.Select>
